@@ -29,6 +29,7 @@
         @keyframes bgFloat { 0%,100% { transform: translate(0,0) rotate(0deg); } 33% { transform: translate(30px,-30px) rotate(5deg); } 66% { transform: translate(-20px,20px) rotate(-5deg); } }
         .grid-pattern { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%); }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-primary); } ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
+        select.todo-input option { background: var(--bg-secondary); color: var(--text-primary); }
 
         /* Navbar */
         .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; backdrop-filter: blur(20px); background: rgba(0,0,0,0.7); border-bottom: 1px solid var(--border-color); transition: all 0.3s ease; }
@@ -162,6 +163,8 @@
         .task-content { flex: 1; }
         .task-text { font-size: 14px; font-weight: 500; transition: all 0.3s ease; }
         .task-item.completed .task-text { text-decoration: line-through; color: var(--text-muted); }
+        .task-delete { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 8px; transition: all 0.3s ease; }
+        .task-delete:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
 
         /* Goals Timeline */
         .goals-timeline { display: grid; gap: 16px; }
@@ -229,15 +232,14 @@
         .delete-review-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
         .delete-review-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.1); }
 
-        /* History */
-        .history-item { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; margin-bottom: 16px; transition: all 0.3s ease; }
-        .history-item:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
-        .history-edit-badge { position: absolute; top: 12px; left: 12px; background: rgba(245,158,11,0.15); color: var(--accent-light); border: 1px solid rgba(245,158,11,0.3); padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; display: none; align-items: center; gap: 6px; z-index: 2; }
-        .history-edit-badge.visible { display: flex; }
-        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
-        .history-title { font-size: 16px; font-weight: 600; color: var(--primary-light); font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; gap: 10px; margin-left: 100px; }
-        .history-content { font-size: 14px; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.6; margin-bottom: 16px; }
-        .history-textarea { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--primary); border-radius: 10px; padding: 12px; color: var(--text-primary); font-family: inherit; font-size: 14px; margin-bottom: 16px; resize: vertical; min-height: 120px; outline: none; box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+        /* Project Blogs */
+        .blog-item { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; margin-bottom: 16px; transition: all 0.3s ease; }
+        .blog-item:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+        .blog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        .blog-title { font-size: 16px; font-weight: 600; color: var(--primary-light); font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; gap: 10px; margin-left: 0; }
+        .blog-section { margin-bottom: 12px; }
+        .blog-section h4 { font-size: 14px; color: var(--accent-light); margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
+        .blog-section p { font-size: 14px; color: var(--text-secondary); white-space: pre-wrap; line-height: 1.6; }
 
         /* Roadmap - Timeline & Months */
         .timeline { position: relative; padding-left: 40px; }
@@ -298,9 +300,10 @@
         body.read-only .save-review-btn,
         body.read-only .milestone-delete,
         body.read-only .goal-delete-btn,
-        body.read-only #addHistoryBtn,
+        body.read-only #addBlogBtn,
         body.read-only #editRoadmapBtn,
-        body.read-only #editRoutineBtn {
+        body.read-only #editRoutineBtn,
+        body.read-only .task-delete {
             display: none !important; 
         }
         body.read-only #revEasy,
@@ -325,8 +328,8 @@
             display: block !important;
         }
         body.read-only .review-textarea:placeholder-shown,
-        body.read-only #historyTitleInput:placeholder-shown,
-        body.read-only #historyContentInput:placeholder-shown {
+        body.read-only #blogTitleInput:placeholder-shown,
+        body.read-only .review-textarea:placeholder-shown {
             display: none !important;
         }
         body.read-only #editRoadmapContainer {
@@ -337,7 +340,7 @@
         @media (max-width: 1024px) {
             .span-2 { grid-column: span 1; }
             .review-stats { grid-template-columns: repeat(2, 1fr); }
-            .history-title { margin-left: 0; margin-top: 30px; }
+            .blog-title { margin-top: 0; }
         }
         @media (max-width: 768px) {
             .nav-stats { display: none; }
@@ -345,7 +348,6 @@
             .routine-item { grid-template-columns: 1fr; gap: 6px; }
             .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
             .stat-grid-3 { grid-template-columns: 1fr; }
-            .history-title { margin-left: 0; margin-top: 30px; }
         }
     </style>
 </head>
@@ -377,6 +379,9 @@
                     </div>
                 </div>
                 <div class="nav-actions">
+                    <button class="nav-action-btn" id="exportBtn"><i class="fas fa-download"></i> Export</button>
+                    <button class="nav-action-btn" id="importBtn"><i class="fas fa-upload"></i> Import</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
                     <button class="nav-action-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Admin Login</button>
                     <button class="nav-action-btn danger hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
@@ -433,7 +438,7 @@
             <button class="tab-btn" data-tab="routine"><i class="fas fa-calendar-week"></i> Daily Routine</button>
             <button class="tab-btn" data-tab="roadmap"><i class="fas fa-map-marked-alt"></i> 4-Year Roadmap</button>
             <button class="tab-btn" data-tab="reviews"><i class="fas fa-star"></i> Reviews</button>
-            <button class="tab-btn" data-tab="history"><i class="fas fa-history"></i> History</button>
+            <button class="tab-btn" data-tab="projectBlogs"><i class="fas fa-blog"></i> Project Blogs</button>
         </div>
 
         <!-- Dashboard Section -->
@@ -655,25 +660,30 @@
             </div>
         </section>
 
-        <!-- History Section -->
-        <section id="history" class="content-section">
+        <!-- Project Blogs Section -->
+        <section id="projectBlogs" class="content-section">
             <div class="cards-grid">
                 <div class="card span-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-book"></i></div> Add Monthly History</div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
                     </div>
                     <div class="todo-input-group">
-                        <input type="text" class="todo-input" id="historyTitleInput" placeholder="Month/Title (e.g., August 2025 Recap)">
+                        <input type="text" class="todo-input" id="blogTitleInput" placeholder="Project Title (e.g., Smart Remote)">
                     </div>
-                    <textarea class="review-textarea" id="historyContentInput" placeholder="What did you do this month? Projects completed, topics learned, etc." style="min-height: 120px;"></textarea>
-                    <button class="save-review-btn" id="addHistoryBtn" style="background: var(--gradient-1); box-shadow: 0 4px 20px rgba(99,102,241,0.3);"><i class="fas fa-plus"></i> Add History Entry</button>
+                    <div class="review-label"><i class="fas fa-lightbulb"></i> Project Idea</div>
+                    <textarea class="review-textarea" id="blogIdeaInput" placeholder="What is the project about?"></textarea>
+                    <div class="review-label"><i class="fas fa-code"></i> What I Did</div>
+                    <textarea class="review-textarea" id="blogDidInput" placeholder="Steps you took, tech used..."></textarea>
+                    <div class="review-label"><i class="fas fa-exclamation-triangle"></i> Problems Faced</div>
+                    <textarea class="review-textarea" id="blogProblemsInput" placeholder="Bugs, challenges, how you solved them..."></textarea>
+                    <button class="save-review-btn" id="addBlogBtn" style="background: var(--gradient-1); box-shadow: 0 4px 20px rgba(99,102,241,0.3);"><i class="fas fa-plus"></i> Add Project Blog</button>
                 </div>
 
                 <div class="card span-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> Past Months</div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div>
                     </div>
-                    <div id="historyList"></div>
+                    <div id="projectBlogList"></div>
                 </div>
             </div>
         </section>
@@ -727,10 +737,7 @@
                 { day: "20", month: "Aug", title: "Course Syllabus Review", desc: "Review syllabus for Math, Physics, and Intro to Programming." },
                 { day: "30", month: "Aug", title: "Setup Dev Environment", desc: "Install VS Code, Git, and setup GitHub student pack." }
             ],
-            hackathons: [
-                { name: "Smart India Hackathon 2025", date: "2025-10-15", status: "upcoming" },
-                { name: "HackTheNorth", date: "2025-09-20", status: "upcoming" }
-            ],
+            hackathons: [],
             routines: [
                 {
                     tabName: "Everyday",
@@ -910,7 +917,7 @@
                 }
             ],
             pastReviews: [],
-            history: []
+            projectBlogs: []
         };
 
         // --- Global State ---
@@ -920,6 +927,8 @@
         function saveState() {
             if (auth.currentUser) {
                 setDoc(doc(db, "appData", "mainState"), state).catch(e => console.error("Firestore save error: ", e));
+            } else {
+                localStorage.setItem('letsCrackItLocal', JSON.stringify(state));
             }
         }
 
@@ -934,7 +943,7 @@
                 state.milestones = Array.isArray(state.milestones) ? state.milestones : defaultState.milestones;
                 state.todayTasks = Array.isArray(state.todayTasks) ? state.todayTasks : [];
                 state.upcomingGoals = Array.isArray(state.upcomingGoals) ? state.upcomingGoals : defaultState.upcomingGoals;
-                state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : defaultState.hackathons;
+                state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
                 
                 state.routines = Array.isArray(state.routines) ? state.routines : defaultState.routines;
                 if (state.routines.length > 0 && !state.routines[0].schedule) {
@@ -943,14 +952,19 @@
                 
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
-                state.history = Array.isArray(state.history) ? state.history : [];
+                state.projectBlogs = Array.isArray(state.projectBlogs) ? state.projectBlogs : [];
                 state.totalXP = typeof state.totalXP === 'number' ? state.totalXP : 0;
                 state.todayXP = typeof state.todayXP === 'number' ? state.todayXP : 0;
                 state.weekXP = typeof state.weekXP === 'number' ? state.weekXP : 0;
                 state.streak = typeof state.streak === 'number' ? state.streak : 0;
                 state.lastCheckIn = state.lastCheckIn || null;
             } else {
-                saveState();
+                const localState = localStorage.getItem('letsCrackItLocal');
+                if (localState) {
+                    state = JSON.parse(localState);
+                } else {
+                    saveState();
+                }
             }
             initializeAll();
         });
@@ -1008,6 +1022,42 @@
                 loginBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
             }
+        });
+
+        // --- Export & Import Logic ---
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const dataStr = JSON.stringify(state, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lets_crack_it_backup.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        document.getElementById('importFile').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    state = { ...defaultState, ...importedData };
+                    saveState();
+                    initializeAll();
+                    alert("Data imported successfully!");
+                } catch (err) {
+                    alert("Error importing file.");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
         });
 
         const levels = [
@@ -1163,7 +1213,7 @@
             tab.addEventListener('click', () => {
                 const targetTab = tab.dataset.tab;
                 
-                if ((targetTab === 'history' || targetTab === 'roadmap') && !auth.currentUser) {
+                if ((targetTab === 'projectBlogs' || targetTab === 'roadmap') && !auth.currentUser) {
                     if (sessionStorage.getItem('pagePassUnlocked') !== 'true') {
                         requestPagePass(tab);
                         return; 
@@ -1314,6 +1364,7 @@
                     <div class="task-content">
                         <div class="task-text">${task.text}</div>
                     </div>
+                    <button class="task-delete" onclick="deleteTodayTask(${index})"><i class="fas fa-trash"></i></button>
                 `;
                 todayFocusList.appendChild(el);
             });
@@ -1321,6 +1372,12 @@
 
         window.toggleTodayTask = (index) => {
             state.todayTasks[index].completed = !state.todayTasks[index].completed;
+            saveState();
+            renderTodayFocus();
+        };
+
+        window.deleteTodayTask = (index) => {
+            state.todayTasks.splice(index, 1);
             saveState();
             renderTodayFocus();
         };
@@ -1444,13 +1501,20 @@
             const status = document.getElementById('hackathonStatus').value;
             if (!name || !date) return;
             state.hackathons.push({ name, date, status });
-            document.getElementById('hackathonName').value = '';
-            document.getElementById('hackathonDate').value = '';
             saveState();
             renderHackathons();
+
+            if (status === 'upcoming') {
+                const subject = `Upcoming Hackathon: ${name}`;
+                const body = `Hackathon: ${name}%0D%0ADate: ${date}%0D%0AStatus: ${status}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
+            }
+
+            document.getElementById('hackathonName').value = '';
+            document.getElementById('hackathonDate').value = '';
         });
 
-        // --- Routine Logic (Interactive Day Tabs with Edit Mode) ---
+        // --- Routine Logic (Interactive Day Tabs with Edit Mode & Sorting) ---
         const routineTabs = document.getElementById('routineTabs');
         const routineContent = document.getElementById('routineContent');
         const editRoutineBtn = document.getElementById('editRoutineBtn');
@@ -1468,11 +1532,25 @@
             renderRoutines();
         });
 
+        function timeToMinutes(t) {
+            if (!t) return 9999;
+            let [time, period] = t.toUpperCase().trim().split(/\s+/);
+            if (!time) return 9999;
+            let [h, m] = time.split(':').map(Number);
+            if (isNaN(h)) return 9999;
+            if (isNaN(m)) m = 0;
+            if (period === 'PM' && h !== 12) h += 12;
+            if (period === 'AM' && h === 12) h = 0;
+            return (h * 60) + m;
+        }
+
         function renderRoutines() {
             routineTabs.innerHTML = '';
             routineContent.innerHTML = '';
             
             state.routines.forEach((dayData, index) => {
+                dayData.schedule.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
                 const tabBtn = document.createElement('button');
                 tabBtn.className = 'routine-tab' + (index === activeRoutineTab ? ' active' : '');
                 tabBtn.textContent = dayData.tabName;
@@ -1658,7 +1736,7 @@
             const hours = parseInt(document.getElementById('revHours').textContent) || 0;
             const contests = parseInt(document.getElementById('revContests').textContent) || 0;
             
-            const textareas = document.querySelectorAll('.review-textarea');
+            const textareas = document.querySelectorAll('#reviews .review-textarea');
             
             const problemXP = (easy * 15) + (medium * 25) + (hard * 40);
             const videoXP = videos * 5; 
@@ -1753,79 +1831,69 @@
             renderPastReviews();
         };
 
-        // --- History Logic ---
-        const historyList = document.getElementById('historyList');
+        // --- Project Blogs Logic ---
+        const projectBlogList = document.getElementById('projectBlogList');
 
-        function renderHistory() {
-            historyList.innerHTML = '';
-            if (state.history.length === 0) {
-                historyList.innerHTML = `
+        function renderProjectBlogs() {
+            projectBlogList.innerHTML = '';
+            if (state.projectBlogs.length === 0) {
+                projectBlogList.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
-                        <p>No history entries yet. Add your first monthly recap above!</p>
+                        <p>No project blogs yet. Add your first project above!</p>
                     </div>
                 `;
                 return;
             }
 
-            state.history.forEach((h, index) => {
+            state.projectBlogs.forEach((b, index) => {
                 const el = document.createElement('div');
-                el.className = 'history-item';
-                const isEditing = h.isEditing || false;
-
+                el.className = 'blog-item';
                 el.innerHTML = `
-                    <div class="history-edit-badge ${h.isEdited ? 'visible' : ''}"><i class="fas fa-pencil-alt"></i> Edited</div>
-                    <div class="history-header">
-                        <div class="history-title">${h.title}</div>
+                    <div class="blog-header">
+                        <div class="blog-title">${b.title}</div>
                         <div class="header-actions">
-                            ${isEditing 
-                                ? `<button class="action-btn active" onclick="saveHistoryEdit(${index})"><i class="fas fa-save"></i> Save</button>` 
-                                : `<button class="action-btn" onclick="editHistory(${index})"><i class="fas fa-edit"></i> Edit</button>`
-                            }
-                            <button class="action-btn danger" onclick="deleteHistory(${index})"><i class="fas fa-trash"></i> Remove</button>
+                            <button class="action-btn danger" onclick="deleteBlog(${index})"><i class="fas fa-trash"></i> Remove</button>
                         </div>
                     </div>
-                    ${isEditing 
-                        ? `<textarea class="history-textarea" id="historyEditArea-${index}">${h.content}</textarea>` 
-                        : `<div class="history-content">${h.content}</div>`
-                    }
+                    <div class="blog-section">
+                        <h4><i class="fas fa-lightbulb"></i> Project Idea</h4>
+                        <p>${b.idea}</p>
+                    </div>
+                    <div class="blog-section">
+                        <h4><i class="fas fa-code"></i> What I Did</h4>
+                        <p>${b.did}</p>
+                    </div>
+                    <div class="blog-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Problems Faced</h4>
+                        <p>${b.problems}</p>
+                    </div>
                 `;
-                historyList.appendChild(el);
+                projectBlogList.appendChild(el);
             });
         }
 
-        window.editHistory = (i) => {
-            state.history[i].isEditing = true;
-            renderHistory();
-        };
-
-        window.saveHistoryEdit = (i) => {
-            const newText = document.getElementById(`historyEditArea-${i}`).value;
-            if (state.history[i].content !== newText) {
-                state.history[i].isEdited = true;
-            }
-            state.history[i].content = newText;
-            state.history[i].isEditing = false;
+        window.deleteBlog = (index) => {
+            state.projectBlogs.splice(index, 1);
             saveState();
-            renderHistory();
+            renderProjectBlogs();
         };
 
-        window.deleteHistory = (i) => {
-            state.history.splice(i, 1);
-            saveState();
-            renderHistory();
-        };
-
-        document.getElementById('addHistoryBtn').addEventListener('click', () => {
-            const title = document.getElementById('historyTitleInput').value.trim();
-            const content = document.getElementById('historyContentInput').value.trim();
-            if (!title || !content) return alert("Please enter both a title and content.");
+        document.getElementById('addBlogBtn').addEventListener('click', () => {
+            const title = document.getElementById('blogTitleInput').value.trim();
+            const idea = document.getElementById('blogIdeaInput').value.trim();
+            const did = document.getElementById('blogDidInput').value.trim();
+            const problems = document.getElementById('blogProblemsInput').value.trim();
             
-            state.history.unshift({ title, content, isEdited: false, isEditing: false });
+            if (!title || !idea || !did || !problems) return alert("Please fill in all fields.");
+            
+            state.projectBlogs.unshift({ title, idea, did, problems });
             saveState();
-            document.getElementById('historyTitleInput').value = '';
-            document.getElementById('historyContentInput').value = '';
-            renderHistory();
+            document.getElementById('blogTitleInput').value = '';
+            document.getElementById('blogIdeaInput').value = '';
+            document.getElementById('blogDidInput').value = '';
+            document.getElementById('blogProblemsInput').value = '';
+            renderProjectBlogs();
         });
 
         // --- Initialize All Render Functions ---
@@ -1840,7 +1908,7 @@
             renderRoutines();
             renderRoadmap();
             renderPastReviews();
-            renderHistory();
+            renderProjectBlogs();
         }
     </script>
 </body>
