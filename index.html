@@ -49,6 +49,8 @@
         .nav-action-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(99,102,241,0.1); }
         .nav-action-btn.danger { border-color: rgba(239,68,68,0.3); color: var(--danger); }
         .nav-action-btn.danger:hover { background: rgba(239,68,68,0.1); border-color: var(--danger); }
+        #navLevel { cursor: pointer; transition: 0.3s; }
+        #navLevel:hover { color: var(--secondary-light); }
 
         /* Main */
         .main-container { max-width: 1400px; margin: 0 auto; padding: 120px 2rem 4rem; }
@@ -114,7 +116,7 @@
 
         /* XP Display & Tracking */
         .xp-display { text-align: center; padding: 20px 0; }
-        .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; }
+        .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; }
         .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
         .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.05) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
         .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -133,7 +135,7 @@
         .progress-item { margin-bottom: 24px; }
         .progress-item:last-child { margin-bottom: 0; }
         .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 10px; }
-        .progress-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; flex: 1; }
+        .progress-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; flex: 1; display: flex; align-items: center; gap: 8px; }
         .progress-label-input { background: transparent; border: none; border-bottom: 1px dashed var(--primary); color: var(--text-primary); font-size: 14px; outline: none; width: 100%; font-family: inherit; font-weight: 500; }
         .progress-value { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--primary-light); display: flex; align-items: center; gap: 8px; }
         .progress-bar { height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; position: relative; }
@@ -407,6 +409,15 @@
             <input type="password" class="todo-input" id="pagePassInput" placeholder="Enter Page Password">
             <button class="login-submit-btn" id="pagePassSubmitBtn"><i class="fas fa-key"></i> Unlock</button>
             <button class="action-btn" id="pagePassCancelBtn"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+    </div>
+
+    <!-- Levels Modal -->
+    <div class="login-overlay" id="levelsOverlay">
+        <div class="login-box">
+            <h3>Level Progression</h3>
+            <div id="levelsList" style="margin-bottom: 20px;"></div>
+            <button class="action-btn" id="levelsCloseBtn" style="width: 100%; justify-content: center;"><i class="fas fa-times"></i> Close</button>
         </div>
     </div>
 
@@ -718,6 +729,7 @@
             weekXP: 0,
             streak: 0,
             lastCheckIn: null,
+            milestonesInitialized: false,
             quotes: [
                 { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
                 { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
@@ -727,9 +739,14 @@
             ],
             tags: ["React.js", "Node.js", "Python/AI", "Cloud (AWS)", "Java Spring"],
             milestones: [
-                { label: "1st Year Foundation", progress: 0 },
-                { label: "Problems Solved (Target: 500)", progress: 0 },
-                { label: "Course Completion (4-Year Roadmap)", progress: 0 }
+                { label: "Semester 1", connectedTo: 0 },
+                { label: "Semester 2", connectedTo: 1 },
+                { label: "Semester 3", connectedTo: 2 },
+                { label: "Semester 4", connectedTo: 3 },
+                { label: "Semester 5", connectedTo: 4 },
+                { label: "Semester 6", connectedTo: 5 },
+                { label: "Semester 7", connectedTo: 6 },
+                { label: "Semester 8", connectedTo: 7 }
             ],
             todayTasks: [],
             upcomingGoals: [
@@ -940,7 +957,14 @@
                 state = { ...defaultState, ...state };
                 state.quotes = defaultState.quotes; 
                 state.tags = Array.isArray(state.tags) ? state.tags : defaultState.tags;
+                
+                // Milestone Auto-Initialization
+                if (!state.milestonesInitialized) {
+                    state.milestones = defaultState.milestones;
+                    state.milestonesInitialized = true;
+                }
                 state.milestones = Array.isArray(state.milestones) ? state.milestones : defaultState.milestones;
+                
                 state.todayTasks = Array.isArray(state.todayTasks) ? state.todayTasks : [];
                 state.upcomingGoals = Array.isArray(state.upcomingGoals) ? state.upcomingGoals : defaultState.upcomingGoals;
                 state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
@@ -962,6 +986,10 @@
                 const localState = localStorage.getItem('letsCrackItLocal');
                 if (localState) {
                     state = JSON.parse(localState);
+                    if (!state.milestonesInitialized) {
+                        state.milestones = defaultState.milestones;
+                        state.milestonesInitialized = true;
+                    }
                 } else {
                     saveState();
                 }
@@ -1076,6 +1104,41 @@
                 if(xp > levels[i-1].max && xp <= levels[i].max) return levels[i];
             }
             return levels[levels.length - 1];
+        }
+
+        // --- Levels Modal Logic ---
+        const levelsOverlay = document.getElementById('levelsOverlay');
+        const levelsList = document.getElementById('levelsList');
+        const levelsCloseBtn = document.getElementById('levelsCloseBtn');
+        
+        document.getElementById('navLevel').addEventListener('click', () => {
+            renderLevelsList();
+            levelsOverlay.classList.add('active');
+        });
+        document.getElementById('levelBadge').addEventListener('click', () => {
+            renderLevelsList();
+            levelsOverlay.classList.add('active');
+        });
+        levelsCloseBtn.addEventListener('click', () => levelsOverlay.classList.remove('active'));
+        levelsOverlay.addEventListener('click', (e) => { if(e.target === levelsOverlay) levelsOverlay.classList.remove('active'); });
+
+        function renderLevelsList() {
+            levelsList.innerHTML = '';
+            const currentLevelName = getLevelData(state.totalXP).name;
+            
+            levels.forEach(l => {
+                let xpRange = '';
+                if (l.name === "Beginner") xpRange = "0 XP";
+                else if (l.name === "Master") xpRange = "15,000 - 30,000 XP";
+                else xpRange = `${l.min.toLocaleString()} - ${l.max.toLocaleString()} XP`;
+                
+                const isCurrent = l.name === currentLevelName;
+                
+                const div = document.createElement('div');
+                div.style.cssText = `padding: 12px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; ${isCurrent ? 'color: var(--secondary-light); font-weight: 700;' : ''}`;
+                div.innerHTML = `<span><i class="fas fa-${isCurrent ? 'check-circle' : 'star'}" style="margin-right: 8px;"></i>${l.name}</span><span style="font-size: 13px;">${xpRange}</span>`;
+                levelsList.appendChild(div);
+            });
         }
 
         function updateXPDisplay(xp) {
@@ -1221,7 +1284,7 @@
                 }
 
                 tabs.forEach(t => t.classList.remove('active'));
-                sections.forEach(s => s.classList.remove('active'));
+                sections.forEach(s => t.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
             });
@@ -1292,25 +1355,73 @@
         function renderMilestones() {
             milestoneList.innerHTML = '';
             state.milestones.forEach((m, index) => {
+                let progress = m.progress || 0;
+                let is_connected = false;
+                
+                if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
+                    is_connected = true;
+                    const sem = state.roadmap[m.connectedTo];
+                    let totalGoals = 0;
+                    let doneGoals = 0;
+                    sem.months.forEach(month => {
+                        month.goals.forEach(goal => {
+                            totalGoals++;
+                            if (goal.done) doneGoals++;
+                        });
+                    });
+                    progress = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
+                }
+                
                 const item = document.createElement('div');
                 item.className = 'progress-item';
+                
+                const labelHTML = milestoneEditMode ? 
+                    `<input type="text" class="progress-label-input" value="${m.label}" onchange="updateMilestoneLabel(${index}, this.value)">` : 
+                    m.label;
+                    
+                const valueHTML = milestoneEditMode ? 
+                    (is_connected ? 
+                        `<span style="color: var(--secondary-light); font-size: 14px; font-weight: 600;">${progress}% (Auto)</span>` :
+                        `<input type="number" min="0" max="100" value="${m.progress}" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: var(--primary-light); text-align: center; padding: 4px;" onchange="updateMilestoneProgress(${index}, this.value)">%`
+                    ) : 
+                    `${progress}%`;
+                    
+                const deleteHTML = milestoneEditMode ? `<button class="milestone-delete" onclick="deleteMilestone(${index})"><i class="fas fa-trash"></i></button>` : '';
+                
                 item.innerHTML = `
                     <div class="progress-header">
                         <span class="progress-label">
-                            ${milestoneEditMode ? `<input type="text" class="progress-label-input" value="${m.label}" onchange="updateMilestoneLabel(${index}, this.value)">` : m.label}
+                            ${labelHTML} ${is_connected ? '<small style="color: var(--secondary-light);">(Connected)</small>' : ''}
                         </span>
                         <span class="progress-value">
-                            ${milestoneEditMode ? `<input type="number" min="0" max="100" value="${m.progress}" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: var(--primary-light); text-align: center; padding: 4px;" onchange="updateMilestoneProgress(${index}, this.value)">%` : m.progress + '%'}
-                            ${milestoneEditMode ? `<button class="milestone-delete" onclick="deleteMilestone(${index})"><i class="fas fa-trash"></i></button>` : ''}
+                            ${valueHTML}
+                            ${deleteHTML}
                         </span>
                     </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${m.progress}%;"></div></div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
                 `;
                 milestoneList.appendChild(item);
             });
             
             if(state.milestones.length > 0) {
-                const avgRate = state.milestones.reduce((sum, m) => sum + m.progress, 0) / state.milestones.length;
+                let totalProgress = 0;
+                state.milestones.forEach(m => {
+                    let p = m.progress || 0;
+                    if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
+                        const sem = state.roadmap[m.connectedTo];
+                        let totalGoals = 0;
+                        let doneGoals = 0;
+                        sem.months.forEach(month => {
+                            month.goals.forEach(goal => {
+                                totalGoals++;
+                                if (goal.done) doneGoals++;
+                            });
+                        });
+                        p = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
+                    }
+                    totalProgress += p;
+                });
+                const avgRate = totalProgress / state.milestones.length;
                 document.getElementById('milestoneRateStat').innerText = Math.round(avgRate) + '%';
             } else {
                 document.getElementById('milestoneRateStat').innerText = '0%';
@@ -1324,9 +1435,14 @@
         });
 
         document.getElementById('addMilestoneBtn').addEventListener('click', () => {
-            state.milestones.push({ label: "New Milestone", progress: 0 });
-            milestoneEditMode = true;
-            editMilestoneBtn.classList.add('active');
+            const name = prompt("Enter milestone name:", "New Milestone");
+            if (!name) return;
+            const connect = prompt("Connect to 4-Year Roadmap?\nEnter semester number (1-8) to connect, or leave empty for manual progress:", "");
+            if (connect !== null && connect !== "" && !isNaN(connect) && connect >= 1 && connect <= 8) {
+                state.milestones.push({ label: name, connectedTo: parseInt(connect) - 1 });
+            } else {
+                state.milestones.push({ label: name, progress: 0 });
+            }
             saveState();
             renderMilestones();
         });
@@ -1697,6 +1813,7 @@
             state.roadmap[s].months[m].goals[g].done = !state.roadmap[s].months[m].goals[g].done;
             saveState();
             renderRoadmap();
+            renderMilestones(); // Update milestones instantly
         };
 
         window.updateGoal = (s, m, g, val) => {
