@@ -131,6 +131,26 @@
         .check-in-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
         .check-in-btn.done { background: rgba(255,255,255,0.05); color: var(--secondary); cursor: default; box-shadow: none; }
 
+        /* Pet Section */
+        .pet-display { text-align: center; margin-bottom: 20px; position: relative; }
+        .pet-img-container { width: 140px; height: 140px; margin: 0 auto 12px; border-radius: 50%; border: 2px solid var(--border-color); overflow: hidden; cursor: pointer; transition: all 0.3s ease; background: rgba(0,0,0,0.3); }
+        .pet-img-container:hover { border-color: var(--primary); transform: scale(1.05); }
+        .pet-img { width: 100%; height: 100%; object-fit: contain; }
+        .pet-name { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-light); }
+        .pet-level { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .feed-btn { width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; color: white; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; }
+        .feed-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(245,158,11,0.4); }
+        .feed-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+        .treats-counter { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--accent-light); padding: 6px 12px; border-radius: 12px; font-weight: 700; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+        
+        /* Floating Pet */
+        .floating-pet { position: fixed; bottom: 20px; right: 20px; width: 80px; height: 80px; z-index: 999; cursor: pointer; transition: transform 0.1s ease-out; }
+        .floating-pet img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5)); transition: transform 0.2s ease-out; }
+        
+        /* Heart Animation */
+        .heart { position: absolute; font-size: 24px; color: #ef4444; animation: floatUp 1s ease-out forwards; pointer-events: none; z-index: 1001; }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-60px) scale(1.5); opacity: 0; } }
+
         /* Progress / Milestones */
         .progress-item { margin-bottom: 24px; }
         .progress-item:last-child { margin-bottom: 0; }
@@ -290,6 +310,16 @@
         .login-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
         .login-submit-btn.success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 20px rgba(16,185,129,0.3); }
         
+        /* Dog Collection Modal */
+        .dog-collection-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-color); }
+        .dog-collection-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--border-color); object-fit: contain; background: rgba(0,0,0,0.3); }
+        .dog-collection-img.locked { filter: brightness(0.3); opacity: 0.5; }
+        .dog-collection-info { flex: 1; }
+        .dog-collection-name { font-weight: 700; font-size: 16px; color: var(--primary-light); }
+        .dog-collection-level { font-size: 12px; color: var(--text-muted); }
+        .dog-lock-icon { color: var(--text-muted); font-size: 20px; }
+        .dog-unlock-icon { color: var(--secondary); font-size: 20px; }
+
         /* Read-Only Mode Styling */
         body.read-only .header-actions,
         body.read-only .todo-input-group,
@@ -305,7 +335,8 @@
         body.read-only #addBlogBtn,
         body.read-only #editRoadmapBtn,
         body.read-only #editRoutineBtn,
-        body.read-only .task-delete {
+        body.read-only .task-delete,
+        body.read-only .feed-btn {
             display: none !important; 
         }
         body.read-only #revEasy,
@@ -350,6 +381,7 @@
             .routine-item { grid-template-columns: 1fr; gap: 6px; }
             .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
             .stat-grid-3 { grid-template-columns: 1fr; }
+            .floating-pet { width: 60px; height: 60px; bottom: 10px; right: 10px; }
         }
     </style>
 </head>
@@ -357,6 +389,11 @@
 
     <div class="bg-animation"></div>
     <div class="grid-pattern"></div>
+
+    <!-- Floating Pet -->
+    <div id="floatingPet" class="floating-pet hidden">
+        <img id="floatingPetImg" src="" alt="Ninja Dog">
+    </div>
 
     <!-- Navbar -->
     <nav class="navbar" id="navbar">
@@ -418,6 +455,15 @@
             <h3>Level Progression</h3>
             <div id="levelsList" style="margin-bottom: 20px;"></div>
             <button class="action-btn" id="levelsCloseBtn" style="width: 100%; justify-content: center;"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+
+    <!-- Dog Collection Modal -->
+    <div class="login-overlay" id="petCollectionOverlay">
+        <div class="login-box">
+            <h3>🐕 Ninja Dog Collection</h3>
+            <div id="dogCollectionList" style="margin-bottom: 20px;"></div>
+            <button class="action-btn" id="petCollectionCloseBtn" style="width: 100%; justify-content: center;"><i class="fas fa-times"></i> Close</button>
         </div>
     </div>
 
@@ -489,6 +535,22 @@
                         </div>
                         <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                     </div>
+                </div>
+
+                <!-- My Ninja Dog (Pet Section) -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-dog"></i></div> My Ninja Dog</div>
+                        <div class="treats-counter"><i class="fas fa-bone"></i> <span id="treatsCount">0</span></div>
+                    </div>
+                    <div class="pet-display" id="petDisplay">
+                        <div class="pet-img-container" id="petImgContainer">
+                            <img class="pet-img" id="petImg" src="" alt="Ninja Dog">
+                        </div>
+                        <div class="pet-name" id="petName">Locked</div>
+                        <div class="pet-level" id="petLevel">Reach Learner to unlock</div>
+                    </div>
+                    <button class="feed-btn" id="feedBtn" disabled><i class="fas fa-bone"></i> Feed Treat</button>
                 </div>
 
                 <!-- XP Tracking & Attendance -->
@@ -722,12 +784,23 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
+        // --- Ninja Dogs Data ---
+        const ninjaDogs = [
+            { name: "Pakkun", level: "Learner", img: "https://z-cdn-media.chatglm.cn/files/3fab8c99-c241-4a63-98fd-96d3b5e0509c.png" },
+            { name: "Bisuke", level: "Coder", img: "https://z-cdn-media.chatglm.cn/files/4a08b7f1-2587-4a8c-944d-260786c0fc25.png" },
+            { name: "Shiba", level: "Developer", img: "https://z-cdn-media.chatglm.cn/files/6253af57-23bb-42f3-acd1-5818dffa4da7.jpg" },
+            { name: "Urushi", level: "Expert", img: "https://z-cdn-media.chatglm.cn/files/9210435f-a1a2-4ed3-b577-adee7717972f.png" },
+            { name: "Ūhei", level: "Professional", img: "https://z-cdn-media.chatglm.cn/files/f8b01b13-6bef-4bc3-b4fa-e69700b8b0c7.jpg" },
+            { name: "Akino", level: "Master", img: "https://z-cdn-media.chatglm.cn/files/3cf09cf7-b34c-476a-8e54-a263294c634f.jpg" }
+        ];
+
         // --- Default Data State ---
         const defaultState = {
             totalXP: 0,
             todayXP: 0,
             weekXP: 0,
             streak: 0,
+            treats: 0,
             lastCheckIn: null,
             milestonesInitialized: false,
             quotes: [
@@ -980,6 +1053,7 @@
                 state.todayXP = typeof state.todayXP === 'number' ? state.todayXP : 0;
                 state.weekXP = typeof state.weekXP === 'number' ? state.weekXP : 0;
                 state.streak = typeof state.streak === 'number' ? state.streak : 0;
+                state.treats = typeof state.treats === 'number' ? state.treats : 0;
                 state.lastCheckIn = state.lastCheckIn || null;
             } else {
                 const localState = localStorage.getItem('letsCrackItLocal');
@@ -989,6 +1063,7 @@
                         state.milestones = defaultState.milestones;
                         state.milestonesInitialized = true;
                     }
+                    if (typeof state.treats !== 'number') state.treats = 0;
                 } else {
                     saveState();
                 }
@@ -1105,6 +1180,17 @@
             return levels[levels.length - 1];
         }
 
+        function getCurrentDogIndex() {
+            const levelData = getLevelData(state.totalXP);
+            if (levelData.name === "Learner") return 0;
+            if (levelData.name === "Coder") return 1;
+            if (levelData.name === "Developer") return 2;
+            if (levelData.name === "Expert") return 3;
+            if (levelData.name === "Professional") return 4;
+            if (levelData.name === "Master") return 5;
+            return -1; // Beginner
+        }
+
         // --- Levels Modal Logic ---
         const levelsOverlay = document.getElementById('levelsOverlay');
         const levelsList = document.getElementById('levelsList');
@@ -1139,6 +1225,125 @@
                 levelsList.appendChild(div);
             });
         }
+
+        // --- Pet Logic ---
+        const petImg = document.getElementById('petImg');
+        const petName = document.getElementById('petName');
+        const petLevel = document.getElementById('petLevel');
+        const feedBtn = document.getElementById('feedBtn');
+        const treatsCount = document.getElementById('treatsCount');
+        const floatingPet = document.getElementById('floatingPet');
+        const floatingPetImg = document.getElementById('floatingPetImg');
+        const petCollectionOverlay = document.getElementById('petCollectionOverlay');
+        const petCollectionList = document.getElementById('dogCollectionList');
+        const petCollectionCloseBtn = document.getElementById('petCollectionCloseBtn');
+        const petImgContainer = document.getElementById('petImgContainer');
+
+        function renderPet() {
+            const dogIndex = getCurrentDogIndex();
+            treatsCount.innerText = state.treats;
+            
+            if (dogIndex === -1) {
+                petImg.src = "";
+                petImg.style.display = 'none';
+                petName.innerText = "Locked";
+                petLevel.innerText = "Reach Learner to unlock";
+                feedBtn.disabled = true;
+                floatingPet.classList.add('hidden');
+            } else {
+                const dog = ninjaDogs[dogIndex];
+                petImg.src = dog.img;
+                petImg.style.display = 'block';
+                petName.innerText = dog.name;
+                petLevel.innerText = `${dog.level} Level`;
+                feedBtn.disabled = state.treats < 1;
+                
+                floatingPetImg.src = dog.img;
+                floatingPet.classList.remove('hidden');
+            }
+        }
+
+        petImgContainer.addEventListener('click', () => {
+            renderDogCollection();
+            petCollectionOverlay.classList.add('active');
+        });
+        petCollectionCloseBtn.addEventListener('click', () => petCollectionOverlay.classList.remove('active'));
+        petCollectionOverlay.addEventListener('click', (e) => { if(e.target === petCollectionOverlay) petCollectionOverlay.classList.remove('active'); });
+
+        function renderDogCollection() {
+            petCollectionList.innerHTML = '';
+            const currentDogIndex = getCurrentDogIndex();
+
+            ninjaDogs.forEach((dog, index) => {
+                const isUnlocked = index <= currentDogIndex;
+                const div = document.createElement('div');
+                div.className = 'dog-collection-item';
+                
+                if (isUnlocked) {
+                    div.innerHTML = `
+                        <img src="${dog.img}" class="dog-collection-img">
+                        <div class="dog-collection-info">
+                            <div class="dog-collection-name">${dog.name}</div>
+                            <div class="dog-collection-level">${dog.level} Level</div>
+                        </div>
+                        <i class="fas fa-check-circle dog-unlock-icon"></i>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        <img src="${dog.img}" class="dog-collection-img locked">
+                        <div class="dog-collection-info">
+                            <div class="dog-collection-name" style="color: var(--text-muted);">???</div>
+                            <div class="dog-collection-level">Unlocks at ${dog.level} Level</div>
+                        </div>
+                        <i class="fas fa-lock dog-lock-icon"></i>
+                    `;
+                }
+                petCollectionList.appendChild(div);
+            });
+        }
+
+        feedBtn.addEventListener('click', () => {
+            if (state.treats > 0) {
+                state.treats -= 1;
+                saveState();
+                renderPet();
+                
+                // Heart animation
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                petImgContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 1000);
+            }
+        });
+
+        // Floating pet head tracking
+        document.addEventListener('mousemove', (e) => {
+            if (floatingPet.classList.contains('hidden')) return;
+            
+            const rect = floatingPetImg.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            const dx = e.clientX - centerX;
+            const dy = e.clientY - centerY;
+            
+            const angle = Math.atan2(dy, dx);
+            const rot = Math.sin(angle) * 15; 
+            const tilt = Math.cos(angle) * 5;
+            
+            floatingPetImg.style.transform = `rotate(${rot}deg) translateY(${tilt}px)`;
+        });
+
+        floatingPet.addEventListener('click', () => {
+            renderDogCollection();
+            petCollectionOverlay.classList.add('active');
+        });
 
         function updateXPDisplay(xp) {
             const level = getLevelData(xp);
@@ -1210,10 +1415,12 @@
             }
 
             state.lastCheckIn = today;
+            state.treats += 2; // Earn 2 treats for checking in
             saveState();
             updateXPDisplay(state.totalXP);
             updateCheckInBtn();
-            alert(`Daily Check-in Successful! Current Streak: ${state.streak} days!`);
+            renderPet();
+            alert(`Daily Check-in Successful!\n+2 Treats earned! Current Streak: ${state.streak} days!`);
         });
 
         // --- DOM Elements ---
@@ -1283,7 +1490,7 @@
                 }
 
                 tabs.forEach(t => t.classList.remove('active'));
-                sections.forEach(s => s.classList.remove('active')); // Fixed typo here
+                sections.forEach(s => s.classList.remove('active')); 
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
             });
@@ -1863,6 +2070,7 @@
             state.totalXP += earnedXP;
             state.todayXP += earnedXP;
             state.weekXP += earnedXP;
+            state.treats += 5; // Earn 5 treats for review
             
             updateXPDisplay(state.totalXP);
             
@@ -1880,6 +2088,7 @@
             state.pastReviews.unshift(reviewData);
             saveState();
             renderPastReviews();
+            renderPet();
             
             document.getElementById('revEasy').textContent = '0';
             document.getElementById('revMedium').textContent = '0';
@@ -1891,7 +2100,7 @@
             motivationSlider.value = 5;
             motivationValue.textContent = '5';
             
-            alert(`Weekly Review Saved!\nYou earned ${earnedXP} XP!`);
+            alert(`Weekly Review Saved!\n+${earnedXP} XP & +5 Treats earned!`);
         });
 
         function renderPastReviews() {
@@ -2004,18 +2213,22 @@
             if (!title || !idea || !did || !problems) return alert("Please fill in all fields.");
             
             state.projectBlogs.unshift({ title, idea, did, problems });
+            state.treats += 10; // Earn 10 treats for adding a project
             saveState();
+            renderPet();
             document.getElementById('blogTitleInput').value = '';
             document.getElementById('blogIdeaInput').value = '';
             document.getElementById('blogDidInput').value = '';
             document.getElementById('blogProblemsInput').value = '';
             renderProjectBlogs();
+            alert("Project Blog added! +10 Treats earned!");
         });
 
         // --- Initialize All Render Functions ---
         function initializeAll() {
             updateXPDisplay(state.totalXP);
             updateCheckInBtn();
+            renderPet();
             renderTags();
             renderMilestones();
             renderTodayFocus();
