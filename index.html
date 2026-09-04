@@ -126,12 +126,14 @@
         /* XP Display & Tracking */
         .xp-display { text-align: center; padding: 20px 0; }
         .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; }
-        .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
-        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.02) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
-        .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .xp-value { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 800; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-        .xp-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
-        .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+        .xp-vital-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        .xp-vital-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 14px; }
+        .xp-vital-row span { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+        .xp-vital-row strong { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-light); }
+        .xp-progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .xp-progress-info .label { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
+        .xp-progress-info .value { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--primary-light); }
+        .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-top: 8px; text-align: left; }
         .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; text-align: center; }
         .stat-box-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--primary-light); }
@@ -164,7 +166,7 @@
         .todo-input[type="date"] { color-scheme: dark; }
         .add-task-btn { background: var(--gradient-1); border: none; color: white; padding: 16px 28px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--shadow-glow); -webkit-tap-highlight-color: transparent; }
         .add-task-btn:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .task-list { max-height: 220px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
+        .task-list { max-height: 300px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
         .task-item { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
         .task-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); }
         .task-checkbox { width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
@@ -243,6 +245,7 @@
         .status-participated { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
         .status-missed { background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
         .hackathon-status-select { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600; outline: none; }
+        #hackathonList { margin-top: 24px; }
 
         /* Reviews */
         .review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
@@ -515,55 +518,58 @@
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div>
                     </div>
-                    <div class="xp-display">
+                    <div style="text-align: center;">
                         <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
-                        <div class="xp-circle-wrapper" style="--progress: 0;" id="xpCircleWrapper">
-                            <div class="xp-circle-bg">
-                                <div class="xp-circle-inner">
-                                    <div class="xp-value" id="xpValue">0</div>
-                                    <div class="xp-label" id="xpLabel">0 / 500 XP</div>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                     </div>
+                    
+                    <div class="xp-vital-list">
+                        <div class="xp-vital-row">
+                            <span>Today's XP</span>
+                            <strong id="xpValToday">0</strong>
+                        </div>
+                        <div class="xp-vital-row">
+                            <span>Weekly XP</span>
+                            <strong id="xpValWeek">0</strong>
+                        </div>
+                        <div class="xp-vital-row">
+                            <span>Milestone Rate</span>
+                            <strong id="xpValMilestone">0%</strong>
+                        </div>
+                    </div>
+
+                    <div class="xp-progress-info">
+                        <span class="label">Total Progress</span>
+                        <span class="value"><span id="xpValue">0</span> / <span id="xpLabel">500</span> XP</span>
+                    </div>
+                    <div class="progress-bar" style="height: 12px;">
+                        <div class="progress-fill" id="xpProgressBar" style="width: 0%;"></div>
+                    </div>
+                    <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                 </div>
 
-                <!-- Row 2: Middle Left (XP Tracking), Middle (Today's Focus), Middle Right (Holidays) -->
-                <div class="card d-col-2">
+                <!-- Row 2: Middle Left (Daily Check-in), Middle (Today's Focus), Middle Right (Holidays) -->
+                <div class="card d-col-2" style="display: flex; flex-direction: column; justify-content: center;">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-check"></i></div> Daily Attendance</div>
                     </div>
-                    <div class="stat-grid-3">
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="todayXPStat">0</div>
-                            <div class="stat-box-label">Today (XP)</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="weekXPStat">0</div>
-                            <div class="stat-box-label">This Week (XP)</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="milestoneRateStat">0%</div>
-                            <div class="stat-box-label">Milestone Rate</div>
-                        </div>
+                    <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
+                        <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
                     </div>
-                    <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
                 </div>
 
-                <div class="card d-col-2">
+                <div class="card d-col-2" style="display: flex; flex-direction: column;">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-bullseye"></i></div> Today's Focus</div>
                     </div>
-                    <div class="task-list" id="todayFocusList">
+                    <div class="task-list" id="todayFocusList" style="flex: 1; max-height: none; margin-bottom: 16px;">
                         <div class="empty-state" id="emptyFocus">
                             <i class="fas fa-mug-hot"></i>
                             <p>No tasks added yet</p>
                         </div>
                     </div>
-                    <div class="todo-input-group" style="margin-top: 16px; margin-bottom: 0;">
-                        <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task...">
-                        <button class="add-task-btn" id="addTodayFocusBtn"><i class="fas fa-plus"></i></button>
+                    <div class="todo-input-group" style="flex-direction: column; gap: 12px; width: 100%;">
+                        <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task..." style="width: 100%;">
+                        <button class="add-task-btn" id="addTodayFocusBtn" style="width: 100%;"><i class="fas fa-plus"></i> Add Task</button>
                     </div>
                 </div>
 
@@ -1221,7 +1227,7 @@
 
             document.getElementById('levelBadge').innerHTML = `<i class="fas fa-seedling"></i> LEVEL: ${level.name.toUpperCase()}`;
             document.getElementById('xpValue').innerText = xp.toLocaleString();
-            document.getElementById('xpLabel').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
+            document.getElementById('xpLabel').innerText = displayMax.toLocaleString();
             
             if (level.name === "Master" && xp >= level.max) {
                 document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`;
@@ -1229,11 +1235,18 @@
                 document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
             }
 
-            document.getElementById('xpCircleWrapper').style.setProperty('--progress', progressPercent);
+            const xpProgressBar = document.getElementById('xpProgressBar');
+            if (xpProgressBar) xpProgressBar.style.width = progressPercent + '%';
+            
             document.getElementById('navXp').innerText = xp.toLocaleString();
             document.getElementById('navLevel').innerText = level.name;
-            document.getElementById('todayXPStat').innerText = state.todayXP;
-            document.getElementById('weekXPStat').innerText = state.weekXP;
+            
+            const xpValToday = document.getElementById('xpValToday');
+            if (xpValToday) xpValToday.innerText = state.todayXP;
+            
+            const xpValWeek = document.getElementById('xpValWeek');
+            if (xpValWeek) xpValWeek.innerText = state.weekXP;
+            
             document.getElementById('navStreak').innerText = state.streak;
         }
 
@@ -1591,9 +1604,19 @@
                     totalProgress += p;
                 });
                 const avgRate = totalProgress / state.milestones.length;
-                document.getElementById('milestoneRateStat').innerText = Math.round(avgRate) + '%';
+                const rateStr = Math.round(avgRate) + '%';
+                
+                const xpValMilestone = document.getElementById('xpValMilestone');
+                if (xpValMilestone) xpValMilestone.innerText = rateStr;
+                
+                const oldMilestoneStat = document.getElementById('milestoneRateStat');
+                if (oldMilestoneStat) oldMilestoneStat.innerText = rateStr;
             } else {
-                document.getElementById('milestoneRateStat').innerText = '0%';
+                const xpValMilestone = document.getElementById('xpValMilestone');
+                if (xpValMilestone) xpValMilestone.innerText = '0%';
+                
+                const oldMilestoneStat = document.getElementById('milestoneRateStat');
+                if (oldMilestoneStat) oldMilestoneStat.innerText = '0%';
             }
         }
 
