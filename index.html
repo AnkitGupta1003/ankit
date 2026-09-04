@@ -89,7 +89,12 @@
 
         /* Cards */
         .cards-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; }
-        @media (min-width: 1024px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); } }
+        @media (min-width: 1024px) { 
+            .cards-grid { grid-template-columns: repeat(3, 1fr); }
+            .span-2 { grid-column: span 2; }
+            .span-3 { grid-column: span 3; }
+        }
         .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 28px; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent); opacity: 0; transition: opacity 0.3s ease; }
         .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
@@ -97,9 +102,6 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .card-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 12px; color: var(--text-primary); }
         .card-icon { width: 40px; height: 40px; background: rgba(99,102,241,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-light); font-size: 16px; }
-        .span-2 { grid-column: span 1; }
-        .span-3 { grid-column: span 1; }
-        @media (min-width: 1024px) { .span-2 { grid-column: span 2; } .span-3 { grid-column: span 3; } }
         .header-actions { display: flex; gap: 8px; }
         .action-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-family: inherit; -webkit-tap-highlight-color: transparent; }
         .action-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(99,102,241,0.1); }
@@ -126,7 +128,7 @@
         .xp-value { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 800; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
         .xp-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
         .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
-        .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
         .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; text-align: center; }
         .stat-box-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--primary-light); }
         .stat-box-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
@@ -228,6 +230,7 @@
         .status-won { background: rgba(16,185,129,0.15); color: var(--secondary); border: 1px solid rgba(16,185,129,0.3); }
         .status-participated { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
         .status-not_participated { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+        .hackathon-status-select { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; color: var(--text-primary); font-size: 12px; font-weight: 600; cursor: pointer; outline: none; font-family: inherit; -webkit-tap-highlight-color: transparent; }
 
         /* Reviews */
         .review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
@@ -364,7 +367,6 @@
             .main-container { padding: 100px 1rem 2rem; }
             .routine-item { grid-template-columns: 1fr; gap: 6px; }
             .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
-            .stat-grid-3 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -507,7 +509,7 @@
                 </div>
 
                 <!-- XP Tracking & Attendance -->
-                <div class="card span-2">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div>
                     </div>
@@ -539,18 +541,6 @@
                     <div id="holidayList"></div>
                 </div>
 
-                <!-- Milestone Progress -->
-                <div class="card span-2">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-flag-checkered"></i></div> Milestone Progress</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="addMilestoneBtn"><i class="fas fa-plus"></i> Add</button>
-                            <button class="action-btn" id="editMilestoneBtn"><i class="fas fa-edit"></i> Edit</button>
-                        </div>
-                    </div>
-                    <div id="milestoneList"></div>
-                </div>
-
                 <!-- Today's Focus -->
                 <div class="card">
                     <div class="card-header">
@@ -566,6 +556,18 @@
                         <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task...">
                         <button class="add-task-btn" id="addTodayFocusBtn"><i class="fas fa-plus"></i></button>
                     </div>
+                </div>
+
+                <!-- Milestone Progress -->
+                <div class="card span-3">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-flag-checkered"></i></div> Milestone Progress</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="addMilestoneBtn"><i class="fas fa-plus"></i> Add</button>
+                            <button class="action-btn" id="editMilestoneBtn"><i class="fas fa-edit"></i> Edit</button>
+                        </div>
+                    </div>
+                    <div id="milestoneList"></div>
                 </div>
 
                 <!-- Upcoming Goals -->
@@ -632,7 +634,7 @@
         <!-- Reviews Section -->
         <section id="reviews" class="content-section">
             <div class="cards-grid">
-                <div class="card span-2">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div>
                     </div>
@@ -684,7 +686,7 @@
                     <button class="save-review-btn" id="saveReviewBtn"><i class="fas fa-save"></i> Save Weekly Review (+15 XP Bonus!)</button>
                 </div>
 
-                <div class="card span-2">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div>
                     </div>
@@ -701,7 +703,7 @@
         <!-- Project Blogs Section -->
         <section id="projectBlogs" class="content-section">
             <div class="cards-grid">
-                <div class="card span-2">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
                     </div>
@@ -717,7 +719,7 @@
                     <button class="save-review-btn" id="addBlogBtn" style="background: var(--gradient-1); box-shadow: 0 4px 20px rgba(99,102,241,0.3);"><i class="fas fa-plus"></i> Add Project Blog</button>
                 </div>
 
-                <div class="card span-2">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div>
                     </div>
@@ -1425,10 +1427,16 @@
             state.hackathons.forEach((h, index) => {
                 const el = document.createElement('div');
                 el.className = 'hackathon-card';
-                el.innerHTML = `<div class="hackathon-info"><h4>${h.name}</h4><p><i class="fas fa-calendar-alt"></i> ${h.date}</p></div><div style="display:flex; align-items:center; gap: 12px;"><span class="status-badge status-${h.status}">${h.status.replace('_', ' ')}</span><button class="action-btn danger" onclick="removeHackathon(${index})"><i class="fas fa-trash"></i> Remove</button></div>`;
+                el.innerHTML = `<div class="hackathon-info"><h4>${h.name}</h4><p><i class="fas fa-calendar-alt"></i> ${h.date}</p></div><div style="display:flex; align-items:center; gap: 12px; flex-wrap: wrap;"><select class="hackathon-status-select" onchange="changeHackathonStatus(${index}, this.value)"><option value="upcoming" ${h.status === 'upcoming' ? 'selected' : ''}>Upcoming</option><option value="participated" ${h.status === 'participated' ? 'selected' : ''}>Participated</option><option value="won" ${h.status === 'won' ? 'selected' : ''}>Won!</option><option value="not_participated" ${h.status === 'not_participated' ? 'selected' : ''}>Didn't Participated</option></select><button class="action-btn danger" onclick="removeHackathon(${index})"><i class="fas fa-trash"></i> Remove</button></div>`;
                 hackathonList.appendChild(el);
             });
         }
+
+        window.changeHackathonStatus = (index, newStatus) => {
+            state.hackathons[index].status = newStatus;
+            saveState();
+            renderHackathons();
+        };
 
         window.removeHackathon = (index) => { state.hackathons.splice(index, 1); saveState(); renderHackathons(); };
         document.getElementById('addHackathonBtn').addEventListener('click', () => {
