@@ -13,6 +13,7 @@
             --secondary: #10b981; --secondary-light: #34d399;
             --accent: #f59e0b; --accent-light: #fbbf24;
             --danger: #ef4444; --info: #3b82f6;
+            --pink-holiday: #f472b6;
             --bg-primary: #000000; --bg-secondary: #0a0a0f;
             --bg-card: rgba(255,255,255,0.03); --bg-card-hover: rgba(255,255,255,0.06);
             --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
@@ -126,19 +127,19 @@
         /* XP Display & Tracking */
         .xp-display { text-align: center; padding: 20px 0; }
         .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; }
-        .xp-vital-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        .xp-vital-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 14px; }
-        .xp-vital-row span { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
-        .xp-vital-row strong { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-light); }
-        .xp-progress-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .xp-progress-info .label { font-size: 14px; color: var(--text-secondary); font-weight: 600; }
-        .xp-progress-info .value { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--primary-light); }
-        .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-top: 8px; text-align: left; }
-        .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; text-align: center; }
-        .stat-box-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--primary-light); }
-        .stat-box-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-        .check-in-btn { width: 100%; margin-top: 16px; background: linear-gradient(135deg, #f59e0b 0%, #f5576c 100%); border: none; color: white; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; font-family: inherit; box-shadow: 0 4px 15px rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
+        .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
+        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.02) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
+        .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .xp-value { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 800; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
+        .xp-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
+        .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+        
+        .xp-tracking-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+        .xp-tracking-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: 14px; }
+        .xp-tracking-row span { font-size: 14px; color: var(--text-secondary); font-weight: 500; }
+        .xp-tracking-row strong { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--primary-light); }
+
+        .check-in-btn { width: 100%; background: linear-gradient(135deg, #f59e0b 0%, #f5576c 100%); border: none; color: white; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; font-family: inherit; box-shadow: 0 4px 15px rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
         .check-in-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
         .check-in-btn.done { background: rgba(255,255,255,0.05); color: var(--secondary); cursor: default; box-shadow: none; }
 
@@ -166,7 +167,7 @@
         .todo-input[type="date"] { color-scheme: dark; }
         .add-task-btn { background: var(--gradient-1); border: none; color: white; padding: 16px 28px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--shadow-glow); -webkit-tap-highlight-color: transparent; }
         .add-task-btn:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .task-list { max-height: 300px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
+        .task-list { max-height: 220px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
         .task-item { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
         .task-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); }
         .task-checkbox { width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
@@ -206,10 +207,13 @@
         .holiday-info .desc { font-size: 11px; }
         .holiday-weekend .holiday-date-box, .holiday-weekend .holiday-info .name, .holiday-weekend .holiday-info .desc { color: var(--info); }
         .holiday-weekend .holiday-date-box { border-color: rgba(59,130,246,0.2); }
-        .holiday-govt .holiday-date-box, .holiday-govt .holiday-info .name, .holiday-govt .holiday-info .desc { color: var(--danger); }
-        .holiday-govt .holiday-date-box { border-color: rgba(239,68,68,0.2); }
+        .holiday-govt .holiday-date-box, .holiday-govt .holiday-info .name, .holiday-govt .holiday-info .desc { color: var(--pink-holiday); }
+        .holiday-govt .holiday-date-box { border-color: rgba(244, 114, 182, 0.2); }
         .see-more-btn { width: 100%; margin-top: 12px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); color: var(--primary-light); padding: 10px; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
         .see-more-btn:hover { background: rgba(99,102,241,0.1); border-color: var(--primary); }
+
+        .holiday-year-header { font-size: 18px; font-weight: 700; margin: 20px 0 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        .holiday-year-header:first-child { margin-top: 0; }
 
         /* Routine */
         .routine-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -331,7 +335,6 @@
         body.read-only .delete-review-btn,
         body.read-only .goal-delete,
         body.read-only .add-goal-btn,
-        body.read-only .check-in-btn,
         body.read-only .save-review-btn,
         body.read-only .milestone-delete,
         body.read-only .goal-delete-btn,
@@ -382,7 +385,6 @@
             .main-container { padding: 100px 1rem 2rem; }
             .routine-item { grid-template-columns: 1fr; gap: 6px; }
             .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
-            .stat-grid-3 { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -518,43 +520,40 @@
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div>
                     </div>
-                    <div style="text-align: center;">
+                    <div class="xp-display">
                         <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
-                    </div>
-                    
-                    <div class="xp-vital-list">
-                        <div class="xp-vital-row">
-                            <span>Today's XP</span>
-                            <strong id="xpValToday">0</strong>
+                        <div class="xp-circle-wrapper" style="--progress: 0;" id="xpCircleWrapper">
+                            <div class="xp-circle-bg">
+                                <div class="xp-circle-inner">
+                                    <div class="xp-value" id="xpValue">0</div>
+                                    <div class="xp-label" id="xpLabel">0 / 500 XP</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="xp-vital-row">
-                            <span>Weekly XP</span>
-                            <strong id="xpValWeek">0</strong>
-                        </div>
-                        <div class="xp-vital-row">
-                            <span>Milestone Rate</span>
-                            <strong id="xpValMilestone">0%</strong>
-                        </div>
+                        <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                     </div>
-
-                    <div class="xp-progress-info">
-                        <span class="label">Total Progress</span>
-                        <span class="value"><span id="xpValue">0</span> / <span id="xpLabel">500</span> XP</span>
-                    </div>
-                    <div class="progress-bar" style="height: 12px;">
-                        <div class="progress-fill" id="xpProgressBar" style="width: 0%;"></div>
-                    </div>
-                    <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                 </div>
 
-                <!-- Row 2: Middle Left (Daily Check-in), Middle (Today's Focus), Middle Right (Holidays) -->
-                <div class="card d-col-2" style="display: flex; flex-direction: column; justify-content: center;">
+                <!-- Row 2: Middle Left (XP Tracking), Middle (Today's Focus), Middle Right (Holidays) -->
+                <div class="card d-col-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-check"></i></div> Daily Attendance</div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div>
                     </div>
-                    <div style="display: flex; flex-direction: column; justify-content: center; flex: 1;">
-                        <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
+                    <div class="xp-tracking-list">
+                        <div class="xp-tracking-row">
+                            <span>Today's XP</span>
+                            <strong id="todayXPStat">0</strong>
+                        </div>
+                        <div class="xp-tracking-row">
+                            <span>Weekly XP</span>
+                            <strong id="weekXPStat">0</strong>
+                        </div>
+                        <div class="xp-tracking-row">
+                            <span>Milestone Rate</span>
+                            <strong id="milestoneRateStat">0%</strong>
+                        </div>
                     </div>
+                    <button class="check-in-btn" id="checkInBtn" style="display: none;"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
                 </div>
 
                 <div class="card d-col-2" style="display: flex; flex-direction: column;">
@@ -1227,7 +1226,7 @@
 
             document.getElementById('levelBadge').innerHTML = `<i class="fas fa-seedling"></i> LEVEL: ${level.name.toUpperCase()}`;
             document.getElementById('xpValue').innerText = xp.toLocaleString();
-            document.getElementById('xpLabel').innerText = displayMax.toLocaleString();
+            document.getElementById('xpLabel').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
             
             if (level.name === "Master" && xp >= level.max) {
                 document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`;
@@ -1235,24 +1234,23 @@
                 document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
             }
 
-            const xpProgressBar = document.getElementById('xpProgressBar');
-            if (xpProgressBar) xpProgressBar.style.width = progressPercent + '%';
-            
+            document.getElementById('xpCircleWrapper').style.setProperty('--progress', progressPercent);
             document.getElementById('navXp').innerText = xp.toLocaleString();
             document.getElementById('navLevel').innerText = level.name;
-            
-            const xpValToday = document.getElementById('xpValToday');
-            if (xpValToday) xpValToday.innerText = state.todayXP;
-            
-            const xpValWeek = document.getElementById('xpValWeek');
-            if (xpValWeek) xpValWeek.innerText = state.weekXP;
-            
+            document.getElementById('todayXPStat').innerText = state.todayXP;
+            document.getElementById('weekXPStat').innerText = state.weekXP;
             document.getElementById('navStreak').innerText = state.streak;
         }
 
         // --- Attendance / Check-in Logic ---
         const checkInBtn = document.getElementById('checkInBtn');
         function updateCheckInBtn() {
+            if (!auth.currentUser) {
+                checkInBtn.style.display = 'none';
+                return;
+            }
+            checkInBtn.style.display = 'flex';
+            
             const today = new Date().toLocaleDateString();
             if (state.lastCheckIn === today) {
                 checkInBtn.innerHTML = `<i class="fas fa-check-circle"></i> Checked In Today!`;
@@ -1418,34 +1416,109 @@
 
         // --- Upcoming Holidays Logic ---
         const allMpHolidays = [
-            // 2024
-            { d: '2024-08-15', n: 'Independence Day' }, { d: '2024-10-02', n: 'Gandhi Jayanti' },
-            { d: '2024-11-01', n: 'MP Foundation Day' }, { d: '2024-12-25', n: 'Christmas' },
-            // 2025
-            { d: '2025-01-26', n: 'Republic Day' }, { d: '2025-03-14', n: 'Holi' },
-            { d: '2025-03-31', n: 'Eid-ul-Fitr' }, { d: '2025-04-06', n: 'Ram Navami' },
-            { d: '2025-05-01', n: 'Labour Day' }, { d: '2025-08-15', n: 'Independence Day' },
-            { d: '2025-10-02', n: 'Gandhi Jayanti' }, { d: '2025-10-20', n: 'Dussehra' },
-            { d: '2025-11-01', n: 'MP Foundation Day' }, { d: '2025-12-25', n: 'Christmas' },
             // 2026
-            { d: '2026-01-26', n: 'Republic Day' }, { d: '2026-03-04', n: 'Holi' },
-            { d: '2026-08-15', n: 'Independence Day' }, { d: '2026-10-02', n: 'Gandhi Jayanti' },
-            { d: '2026-10-09', n: 'Dussehra' }, { d: '2026-11-01', n: 'MP Foundation Day' },
+            { d: '2026-01-26', n: 'Republic Day' },
+            { d: '2026-02-15', n: 'Maha Shivratri' },
+            { d: '2026-03-03', n: 'Holi' },
+            { d: '2026-03-19', n: 'Gudi Padwa' },
+            { d: '2026-03-20', n: 'Cheti Chand' },
+            { d: '2026-03-21', n: 'Id-ul-Fitr' },
+            { d: '2026-03-27', n: 'Ram Navami' },
+            { d: '2026-03-31', n: 'Mahavir Jayanti' },
+            { d: '2026-04-03', n: 'Good Friday' },
+            { d: '2026-04-14', n: 'Dr. Ambedkar Jayanti' },
+            { d: '2026-05-01', n: 'Buddha Purnima' },
+            { d: '2026-05-27', n: 'Id-ul-Zuha (Bakrid)' },
+            { d: '2026-06-17', n: 'Maharana Pratap Jayanti' },
+            { d: '2026-06-26', n: 'Muharram' },
+            { d: '2026-08-15', n: 'Independence Day' },
+            { d: '2026-08-25', n: 'Id-e-Milad' },
+            { d: '2026-09-04', n: 'Janmashtami' },
+            { d: '2026-09-14', n: 'Ganesh Chaturthi' },
+            { d: '2026-10-02', n: 'Gandhi Jayanti' },
+            { d: '2026-10-20', n: 'Dussehra' },
+            { d: '2026-10-26', n: 'Valmiki Jayanti' },
+            { d: '2026-11-07', n: 'Diwali' },
+            { d: '2026-11-09', n: 'Govardhan Puja' },
+            { d: '2026-11-24', n: 'Guru Nanak Jayanti' },
             { d: '2026-12-25', n: 'Christmas' },
-            // 2027
-            { d: '2027-01-26', n: 'Republic Day' }, { d: '2027-03-24', n: 'Holi' },
-            { d: '2027-08-15', n: 'Independence Day' }, { d: '2027-10-02', n: 'Gandhi Jayanti' },
-            { d: '2027-10-29', n: 'Dussehra' }, { d: '2027-11-01', n: 'MP Foundation Day' },
+            // 2027 (Approximated based on lunar shifts)
+            { d: '2027-01-26', n: 'Republic Day' },
+            { d: '2027-02-04', n: 'Maha Shivratri' },
+            { d: '2027-02-22', n: 'Holi' },
+            { d: '2027-03-09', n: 'Gudi Padwa' },
+            { d: '2027-03-10', n: 'Cheti Chand' },
+            { d: '2027-03-11', n: 'Id-ul-Fitr' },
+            { d: '2027-03-16', n: 'Ram Navami' },
+            { d: '2027-03-20', n: 'Mahavir Jayanti' },
+            { d: '2027-03-26', n: 'Good Friday' },
+            { d: '2027-04-14', n: 'Dr. Ambedkar Jayanti' },
+            { d: '2027-04-20', n: 'Buddha Purnima' },
+            { d: '2027-05-17', n: 'Id-ul-Zuha (Bakrid)' },
+            { d: '2027-06-06', n: 'Maharana Pratap Jayanti' },
+            { d: '2027-06-15', n: 'Muharram' },
+            { d: '2027-08-15', n: 'Independence Day' },
+            { d: '2027-08-14', n: 'Id-e-Milad' },
+            { d: '2027-08-25', n: 'Janmashtami' },
+            { d: '2027-09-04', n: 'Ganesh Chaturthi' },
+            { d: '2027-10-02', n: 'Gandhi Jayanti' },
+            { d: '2027-10-09', n: 'Dussehra' },
+            { d: '2027-10-15', n: 'Valmiki Jayanti' },
+            { d: '2027-10-28', n: 'Diwali' },
+            { d: '2027-10-30', n: 'Govardhan Puja' },
+            { d: '2027-11-15', n: 'Guru Nanak Jayanti' },
             { d: '2027-12-25', n: 'Christmas' },
-            // 2028
-            { d: '2028-01-26', n: 'Republic Day' }, { d: '2028-03-12', n: 'Holi' },
-            { d: '2028-08-15', n: 'Independence Day' }, { d: '2028-10-02', n: 'Gandhi Jayanti' },
-            { d: '2028-10-17', n: 'Dussehra' }, { d: '2028-11-01', n: 'MP Foundation Day' },
+            // 2028 (Approximated)
+            { d: '2028-01-26', n: 'Republic Day' },
+            { d: '2028-01-25', n: 'Maha Shivratri' },
+            { d: '2028-03-11', n: 'Holi' },
+            { d: '2028-03-28', n: 'Gudi Padwa' },
+            { d: '2028-03-29', n: 'Cheti Chand' },
+            { d: '2028-03-30', n: 'Id-ul-Fitr' },
+            { d: '2028-04-04', n: 'Ram Navami' },
+            { d: '2028-04-08', n: 'Mahavir Jayanti' },
+            { d: '2028-04-14', n: 'Good Friday' },
+            { d: '2028-04-14', n: 'Dr. Ambedkar Jayanti' },
+            { d: '2028-05-09', n: 'Buddha Purnima' },
+            { d: '2028-05-06', n: 'Id-ul-Zuha (Bakrid)' },
+            { d: '2028-05-25', n: 'Maharana Pratap Jayanti' },
+            { d: '2028-06-04', n: 'Muharram' },
+            { d: '2028-08-15', n: 'Independence Day' },
+            { d: '2028-08-04', n: 'Id-e-Milad' },
+            { d: '2028-09-13', n: 'Janmashtami' },
+            { d: '2028-09-23', n: 'Ganesh Chaturthi' },
+            { d: '2028-10-02', n: 'Gandhi Jayanti' },
+            { d: '2028-10-17', n: 'Dussehra' },
+            { d: '2028-10-23', n: 'Valmiki Jayanti' },
+            { d: '2028-11-15', n: 'Diwali' },
+            { d: '2028-11-17', n: 'Govardhan Puja' },
+            { d: '2028-12-03', n: 'Guru Nanak Jayanti' },
             { d: '2028-12-25', n: 'Christmas' },
-            // 2029
-            { d: '2029-01-26', n: 'Republic Day' }, { d: '2029-03-01', n: 'Holi' },
-            { d: '2029-08-15', n: 'Independence Day' }, { d: '2029-10-02', n: 'Gandhi Jayanti' },
-            { d: '2029-10-06', n: 'Dussehra' }, { d: '2029-11-01', n: 'MP Foundation Day' },
+            // 2029 (Approximated)
+            { d: '2029-01-26', n: 'Republic Day' },
+            { d: '2029-02-13', n: 'Maha Shivratri' },
+            { d: '2029-03-01', n: 'Holi' },
+            { d: '2029-03-16', n: 'Gudi Padwa' },
+            { d: '2029-03-17', n: 'Cheti Chand' },
+            { d: '2029-03-19', n: 'Id-ul-Fitr' },
+            { d: '2029-03-24', n: 'Ram Navami' },
+            { d: '2029-03-28', n: 'Mahavir Jayanti' },
+            { d: '2029-03-30', n: 'Good Friday' },
+            { d: '2029-04-14', n: 'Dr. Ambedkar Jayanti' },
+            { d: '2029-04-28', n: 'Buddha Purnima' },
+            { d: '2029-05-25', n: 'Id-ul-Zuha (Bakrid)' },
+            { d: '2029-06-13', n: 'Maharana Pratap Jayanti' },
+            { d: '2029-06-23', n: 'Muharram' },
+            { d: '2029-08-15', n: 'Independence Day' },
+            { d: '2029-08-24', n: 'Id-e-Milad' },
+            { d: '2029-09-02', n: 'Janmashtami' },
+            { d: '2029-09-12', n: 'Ganesh Chaturthi' },
+            { d: '2029-10-02', n: 'Gandhi Jayanti' },
+            { d: '2029-10-06', n: 'Dussehra' },
+            { d: '2029-10-12', n: 'Valmiki Jayanti' },
+            { d: '2029-11-04', n: 'Diwali' },
+            { d: '2029-11-06', n: 'Govardhan Puja' },
+            { d: '2029-11-22', n: 'Guru Nanak Jayanti' },
             { d: '2029-12-25', n: 'Christmas' }
         ];
 
@@ -1459,9 +1532,9 @@
             today.setHours(0,0,0,0);
             const upcomingDates = [];
             
-            // Add Weekends for the next 3 months
+            // Add Weekends from today until end of 2029
             let tempDate = new Date(today);
-            for(let i=0; i<90; i++) {
+            while(tempDate.getFullYear() <= 2029) {
                 if(tempDate.getDay() === 0) upcomingDates.push({ date: new Date(tempDate), name: "Sunday", type: "weekend" });
                 if(tempDate.getDay() === 6) upcomingDates.push({ date: new Date(tempDate), name: "Saturday", type: "weekend" });
                 tempDate.setDate(tempDate.getDate() + 1);
@@ -1492,8 +1565,18 @@
                 list.appendChild(createHolidayElement(item, monthNames, dayNames));
             });
 
-            // Render ALL in Modal
+            // Render ALL in Modal grouped by Year
+            let currentYear = -1;
             upcomingDates.forEach(item => {
+                const y = item.date.getFullYear();
+                if(y > 2029) return; // Stop at 2029
+                if(y !== currentYear) {
+                    currentYear = y;
+                    const subHeader = document.createElement('div');
+                    subHeader.className = 'holiday-year-header';
+                    subHeader.innerText = y;
+                    modalList.appendChild(subHeader);
+                }
                 modalList.appendChild(createHolidayElement(item, monthNames, dayNames));
             });
         }
@@ -1501,7 +1584,7 @@
         function createHolidayElement(item, monthNames, dayNames) {
             const el = document.createElement('div');
             el.className = `holiday-list-item holiday-${item.type}`;
-            const typeColor = item.type === 'weekend' ? 'var(--info)' : 'var(--danger)';
+            const typeColor = item.type === 'weekend' ? 'var(--info)' : 'var(--pink-holiday)';
             const descText = item.type === 'weekend' ? 'Weekend Leave' : 'MP Govt Holiday';
             
             el.innerHTML = `
@@ -1604,19 +1687,9 @@
                     totalProgress += p;
                 });
                 const avgRate = totalProgress / state.milestones.length;
-                const rateStr = Math.round(avgRate) + '%';
-                
-                const xpValMilestone = document.getElementById('xpValMilestone');
-                if (xpValMilestone) xpValMilestone.innerText = rateStr;
-                
-                const oldMilestoneStat = document.getElementById('milestoneRateStat');
-                if (oldMilestoneStat) oldMilestoneStat.innerText = rateStr;
+                document.getElementById('milestoneRateStat').innerText = Math.round(avgRate) + '%';
             } else {
-                const xpValMilestone = document.getElementById('xpValMilestone');
-                if (xpValMilestone) xpValMilestone.innerText = '0%';
-                
-                const oldMilestoneStat = document.getElementById('milestoneRateStat');
-                if (oldMilestoneStat) oldMilestoneStat.innerText = '0%';
+                document.getElementById('milestoneRateStat').innerText = '0%';
             }
         }
 
