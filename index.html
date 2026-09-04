@@ -87,14 +87,22 @@
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards */
+        /* Cards & Grids */
         .cards-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; align-items: start; }
-        @media (min-width: 768px) { .cards-grid { grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); } }
-        @media (min-width: 1024px) { 
+        .cards-grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; align-items: start; }
+        
+        @media (min-width: 768px) {
+            .cards-grid { grid-template-columns: repeat(2, 1fr); }
+            .span-2 { grid-column: span 2; }
+            .span-3 { grid-column: span 2; }
+        }
+        @media (min-width: 1024px) {
             .cards-grid { grid-template-columns: repeat(3, 1fr); }
             .span-2 { grid-column: span 2; }
             .span-3 { grid-column: span 3; }
+            .cards-grid-2 { grid-template-columns: 1.5fr 1fr; }
         }
+
         .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 28px; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; width: 100%; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent); opacity: 0; transition: opacity 0.3s ease; }
         .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
@@ -228,6 +236,7 @@
         .routine-delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
         /* Hackathons */
+        .hackathon-input-container { background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 24px; }
         .hackathon-card { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; flex-wrap: wrap; gap: 16px; }
         .hackathon-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
         .hackathon-info h4 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
@@ -237,7 +246,8 @@
         .status-won { background: rgba(16,185,129,0.15); color: var(--secondary); border: 1px solid rgba(16,185,129,0.3); }
         .status-participated { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
         .status-not_participated { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
-        .hackathon-status-select { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; color: var(--text-primary); font-size: 12px; font-weight: 600; cursor: pointer; outline: none; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+        .hackathon-status-select { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 50px; padding: 8px 32px 8px 16px; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; outline: none; font-family: inherit; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg fill='%23818cf8' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; transition: all 0.3s ease; }
+        .hackathon-status-select:hover { border-color: var(--primary); }
         select.hackathon-status-select option { background: var(--bg-secondary); color: var(--text-primary); }
 
         /* Reviews */
@@ -333,9 +343,8 @@
         body.read-only #editRoutineBtn,
         body.read-only .task-delete,
         body.read-only #addHolidayBtn,
-        body.read-only .holiday-delete {
-            display: none !important; 
-        }
+        body.read-only .holiday-delete,
+        body.read-only .hackathon-input-container { display: none !important; }
         body.read-only #revEasy,
         body.read-only #revMedium,
         body.read-only #revHard,
@@ -343,39 +352,18 @@
         body.read-only #revHours,
         body.read-only #revContests,
         body.read-only input,
-        body.read-only textarea {
-            pointer-events: none;
-        }
+        body.read-only textarea { pointer-events: none; }
         body.read-only .login-box input,
         body.read-only .login-box button,
         body.read-only .login-box .action-btn,
-        body.read-only .login-box .login-submit-btn {
-            display: flex !important;
-            pointer-events: all !important;
-            opacity: 1 !important;
-        }
-        body.read-only .login-box input {
-            display: block !important;
-        }
+        body.read-only .login-box .login-submit-btn { display: flex !important; pointer-events: all !important; opacity: 1 !important; }
+        body.read-only .login-box input { display: block !important; }
         body.read-only .review-textarea:placeholder-shown,
-        body.read-only #blogTitleInput:placeholder-shown,
-        body.read-only .review-textarea:placeholder-shown {
-            display: none !important;
-        }
-        body.read-only #editRoadmapContainer {
-            display: none !important;
-        }
+        body.read-only #blogTitleInput:placeholder-shown { display: none !important; }
+        body.read-only #editRoadmapContainer { display: none !important; }
 
         /* Responsive */
-        @media (max-width: 1023px) {
-            .span-2, .span-3 { grid-column: span 1; }
-        }
-        @media (max-width: 768px) {
-            .nav-stats { display: none; }
-            .main-container { padding: 100px 1rem 2rem; }
-            .routine-item { grid-template-columns: 1fr; gap: 6px; }
-            .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
-        }
+        @media (max-width: 767px) { .nav-stats { display: none; } .main-container { padding: 100px 1rem 2rem; } .routine-item { grid-template-columns: 1fr; gap: 6px; } .routine-item-edit { grid-template-columns: 1fr; gap: 8px; } }
     </style>
 </head>
 <body class="read-only">
@@ -392,18 +380,9 @@
             </a>
             <div class="nav-right">
                 <div class="nav-stats">
-                    <div class="nav-stat">
-                        <div class="nav-stat-value" id="navLevel">Beginner</div>
-                        <div class="nav-stat-label">Level</div>
-                    </div>
-                    <div class="nav-stat">
-                        <div class="nav-stat-value" id="navXp">0</div>
-                        <div class="nav-stat-label">Total XP</div>
-                    </div>
-                    <div class="nav-stat">
-                        <div class="nav-stat-value" id="navStreak">0</div>
-                        <div class="nav-stat-label">Day Streak</div>
-                    </div>
+                    <div class="nav-stat"><div class="nav-stat-value" id="navLevel">Beginner</div><div class="nav-stat-label">Level</div></div>
+                    <div class="nav-stat"><div class="nav-stat-value" id="navXp">0</div><div class="nav-stat-label">Total XP</div></div>
+                    <div class="nav-stat"><div class="nav-stat-value" id="navStreak">0</div><div class="nav-stat-label">Day Streak</div></div>
                 </div>
                 <div class="nav-actions">
                     <button class="nav-action-btn" id="exportBtn"><i class="fas fa-download"></i> Export</button>
@@ -451,10 +430,7 @@
         
         <!-- Hero -->
         <section class="hero-section">
-            <div class="hero-badge">
-                <i class="fas fa-fire"></i>
-                <span>Start Your B.Tech Journey</span>
-            </div>
+            <div class="hero-badge"><i class="fas fa-fire"></i><span>Start Your B.Tech Journey</span></div>
             <h1 class="hero-title">Track Your <span class="gradient-text">4-Year Journey</span></h1>
             <p class="hero-subtitle">An all-in-one productivity dashboard designed for computer science students. Track your progress, manage hackathons, build routines, and plan your 4-year roadmap.</p>
         </section>
@@ -480,14 +456,11 @@
         <!-- Dashboard Section -->
         <section id="dashboard" class="content-section active">
             <div class="cards-grid">
-                
-                <!-- My Specialization Track -->
+                <!-- Row 1 -->
                 <div class="card span-2">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-laptop-code"></i></div> My Specialization Track</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="editSpecBtn"><i class="fas fa-edit"></i> Edit</button>
-                        </div>
+                        <div class="header-actions"><button class="action-btn" id="editSpecBtn"><i class="fas fa-edit"></i> Edit</button></div>
                     </div>
                     <div class="tags-container" id="tagsContainer"></div>
                     <div class="add-tag-group hidden" id="addTagGroup">
@@ -496,44 +469,24 @@
                     </div>
                     <p style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">Current Path: <span id="currentSpec" style="color: var(--primary-light); font-weight: 600;">React.js & Frontend Engineering</span></p>
                 </div>
-
-                <!-- Experience Points -->
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div>
-                    </div>
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div></div>
                     <div class="xp-display">
                         <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
                         <div class="xp-circle-wrapper" style="--progress: 0;" id="xpCircleWrapper">
-                            <div class="xp-circle-bg">
-                                <div class="xp-circle-inner">
-                                    <div class="xp-value" id="xpValue">0</div>
-                                    <div class="xp-label" id="xpLabel">0 / 500 XP</div>
-                                </div>
-                            </div>
+                            <div class="xp-circle-bg"><div class="xp-circle-inner"><div class="xp-value" id="xpValue">0</div><div class="xp-label" id="xpLabel">0 / 500 XP</div></div></div>
                         </div>
                         <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                     </div>
                 </div>
 
-                <!-- XP Tracking & Attendance -->
+                <!-- Row 2 -->
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div>
-                    </div>
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div></div>
                     <div class="stat-grid-3">
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="todayXPStat">0</div>
-                            <div class="stat-box-label">Today (XP)</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="weekXPStat">0</div>
-                            <div class="stat-box-label">This Week (XP)</div>
-                        </div>
-                        <div class="stat-box">
-                            <div class="stat-box-value" id="milestoneRateStat">0%</div>
-                            <div class="stat-box-label">Milestone Rate</div>
-                        </div>
+                        <div class="stat-box"><div class="stat-box-value" id="todayXPStat">0</div><div class="stat-box-label">Today (XP)</div></div>
+                        <div class="stat-box"><div class="stat-box-value" id="weekXPStat">0</div><div class="stat-box-label">This Week (XP)</div></div>
+                        <div class="stat-box"><div class="stat-box-value" id="milestoneRateStat">0%</div><div class="stat-box-label">Milestone Rate</div></div>
                     </div>
                     <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
                     <div class="xp-next-level-section">
@@ -545,28 +498,17 @@
                         <p class="xp-next-text" id="nextLevelText">0 XP to reach Learner</p>
                     </div>
                 </div>
-
-                <!-- MP Holidays Calendar -->
                 <div class="card">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-times"></i></div> Upcoming Holidays</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="addHolidayBtn"><i class="fas fa-plus"></i> Add</button>
-                        </div>
+                        <div class="header-actions"><button class="action-btn" id="addHolidayBtn"><i class="fas fa-plus"></i> Add</button></div>
                     </div>
                     <div id="holidayList"></div>
                 </div>
-
-                <!-- Today's Focus -->
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-bullseye"></i></div> Today's Focus</div>
-                    </div>
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-bullseye"></i></div> Today's Focus</div></div>
                     <div class="task-list" id="todayFocusList">
-                        <div class="empty-state" id="emptyFocus">
-                            <i class="fas fa-mug-hot"></i>
-                            <p>No tasks added yet</p>
-                        </div>
+                        <div class="empty-state" id="emptyFocus"><i class="fas fa-mug-hot"></i><p>No tasks added yet</p></div>
                     </div>
                     <div class="todo-input-group" style="margin-top: 16px; margin-bottom: 0;">
                         <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task...">
@@ -574,7 +516,7 @@
                     </div>
                 </div>
 
-                <!-- Milestone Progress -->
+                <!-- Row 3 -->
                 <div class="card span-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-flag-checkered"></i></div> Milestone Progress</div>
@@ -586,7 +528,7 @@
                     <div id="milestoneList"></div>
                 </div>
 
-                <!-- Upcoming Goals -->
+                <!-- Row 4 -->
                 <div class="card span-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
@@ -597,7 +539,6 @@
                     </div>
                     <div class="goals-timeline" id="goalsTimeline"></div>
                 </div>
-
             </div>
         </section>
 
@@ -609,16 +550,18 @@
                         <div class="card-title"><div class="card-icon"><i class="fas fa-trophy"></i></div> Hackathon Tracker</div>
                         <span style="font-size: 12px; color: var(--text-muted);">Track schedules & wins</span>
                     </div>
-                    <div class="todo-input-group">
-                        <input type="text" class="todo-input" id="hackathonName" placeholder="Hackathon Name (e.g., HackMIT)">
-                        <input type="date" class="todo-input" id="hackathonDate" style="max-width: 180px;">
-                        <select class="todo-input" id="hackathonStatus" style="max-width: 180px;">
-                            <option value="upcoming">Upcoming</option>
-                            <option value="participated">Participated</option>
-                            <option value="won">Won!</option>
-                            <option value="not_participated">Didn't Participated</option>
-                        </select>
-                        <button class="add-task-btn" id="addHackathonBtn"><i class="fas fa-plus"></i> Add</button>
+                    <div class="hackathon-input-container">
+                        <div class="todo-input-group">
+                            <input type="text" class="todo-input" id="hackathonName" placeholder="Hackathon Name (e.g., HackMIT)">
+                            <input type="date" class="todo-input" id="hackathonDate" style="max-width: 180px;">
+                            <select class="todo-input" id="hackathonStatus" style="max-width: 180px;">
+                                <option value="upcoming">Upcoming</option>
+                                <option value="participated">Participated</option>
+                                <option value="won">Won!</option>
+                                <option value="not_participated">Didn't Participated</option>
+                            </select>
+                            <button class="add-task-btn" id="addHackathonBtn"><i class="fas fa-plus"></i> Add</button>
+                        </div>
                     </div>
                     <div id="hackathonList"></div>
                 </div>
@@ -649,68 +592,36 @@
 
         <!-- Reviews Section -->
         <section id="reviews" class="content-section">
-            <div class="cards-grid">
-                <div class="card span-2">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div>
-                    </div>
+            <div class="cards-grid-2">
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div></div>
                     <div class="review-stats">
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revEasy">0</div>
-                            <div class="review-stat-lbl">Easy Problems (+15 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revMedium">0</div>
-                            <div class="review-stat-lbl">Medium Problems (+25 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revHard">0</div>
-                            <div class="review-stat-lbl">Hard Problems (+40 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revVideos">0</div>
-                            <div class="review-stat-lbl">Videos Watched (+5 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revHours">0</div>
-                            <div class="review-stat-lbl">Hours Coded (+10 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revContests">0</div>
-                            <div class="review-stat-lbl">Contests Done</div>
-                        </div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revEasy">0</div><div class="review-stat-lbl">Easy Problems (+15 XP)</div></div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revMedium">0</div><div class="review-stat-lbl">Medium Problems (+25 XP)</div></div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revHard">0</div><div class="review-stat-lbl">Hard Problems (+40 XP)</div></div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revVideos">0</div><div class="review-stat-lbl">Videos Watched (+5 XP)</div></div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revHours">0</div><div class="review-stat-lbl">Hours Coded (+10 XP)</div></div>
+                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revContests">0</div><div class="review-stat-lbl">Contests Done</div></div>
                     </div>
-
                     <div class="review-label"><i class="fas fa-check-circle"></i> What I Completed This Week</div>
                     <textarea class="review-textarea" placeholder="List your accomplishments..."></textarea>
-
                     <div class="review-label"><i class="fas fa-bullseye"></i> Next Week Goals</div>
                     <textarea class="review-textarea" placeholder="What do you want to achieve?"></textarea>
-
                     <div class="review-label"><i class="fas fa-lightbulb"></i> What I Learned</div>
                     <textarea class="review-textarea" placeholder="Key takeaways..."></textarea>
-
                     <div class="review-label"><i class="fas fa-tools"></i> Areas to Improve</div>
                     <textarea class="review-textarea" placeholder="Where can you get better?"></textarea>
-
                     <div class="review-label"><i class="fas fa-fire"></i> Motivation Level</div>
                     <div class="slider-container">
                         <input type="range" min="1" max="10" value="5" id="motivationSlider">
                         <div class="slider-value" id="motivationValue">5</div>
                     </div>
-
                     <button class="save-review-btn" id="saveReviewBtn"><i class="fas fa-save"></i> Save Weekly Review (+15 XP Bonus!)</button>
                 </div>
-
-                <div class="card span-2">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div>
-                    </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div></div>
                     <div id="pastReviewsList">
-                        <div class="empty-state">
-                            <i class="fas fa-folder-open"></i>
-                            <p>No reviews yet. Complete your first weekly review above!</p>
-                        </div>
+                        <div class="empty-state"><i class="fas fa-folder-open"></i><p>No reviews yet. Complete your first weekly review above!</p></div>
                     </div>
                 </div>
             </div>
@@ -718,11 +629,9 @@
 
         <!-- Project Blogs Section -->
         <section id="projectBlogs" class="content-section">
-            <div class="cards-grid">
-                <div class="card span-2">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
-                    </div>
+            <div class="cards-grid-2">
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div></div>
                     <div class="todo-input-group">
                         <input type="text" class="todo-input" id="blogTitleInput" placeholder="Project Title (e.g., Smart Remote)">
                     </div>
@@ -734,11 +643,8 @@
                     <textarea class="review-textarea" id="blogProblemsInput" placeholder="Bugs, challenges, how you solved them..."></textarea>
                     <button class="save-review-btn" id="addBlogBtn" style="background: var(--gradient-1); box-shadow: 0 4px 20px rgba(99,102,241,0.3);"><i class="fas fa-plus"></i> Add Project Blog</button>
                 </div>
-
-                <div class="card span-2">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div>
-                    </div>
+                <div class="card">
+                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div></div>
                     <div id="projectBlogList"></div>
                 </div>
             </div>
@@ -1121,7 +1027,6 @@
             document.getElementById('weekXPStat').innerText = state.weekXP;
             document.getElementById('navStreak').innerText = state.streak;
             
-            // Update Next Level Mini-Progress Bar
             document.getElementById('nextLevelBar').style.width = `${progressPercent}%`;
             document.getElementById('nextLevelXp').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
             document.getElementById('nextLevelText').innerText = `${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
@@ -1138,7 +1043,7 @@
 
             while (upcoming.length < limit) {
                 const dateStr = checkDate.toISOString().split('T')[0];
-                const day = checkDate.getDay(); // 0=Sun, 6=Sat
+                const day = checkDate.getDay(); 
                 const isWeekend = (day === 0 || day === 6);
                 const mpHoliday = mpGovtHolidays.find(h => h.date === dateStr);
                 const customHoliday = state.customHolidays.find(h => h.date === dateStr);
@@ -1146,21 +1051,12 @@
                 let holidayName = null;
                 let isCustom = false;
 
-                if (customHoliday) {
-                    holidayName = customHoliday.name;
-                    isCustom = true;
-                } else if (mpHoliday) {
-                    holidayName = mpHoliday.name;
-                } else if (isWeekend) {
-                    holidayName = day === 0 ? "Sunday" : "Saturday";
-                }
+                if (customHoliday) { holidayName = customHoliday.name; isCustom = true; }
+                else if (mpHoliday) { holidayName = mpHoliday.name; }
+                else if (isWeekend) { holidayName = day === 0 ? "Sunday" : "Saturday"; }
 
                 if (holidayName) {
-                    upcoming.push({
-                        date: dateStr,
-                        name: holidayName,
-                        isCustom: isCustom
-                    });
+                    upcoming.push({ date: dateStr, name: holidayName, isCustom: isCustom });
                 }
                 checkDate.setDate(checkDate.getDate() + 1);
                 if (checkDate.getFullYear() > today.getFullYear() + 2) break;
