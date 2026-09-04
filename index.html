@@ -13,7 +13,7 @@
             --secondary: #10b981; --secondary-light: #34d399;
             --accent: #f59e0b; --accent-light: #fbbf24;
             --danger: #ef4444; --info: #3b82f6;
-            --bg-primary: #000000; --bg-secondary: #0a0a0f; --bg-track: #15151c;
+            --bg-primary: #000000; --bg-secondary: #0a0a0f;
             --bg-card: rgba(255,255,255,0.03); --bg-card-hover: rgba(255,255,255,0.06);
             --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
             --border-color: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.15);
@@ -26,10 +26,11 @@
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
         .bg-animation::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 20% 50%, rgba(99,102,241,0.08) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(16,185,129,0.06) 0%, transparent 50%), radial-gradient(circle at 40% 80%, rgba(245,158,11,0.05) 0%, transparent 50%); animation: bgFloat 20s ease-in-out infinite; }
-        @keyframes bgFloat { 0%,100% { transform: translate(0, 0) rotate(0deg); } 33% { transform: translate(30px,-30px) rotate(5deg); } 66% { transform: translate(-20px,20px) rotate(-5deg); } }
+        @keyframes bgFloat { 0%,100% { transform: translate(0,0) rotate(0deg); } 33% { transform: translate(30px,-30px) rotate(5deg); } 66% { transform: translate(-20px,20px) rotate(-5deg); } }
         .grid-pattern { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%); }
         ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: var(--bg-primary); } ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
         select.todo-input option { background: var(--bg-secondary); color: var(--text-primary); }
+        select.hackathon-status-select option { background: var(--bg-secondary); color: var(--text-primary); }
 
         /* Navbar */
         .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; backdrop-filter: blur(20px); background: rgba(0,0,0,0.7); border-bottom: 1px solid var(--border-color); transition: all 0.3s ease; }
@@ -87,29 +88,24 @@
         .content-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Cards & Grids */
-        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; align-items: start; }
-        .cards-grid-2 { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; align-items: start; }
+        /* Cards */
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; margin-bottom: 32px; }
         
-        @media (min-width: 768px) {
-            .cards-grid { grid-template-columns: repeat(2, 1fr; }
-            .span-2 { grid-column: span 2; }
-            .span-3 { grid-column: span 2; }
-        }
-        @media (min-width: 1024px) {
-            .cards-grid { grid-template-columns: repeat(3, 1fr); }
-            .span-2 { grid-column: span 2; }
-            .span-3 { grid-column: span 3; }
-            .cards-grid-2 { grid-template-columns: 1.5fr 1fr; }
-        }
+        /* Dashboard Grid */
+        .dashboard-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; margin-bottom: 32px; }
+        .d-col-2 { grid-column: span 2; }
+        .d-col-3 { grid-column: span 3; }
+        .d-col-6 { grid-column: span 6; }
+        @media (max-width: 1024px) { .dashboard-grid { grid-template-columns: 1fr; } .dashboard-grid > * { grid-column: span 1 !important; } }
 
-        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 28px; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; width: 100%; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 28px; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent); opacity: 0; transition: opacity 0.3s ease; }
         .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
         .card:hover::before { opacity: 1; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .card-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 12px; color: var(--text-primary); }
         .card-icon { width: 40px; height: 40px; background: rgba(99,102,241,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-light); font-size: 16px; }
+        .span-2 { grid-column: span 2; }
         .header-actions { display: flex; gap: 8px; }
         .action-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-family: inherit; -webkit-tap-highlight-color: transparent; }
         .action-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(99,102,241,0.1); }
@@ -131,40 +127,18 @@
         .xp-display { text-align: center; padding: 20px 0; }
         .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; }
         .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
-        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), var(--bg-track) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
+        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.02) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
         .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .xp-value { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 800; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
         .xp-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
         .level-progress-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
-        .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+        .stat-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
         .stat-box { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; text-align: center; }
         .stat-box-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--primary-light); }
         .stat-box-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
         .check-in-btn { width: 100%; margin-top: 16px; background: linear-gradient(135deg, #f59e0b 0%, #f5576c 100%); border: none; color: white; padding: 14px; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.3s ease; font-family: inherit; box-shadow: 0 4px 15px rgba(245,158,11,0.3); display: flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
         .check-in-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
         .check-in-btn.done { background: rgba(255,255,255,0.05); color: var(--secondary); cursor: default; box-shadow: none; }
-        
-        /* Mini XP Progress inside XP Tracking Card */
-        .xp-next-level-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-        .xp-next-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .xp-next-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); }
-        .xp-next-value { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--primary-light); }
-        .progress-bar { height: 10px; background: var(--bg-track); border-radius: 10px; overflow: hidden; position: relative; }
-        .progress-fill { height: 100%; background: var(--gradient-1); border-radius: 10px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); position: relative; }
-        .xp-next-text { font-size: 12px; color: var(--text-muted); margin-top: 8px; text-align: center; }
-
-        /* Holiday Calendar */
-        .holiday-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; }
-        .holiday-item:last-child { margin-bottom: 0; }
-        .holiday-date { text-align: center; min-width: 50px; border-right: 1px solid var(--border-color); padding-right: 10px; }
-        .holiday-day { font-size: 20px; font-weight: 700; color: var(--primary-light); line-height: 1; }
-        .holiday-month { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
-        .holiday-info { flex: 1; }
-        .holiday-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
-        .holiday-name.weekend { color: var(--accent-light); }
-        .holiday-day-name { font-size: 12px; color: var(--text-muted); }
-        .holiday-delete { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.3s ease; }
-        .holiday-delete:hover { color: var(--danger); }
 
         /* Progress / Milestones */
         .progress-item { margin-bottom: 24px; }
@@ -173,6 +147,8 @@
         .progress-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; flex: 1; display: flex; align-items: center; gap: 8px; }
         .progress-label-input { background: transparent; border: none; border-bottom: 1px dashed var(--primary); color: var(--text-primary); font-size: 14px; outline: none; width: 100%; font-family: inherit; font-weight: 500; }
         .progress-value { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--primary-light); display: flex; align-items: center; gap: 8px; }
+        .progress-bar { height: 10px; background: rgba(255,255,255,0.02); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: var(--gradient-1); border-radius: 10px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); position: relative; }
         .milestone-delete { background: transparent; border: none; color: var(--danger); cursor: pointer; font-size: 12px; opacity: 0.5; transition: opacity 0.3s; }
         .milestone-delete:hover { opacity: 1; }
 
@@ -185,9 +161,10 @@
         .todo-input { flex: 1; min-width: 200px; background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; color: var(--text-primary); font-size: 14px; outline: none; transition: all 0.3s ease; font-family: inherit; }
         .todo-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
         .todo-input::placeholder { color: var(--text-muted); }
+        .todo-input[type="date"] { color-scheme: dark; }
         .add-task-btn { background: var(--gradient-1); border: none; color: white; padding: 16px 28px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--shadow-glow); -webkit-tap-highlight-color: transparent; }
         .add-task-btn:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
-        .task-list { max-height: 300px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
+        .task-list { max-height: 220px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; }
         .task-item { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
         .task-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); }
         .task-checkbox { width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
@@ -214,6 +191,24 @@
         .date-edit-group input { max-width: 60px; text-align: center; }
         .goal-delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-size: 12px; -webkit-tap-highlight-color: transparent; }
 
+        /* Upcoming Holidays List */
+        .holiday-list-container { max-height: 300px; overflow-y: auto; padding-right: 8px; }
+        .holiday-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 10px; transition: all 0.3s ease; }
+        .holiday-list-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); transform: translateX(4px); }
+        .holiday-date-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px; padding-right: 14px; border-right: 1px solid var(--border-color); }
+        .holiday-date-box .day { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .holiday-date-box .date { font-size: 20px; font-weight: 800; font-family: 'Space Grotesk', sans-serif; line-height: 1.1; }
+        .holiday-date-box .month { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .holiday-info { padding-left: 14px; flex: 1; }
+        .holiday-info .name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+        .holiday-info .desc { font-size: 11px; }
+        .holiday-weekend .holiday-date-box, .holiday-weekend .holiday-info .name, .holiday-weekend .holiday-info .desc { color: var(--info); }
+        .holiday-weekend .holiday-date-box { border-color: rgba(59,130,246,0.2); }
+        .holiday-govt .holiday-date-box, .holiday-govt .holiday-info .name, .holiday-govt .holiday-info .desc { color: var(--danger); }
+        .holiday-govt .holiday-date-box { border-color: rgba(239,68,68,0.2); }
+        .see-more-btn { width: 100%; margin-top: 12px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); color: var(--primary-light); padding: 10px; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
+        .see-more-btn:hover { background: rgba(99,102,241,0.1); border-color: var(--primary); }
+
         /* Routine */
         .routine-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
         .routine-tab { padding: 10px 18px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; color: var(--text-secondary); cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.3s ease; font-family: inherit; -webkit-tap-highlight-color: transparent; }
@@ -224,6 +219,7 @@
         .routine-day-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); }
         .routine-day-subtitle { font-size: 14px; color: var(--accent-light); margin-bottom: 20px; padding: 12px 16px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; line-height: 1.5; }
         .routine-day-subtitle:empty { display: none; }
+        .routine-subtitle-input { width: 100%; background: rgba(245,158,11,0.05); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 16px; color: var(--accent-light); font-family: inherit; margin-bottom: 20px; font-size: 14px; outline: none; resize: vertical; min-height: 60px; }
         .routine-list { display: grid; gap: 12px; }
         .routine-item { display: grid; grid-template-columns: 220px 1fr; align-items: center; gap: 20px; padding: 16px 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; border-left: 4px solid var(--primary); transition: all 0.3s ease; }
         .routine-item:hover { background: rgba(255,255,255,0.04); border-left-color: var(--primary-light); }
@@ -236,19 +232,17 @@
         .routine-delete-btn { background: transparent; border: 1px solid var(--danger); color: var(--danger); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
 
         /* Hackathons */
-        .hackathon-input-container { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; margin-bottom: 24px; }
         .hackathon-card { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; flex-wrap: wrap; gap: 16px; }
         .hackathon-card:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+        .hackathon-info { flex: 1; min-width: 200px; }
         .hackathon-info h4 { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
         .hackathon-info p { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; }
         .status-badge { padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .status-upcoming { background: rgba(59,130,246,0.15); color: var(--info); border: 1px solid rgba(59,130,246,0.3); }
         .status-won { background: rgba(16,185,129,0.15); color: var(--secondary); border: 1px solid rgba(16,185,129,0.3); }
         .status-participated { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
-        .status-not_participated { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
-        .hackathon-status-select { background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 50px; padding: 8px 32px 8px 16px; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; outline: none; font-family: inherit; -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml;utf8,<svg fill='%23818cf8' height='12' viewBox='0 0 24 24' width='12' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>"); background-repeat: no-repeat; background-position: right 12px center; transition: all 0.3s ease; }
-        .hackathon-status-select:hover { border-color: var(--primary); }
-        select.hackathon-status-select option { background: var(--bg-secondary); color: var(--text-primary); }
+        .status-missed { background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+        .hackathon-status-select { background: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 10px; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600; outline: none; }
 
         /* Reviews */
         .review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
@@ -341,10 +335,9 @@
         body.read-only #addBlogBtn,
         body.read-only #editRoadmapBtn,
         body.read-only #editRoutineBtn,
-        body.read-only .task-delete,
-        body.read-only #addHolidayBtn,
-        body.read-only .holiday-delete,
-        body.read-only .hackathon-input-container { display: none !important; }
+        body.read-only .task-delete {
+            display: none !important; 
+        }
         body.read-only #revEasy,
         body.read-only #revMedium,
         body.read-only #revHard,
@@ -352,18 +345,42 @@
         body.read-only #revHours,
         body.read-only #revContests,
         body.read-only input,
-        body.read-only textarea { pointer-events: none; }
+        body.read-only textarea {
+            pointer-events: none;
+        }
         body.read-only .login-box input,
         body.read-only .login-box button,
         body.read-only .login-box .action-btn,
-        body.read-only .login-box .login-submit-btn { display: flex !important; pointer-events: all !important; opacity: 1 !important; }
-        body.read-only .login-box input { display: block !important; }
+        body.read-only .login-box .login-submit-btn {
+            display: flex !important;
+            pointer-events: all !important;
+            opacity: 1 !important;
+        }
+        body.read-only .login-box input {
+            display: block !important;
+        }
         body.read-only .review-textarea:placeholder-shown,
-        body.read-only #blogTitleInput:placeholder-shown { display: none !important; }
-        body.read-only #editRoadmapContainer { display: none !important; }
+        body.read-only #blogTitleInput:placeholder-shown,
+        body.read-only .review-textarea:placeholder-shown {
+            display: none !important;
+        }
+        body.read-only #editRoadmapContainer {
+            display: none !important;
+        }
 
         /* Responsive */
-        @media (max-width: 767px) { .nav-stats { display: none; } .main-container { padding: 100px 1rem 2rem; } .routine-item { grid-template-columns: 1fr; gap: 6px; } .routine-item-edit { grid-template-columns: 1fr; gap: 8px; } }
+        @media (max-width: 1024px) {
+            .span-2 { grid-column: span 1; }
+            .review-stats { grid-template-columns: repeat(2, 1fr); }
+            .blog-title { margin-top: 0; }
+        }
+        @media (max-width: 768px) {
+            .nav-stats { display: none; }
+            .main-container { padding: 100px 1rem 2rem; }
+            .routine-item { grid-template-columns: 1fr; gap: 6px; }
+            .routine-item-edit { grid-template-columns: 1fr; gap: 8px; }
+            .stat-grid-3 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body class="read-only">
@@ -380,9 +397,18 @@
             </a>
             <div class="nav-right">
                 <div class="nav-stats">
-                    <div class="nav-stat"><div class="nav-stat-value" id="navLevel">Beginner</div><div class="nav-stat-label">Level</div></div>
-                    <div class="nav-stat"><div class="nav-stat-value" id="navXp">0</div><div class="nav-stat-label">Total XP</div></div>
-                    <div class="nav-stat"><div class="nav-stat-value" id="navStreak">0</div><div class="nav-stat-label">Day Streak</div></div>
+                    <div class="nav-stat">
+                        <div class="nav-stat-value" id="navLevel">Beginner</div>
+                        <div class="nav-stat-label">Level</div>
+                    </div>
+                    <div class="nav-stat">
+                        <div class="nav-stat-value" id="navXp">0</div>
+                        <div class="nav-stat-label">Total XP</div>
+                    </div>
+                    <div class="nav-stat">
+                        <div class="nav-stat-value" id="navStreak">0</div>
+                        <div class="nav-stat-label">Day Streak</div>
+                    </div>
                 </div>
                 <div class="nav-actions">
                     <button class="nav-action-btn" id="exportBtn"><i class="fas fa-download"></i> Export</button>
@@ -425,12 +451,24 @@
         </div>
     </div>
 
+    <!-- All Holidays Modal -->
+    <div class="login-overlay" id="holidaysOverlay">
+        <div class="login-box" style="max-width: 500px;">
+            <h3>All Upcoming Holidays & Weekends</h3>
+            <div id="allHolidaysList" class="holiday-list-container" style="max-height: 400px; overflow-y: auto; margin-bottom: 16px;"></div>
+            <button class="action-btn" id="holidaysCloseBtn" style="width: 100%; justify-content: center;"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="main-container">
         
         <!-- Hero -->
         <section class="hero-section">
-            <div class="hero-badge"><i class="fas fa-fire"></i><span>Start Your B.Tech Journey</span></div>
+            <div class="hero-badge">
+                <i class="fas fa-fire"></i>
+                <span>Start Your B.Tech Journey</span>
+            </div>
             <h1 class="hero-title">Track Your <span class="gradient-text">4-Year Journey</span></h1>
             <p class="hero-subtitle">An all-in-one productivity dashboard designed for computer science students. Track your progress, manage hackathons, build routines, and plan your 4-year roadmap.</p>
         </section>
@@ -455,12 +493,15 @@
 
         <!-- Dashboard Section -->
         <section id="dashboard" class="content-section active">
-            <div class="cards-grid">
-                <!-- Row 1 -->
-                <div class="card span-2">
+            <div class="dashboard-grid">
+                
+                <!-- Row 1: Top Left (Spec) & Top Right (XP) -->
+                <div class="card d-col-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-laptop-code"></i></div> My Specialization Track</div>
-                        <div class="header-actions"><button class="action-btn" id="editSpecBtn"><i class="fas fa-edit"></i> Edit</button></div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="editSpecBtn"><i class="fas fa-edit"></i> Edit</button>
+                        </div>
                     </div>
                     <div class="tags-container" id="tagsContainer"></div>
                     <div class="add-tag-group hidden" id="addTagGroup">
@@ -469,46 +510,56 @@
                     </div>
                     <p style="margin-top: 20px; font-size: 14px; color: var(--text-secondary);">Current Path: <span id="currentSpec" style="color: var(--primary-light); font-weight: 600;">React.js & Frontend Engineering</span></p>
                 </div>
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div></div>
+
+                <div class="card d-col-3">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div>
+                    </div>
                     <div class="xp-display">
                         <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
                         <div class="xp-circle-wrapper" style="--progress: 0;" id="xpCircleWrapper">
-                            <div class="xp-circle-bg"><div class="xp-circle-inner"><div class="xp-value" id="xpValue">0</div><div class="xp-label" id="xpLabel">0 / 500 XP</div></div></div>
+                            <div class="xp-circle-bg">
+                                <div class="xp-circle-inner">
+                                    <div class="xp-value" id="xpValue">0</div>
+                                    <div class="xp-label" id="xpLabel">0 / 500 XP</div>
+                                </div>
+                            </div>
                         </div>
                         <p class="level-progress-text" id="levelProgressText">Earn 500 XP to reach Learner</p>
                     </div>
                 </div>
 
-                <!-- Row 2 -->
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div></div>
+                <!-- Row 2: Middle Left (XP Tracking), Middle (Today's Focus), Middle Right (Holidays) -->
+                <div class="card d-col-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-chart-line"></i></div> XP Tracking</div>
+                    </div>
                     <div class="stat-grid-3">
-                        <div class="stat-box"><div class="stat-box-value" id="todayXPStat">0</div><div class="stat-box-label">Today (XP)</div></div>
-                        <div class="stat-box"><div class="stat-box-value" id="weekXPStat">0</div><div class="stat-box-label">This Week (XP)</div></div>
-                        <div class="stat-box"><div class="stat-box-value" id="milestoneRateStat">0%</div><div class="stat-box-label">Milestone Rate</div></div>
+                        <div class="stat-box">
+                            <div class="stat-box-value" id="todayXPStat">0</div>
+                            <div class="stat-box-label">Today (XP)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-box-value" id="weekXPStat">0</div>
+                            <div class="stat-box-label">This Week (XP)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-box-value" id="milestoneRateStat">0%</div>
+                            <div class="stat-box-label">Milestone Rate</div>
+                        </div>
                     </div>
                     <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
-                    <div class="xp-next-level-section">
-                        <div class="xp-next-header">
-                            <span class="xp-next-title">Next Level Progress</span>
-                            <span class="xp-next-value" id="nextLevelXp">0 / 500 XP</span>
-                        </div>
-                        <div class="progress-bar"><div class="progress-fill" id="nextLevelBar" style="width: 0%;"></div></div>
-                        <p class="xp-next-text" id="nextLevelText">0 XP to reach Learner</p>
-                    </div>
                 </div>
-                <div class="card">
+
+                <div class="card d-col-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-times"></i></div> Upcoming Holidays</div>
-                        <div class="header-actions"><button class="action-btn" id="addHolidayBtn"><i class="fas fa-plus"></i> Add</button></div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-bullseye"></i></div> Today's Focus</div>
                     </div>
-                    <div id="holidayList"></div>
-                </div>
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-bullseye"></i></div> Today's Focus</div></div>
                     <div class="task-list" id="todayFocusList">
-                        <div class="empty-state" id="emptyFocus"><i class="fas fa-mug-hot"></i><p>No tasks added yet</p></div>
+                        <div class="empty-state" id="emptyFocus">
+                            <i class="fas fa-mug-hot"></i>
+                            <p>No tasks added yet</p>
+                        </div>
                     </div>
                     <div class="todo-input-group" style="margin-top: 16px; margin-bottom: 0;">
                         <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task...">
@@ -516,8 +567,27 @@
                     </div>
                 </div>
 
-                <!-- Row 3 -->
-                <div class="card span-3">
+                <div class="card d-col-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-days"></i></div> Upcoming Holidays</div>
+                    </div>
+                    <div id="upcomingHolidaysList"></div>
+                    <button class="see-more-btn" id="seeMoreHolidaysBtn">See All Holidays <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- Row 3: Bottom Left (Upcoming Goals) & Bottom Right (Milestone Progress) -->
+                <div class="card d-col-3">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="addUpcomingGoalBtn"><i class="fas fa-plus"></i> Add</button>
+                            <button class="action-btn" id="editUpcomingBtn"><i class="fas fa-edit"></i> Edit</button>
+                        </div>
+                    </div>
+                    <div class="goals-timeline" id="goalsTimeline"></div>
+                </div>
+
+                <div class="card d-col-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-flag-checkered"></i></div> Milestone Progress</div>
                         <div class="header-actions">
@@ -528,40 +598,27 @@
                     <div id="milestoneList"></div>
                 </div>
 
-                <!-- Row 4 -->
-                <div class="card span-3">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="addUpcomingGoalBtn"><i class="fas fa-plus"></i> Add</button>
-                            <button class="action-btn" id="editUpcomingBtn"><i class="fas fa-edit"></i> Edit</button>
-                        </div>
-                    </div>
-                    <div class="goals-timeline" id="goalsTimeline"></div>
-                </div>
             </div>
         </section>
 
         <!-- Hackathons Section -->
         <section id="hackathons" class="content-section">
             <div class="cards-grid">
-                <div class="card span-3">
+                <div class="card span-2">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-trophy"></i></div> Hackathon Tracker</div>
                         <span style="font-size: 12px; color: var(--text-muted);">Track schedules & wins</span>
                     </div>
-                    <div class="hackathon-input-container">
-                        <div class="todo-input-group">
-                            <input type="text" class="todo-input" id="hackathonName" placeholder="Hackathon Name (e.g., HackMIT)">
-                            <input type="date" class="todo-input" id="hackathonDate" style="max-width: 180px;">
-                            <select class="todo-input" id="hackathonStatus" style="max-width: 180px;">
-                                <option value="upcoming">Upcoming</option>
-                                <option value="participated">Participated</option>
-                                <option value="won">Won!</option>
-                                <option value="not_participated">Didn't Participated</option>
-                            </select>
-                            <button class="add-task-btn" id="addHackathonBtn"><i class="fas fa-plus"></i> Add</button>
-                        </div>
+                    <div class="todo-input-group">
+                        <input type="text" class="todo-input" id="hackathonName" placeholder="Hackathon Name (e.g., HackMIT)">
+                        <input type="date" class="todo-input" id="hackathonDate" style="max-width: 180px;">
+                        <select class="todo-input" id="hackathonStatus" style="max-width: 180px;">
+                            <option value="upcoming">Upcoming</option>
+                            <option value="participated">Participated</option>
+                            <option value="won">Won!</option>
+                            <option value="missed">Didn't Participate</option>
+                        </select>
+                        <button class="add-task-btn" id="addHackathonBtn"><i class="fas fa-plus"></i> Add</button>
                     </div>
                     <div id="hackathonList"></div>
                 </div>
@@ -571,7 +628,7 @@
         <!-- Routine Section -->
         <section id="routine" class="content-section">
             <div class="cards-grid">
-                <div class="card span-3">
+                <div class="card span-2">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-week"></i></div> Daily Routine</div>
                         <button class="action-btn" id="editRoutineBtn"><i class="fas fa-edit"></i> Edit Routine</button>
@@ -592,36 +649,68 @@
 
         <!-- Reviews Section -->
         <section id="reviews" class="content-section">
-            <div class="cards-grid-2">
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div></div>
-                    <div class="review-stats">
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revEasy">0</div><div class="review-stat-lbl">Easy Problems (+15 XP)</div></div>
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revMedium">0</div><div class="review-stat-lbl">Medium Problems (+25 XP)</div></div>
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revHard">0</div><div class="review-stat-lbl">Hard Problems (+40 XP)</div></div>
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revVideos">0</div><div class="review-stat-lbl">Videos Watched (+5 XP)</div></div>
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revHours">0</div><div class="review-stat-lbl">Hours Coded (+10 XP)</div></div>
-                        <div class="review-stat"><div class="review-stat-val" contenteditable="true" id="revContests">0</div><div class="review-stat-lbl">Contests Done</div></div>
+            <div class="cards-grid">
+                <div class="card span-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div>
                     </div>
+                    <div class="review-stats">
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revEasy">0</div>
+                            <div class="review-stat-lbl">Easy Problems (+15 XP)</div>
+                        </div>
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revMedium">0</div>
+                            <div class="review-stat-lbl">Medium Problems (+25 XP)</div>
+                        </div>
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revHard">0</div>
+                            <div class="review-stat-lbl">Hard Problems (+40 XP)</div>
+                        </div>
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revVideos">0</div>
+                            <div class="review-stat-lbl">Videos Watched (+5 XP)</div>
+                        </div>
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revHours">0</div>
+                            <div class="review-stat-lbl">Hours Coded (+10 XP)</div>
+                        </div>
+                        <div class="review-stat">
+                            <div class="review-stat-val" contenteditable="true" id="revContests">0</div>
+                            <div class="review-stat-lbl">Contests Done</div>
+                        </div>
+                    </div>
+
                     <div class="review-label"><i class="fas fa-check-circle"></i> What I Completed This Week</div>
                     <textarea class="review-textarea" placeholder="List your accomplishments..."></textarea>
+
                     <div class="review-label"><i class="fas fa-bullseye"></i> Next Week Goals</div>
                     <textarea class="review-textarea" placeholder="What do you want to achieve?"></textarea>
+
                     <div class="review-label"><i class="fas fa-lightbulb"></i> What I Learned</div>
                     <textarea class="review-textarea" placeholder="Key takeaways..."></textarea>
+
                     <div class="review-label"><i class="fas fa-tools"></i> Areas to Improve</div>
                     <textarea class="review-textarea" placeholder="Where can you get better?"></textarea>
+
                     <div class="review-label"><i class="fas fa-fire"></i> Motivation Level</div>
                     <div class="slider-container">
                         <input type="range" min="1" max="10" value="5" id="motivationSlider">
                         <div class="slider-value" id="motivationValue">5</div>
                     </div>
+
                     <button class="save-review-btn" id="saveReviewBtn"><i class="fas fa-save"></i> Save Weekly Review (+15 XP Bonus!)</button>
                 </div>
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div></div>
+
+                <div class="card span-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div>
+                    </div>
                     <div id="pastReviewsList">
-                        <div class="empty-state"><i class="fas fa-folder-open"></i><p>No reviews yet. Complete your first weekly review above!</p></div>
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <p>No reviews yet. Complete your first weekly review above!</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -629,9 +718,11 @@
 
         <!-- Project Blogs Section -->
         <section id="projectBlogs" class="content-section">
-            <div class="cards-grid-2">
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div></div>
+            <div class="cards-grid">
+                <div class="card span-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
+                    </div>
                     <div class="todo-input-group">
                         <input type="text" class="todo-input" id="blogTitleInput" placeholder="Project Title (e.g., Smart Remote)">
                     </div>
@@ -643,8 +734,11 @@
                     <textarea class="review-textarea" id="blogProblemsInput" placeholder="Bugs, challenges, how you solved them..."></textarea>
                     <button class="save-review-btn" id="addBlogBtn" style="background: var(--gradient-1); box-shadow: 0 4px 20px rgba(99,102,241,0.3);"><i class="fas fa-plus"></i> Add Project Blog</button>
                 </div>
-                <div class="card">
-                    <div class="card-header"><div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div></div>
+
+                <div class="card span-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-archive"></i></div> My Projects</div>
+                    </div>
                     <div id="projectBlogList"></div>
                 </div>
             </div>
@@ -653,10 +747,12 @@
     </div>
 
     <script type="module">
+        // --- Firebase Imports ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // --- Your Firebase Config ---
         const firebaseConfig = {
           apiKey: "AIzaSyB-KJJDu19pPMPob0priaNztk5excPRES4",
           authDomain: "lets-crack-it-f50e5.firebaseapp.com",
@@ -666,36 +762,19 @@
           appId: "1:475697383303:web:c83e01e2b912676b733522"
         };
 
+        // --- Initialize Firebase ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const mpGovtHolidays = [
-            { name: "New Year's Day", date: "2025-01-01" }, { name: "Guru Gobind Singh Jayanti", date: "2025-01-02" },
-            { name: "Republic Day", date: "2025-01-26" }, { name: "Maha Shivaratri", date: "2025-02-26" },
-            { name: "Holi", date: "2025-03-14" }, { name: "Rama Navami", date: "2025-04-06" },
-            { name: "Mahavir Jayanti", date: "2025-04-10" }, { name: "Dr. B.R. Ambedkar Jayanti", date: "2025-04-14" },
-            { name: "Good Friday", date: "2025-04-18" }, { name: "Eid-ul-Fitr", date: "2025-03-31" },
-            { name: "Bakrid", date: "2025-06-07" }, { name: "Budha Purnima", date: "2025-05-12" },
-            { name: "Independence Day", date: "2025-08-15" }, { name: "Janmashtami", date: "2025-08-16" },
-            { name: "Muharram", date: "2025-07-06" }, { name: "Gandhi Jayanti", date: "2025-10-02" },
-            { name: "Dussehra (Vijayadashami)", date: "2025-10-02" }, { name: "Diwali (Deepavali)", date: "2025-10-21" },
-            { name: "Bhai Dooj", date: "2025-10-23" }, { name: "MP Foundation Day", date: "2025-11-01" },
-            { name: "Guru Nanak Jayanti", date: "2025-11-15" }, { name: "Christmas Day", date: "2025-12-25" },
-            { name: "New Year's Day", date: "2026-01-01" }, { name: "Republic Day", date: "2026-01-26" },
-            { name: "Maha Shivaratri", date: "2026-02-15" }, { name: "Holi", date: "2026-03-04" },
-            { name: "Rama Navami", date: "2026-03-26" }, { name: "Mahavir Jayanti", date: "2026-03-30" },
-            { name: "Good Friday", date: "2026-04-03" }, { name: "Dr. B.R. Ambedkar Jayanti", date: "2026-04-14" },
-            { name: "Eid-ul-Fitr", date: "2026-03-20" }, { name: "Bakrid", date: "2026-05-27" },
-            { name: "Budha Purnima", date: "2026-05-01" }, { name: "Independence Day", date: "2026-08-15" },
-            { name: "Janmashtami", date: "2026-09-04" }, { name: "Muharram", date: "2026-06-26" },
-            { name: "Gandhi Jayanti", date: "2026-10-02" }, { name: "Dussehra (Vijayadashami)", date: "2026-10-20" },
-            { name: "Diwali (Deepavali)", date: "2026-11-09" }, { name: "MP Foundation Day", date: "2026-11-01" },
-            { name: "Guru Nanak Jayanti", date: "2026-11-04" }, { name: "Christmas Day", date: "2026-12-25" }
-        ];
-
+        // --- Default Data State ---
         const defaultState = {
-            totalXP: 0, todayXP: 0, weekXP: 0, streak: 0, lastCheckIn: null, milestonesInitialized: false, customHolidays: [],
+            totalXP: 0,
+            todayXP: 0,
+            weekXP: 0,
+            streak: 0,
+            lastCheckIn: null,
+            milestonesInitialized: false,
             quotes: [
                 { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
                 { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
@@ -705,10 +784,14 @@
             ],
             tags: ["React.js", "Node.js", "Python/AI", "Cloud (AWS)", "Java Spring"],
             milestones: [
-                { label: "Semester 1", connectedTo: 0 }, { label: "Semester 2", connectedTo: 1 },
-                { label: "Semester 3", connectedTo: 2 }, { label: "Semester 4", connectedTo: 3 },
-                { label: "Semester 5", connectedTo: 4 }, { label: "Semester 6", connectedTo: 5 },
-                { label: "Semester 7", connectedTo: 6 }, { label: "Semester 8", connectedTo: 7 }
+                { label: "Semester 1", connectedTo: 0 },
+                { label: "Semester 2", connectedTo: 1 },
+                { label: "Semester 3", connectedTo: 2 },
+                { label: "Semester 4", connectedTo: 3 },
+                { label: "Semester 5", connectedTo: 4 },
+                { label: "Semester 6", connectedTo: 5 },
+                { label: "Semester 7", connectedTo: 6 },
+                { label: "Semester 8", connectedTo: 7 }
             ],
             todayTasks: [],
             upcomingGoals: [
@@ -718,127 +801,191 @@
             ],
             hackathons: [],
             routines: [
-                { tabName: "Everyday", title: "🌅 The Morning Routine (Same Every Day)", subtitle: "", schedule: [
-                    { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath, and get ready." },
-                    { time: "06:00 AM - 08:00 AM (2 hours)", task: "Supreme 4.0 (C++ Learning)" },
-                    { time: "08:00 AM - 09:30 AM", task: "Breakfast, relax a bit, and get your bag ready for college." }
-                ]},
-                { tabName: "Mon & Wed", title: "📅 Monday & Wednesday", subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.", schedule: [
-                    { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
-                    { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
-                    { time: "06:00 PM - 07:00 PM", task: "Travel back to your room. Unwind. Don't look at code right now." },
-                    { time: "07:00 PM - 08:00 PM", task: "Dinner & Chill." },
-                    { time: "08:00 PM - 09:30 PM (1.5 hours)", task: "College Work / Assignments. Finish whatever homework or practical files are due tomorrow." },
-                    { time: "09:30 PM - 11:00 PM (1.5 hours)", task: "Coding Practice / Project Work. Type out the C++ code you learned in the morning. If you have energy, work on our 'Smart Presentation Remote' website." },
-                    { time: "11:00 PM", task: "Sleep." }
-                ]},
-                { tabName: "Tue & Fri", title: "📅 Tuesday & Friday", subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.", schedule: [
-                    { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
-                    { time: "10:00 AM - 01:00 PM", task: "College." },
-                    { time: "01:00 PM - 02:30 PM", task: "Travel back, lunch, and take a power nap if you want." },
-                    { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to build the Smart Presentation Remote with me. We will write code, test websites, and plan the hardware." },
-                    { time: "05:00 PM - 07:00 PM", task: "Free time! Play video games, watch anime, or play chess. You earned it." },
-                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                    { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
-                    { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
-                ]},
-                { tabName: "Thursday", title: "📅 Thursday", subtitle: "Medium Day: 11 AM - 5 PM", schedule: [
-                    { time: "09:30 AM - 11:00 AM", task: "Travel / Relax." },
-                    { time: "11:00 AM - 05:00 PM", task: "College." },
-                    { time: "05:00 PM - 07:00 PM", task: "Travel back, unwind, finish college assignments." },
-                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                    { time: "08:00 PM - 10:00 PM (2 hours)", task: "Coding Practice / Project Work." },
-                    { time: "10:00 PM - 11:00 PM", task: "Free time / Anime / Chill." }
-                ]},
-                { tabName: "Saturday", title: "📅 Saturday", subtitle: "The 'Deep Work' Day. Since there are no college classes, this is the day you build the future. This is your Iron Man workshop day.", schedule: [
-                    { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath." },
-                    { time: "06:00 AM - 08:30 AM (2.5 hours)", task: "Supreme 4.0 (C++ Heavy Lifting). Since you have more time, use Saturdays to clear backlogs, revise tough concepts from Love Babbar's lectures, and solve extra coding problems." },
-                    { time: "08:30 AM - 09:30 AM", task: "Breakfast and relax." },
-                    { time: "09:30 AM - 01:00 PM (3.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to work on the Smart Presentation Remote. We will write code, test the ESP32, and build the website. 3.5 hours of uninterrupted project time every Saturday means you will make massive progress." },
-                    { time: "01:00 PM - 02:30 PM", task: "Lunch and a power nap." },
-                    { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "College Backlog. Finish any practical files, assignments, or pending work for Monday and Tuesday. Get it all out of the way now so Sunday is free." },
-                    { time: "05:00 PM - 07:00 PM", task: "Free Time! Play video games, watch anime, or play chess. You earned a break." },
-                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                    { time: "08:00 PM - 10:00 PM", task: "Light coding practice or just chill out." },
-                    { time: "10:00 PM - 11:00 PM", task: "Wind down and sleep." }
-                ]},
-                { tabName: "Sunday", title: "📅 Sunday", subtitle: "The 'Recharge & Reset' Day. Sunday is about resting your brain and preparing for the week ahead. No heavy new learning today.", schedule: [
-                    { time: "05:00 AM - 06:00 AM", task: "Wake up, bath, etc." },
-                    { time: "06:00 AM - 08:00 AM (2 hours)", task: "C++ Revision Only. Do NOT learn a new topic today. Just review what you learned from Monday to Saturday. Look at your notes, make sure you understand everything." },
-                    { time: "08:00 AM - 10:30 AM", task: "Long breakfast, watch an anime episode, relax." },
-                    { time: "10:30 AM - 01:00 PM", task: "Plan the Week. Pack your bag, check your college timetable for Monday, and organize your desk. Make a small list of what C++ topics you will cover next week." },
-                    { time: "01:00 PM - 02:30 PM", task: "Lunch and nap." },
-                    { time: "02:30 PM - 05:00 PM", task: "Completely Free. Go out, watch a movie, play chess online, do whatever makes you happy. No coding, no college work." },
-                    { time: "05:00 PM - 07:00 PM", task: "Free time / Hobbies." },
-                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                    { time: "08:00 PM - 10:00 PM", task: "Free time." },
-                    { time: "10:00 PM - 11:00 PM", task: "Sleep early and get ready to crush Monday." }
-                ]}
+                {
+                    tabName: "Everyday",
+                    title: "🌅 The Morning Routine (Same Every Day)",
+                    subtitle: "",
+                    schedule: [
+                        { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath, and get ready." },
+                        { time: "06:00 AM - 08:00 AM (2 hours)", task: "Supreme 4.0 (C++ Learning)" },
+                        { time: "08:00 AM - 09:30 AM", task: "Breakfast, relax a bit, and get your bag ready for college." }
+                    ]
+                },
+                {
+                    tabName: "Mon & Wed",
+                    title: "📅 Monday & Wednesday",
+                    subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.",
+                    schedule: [
+                        { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
+                        { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
+                        { time: "06:00 PM - 07:00 PM", task: "Travel back to your room. Unwind. Don't look at code right now." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner & Chill." },
+                        { time: "08:00 PM - 09:30 PM (1.5 hours)", task: "College Work / Assignments. Finish whatever homework or practical files are due tomorrow." },
+                        { time: "09:30 PM - 11:00 PM (1.5 hours)", task: "Coding Practice / Project Work. Type out the C++ code you learned in the morning. If you have energy, work on our 'Smart Presentation Remote' website." },
+                        { time: "11:00 PM", task: "Sleep." }
+                    ]
+                },
+                {
+                    tabName: "Tue & Fri",
+                    title: "📅 Tuesday & Friday",
+                    subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.",
+                    schedule: [
+                        { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
+                        { time: "10:00 AM - 01:00 PM", task: "College." },
+                        { time: "01:00 PM - 02:30 PM", task: "Travel back, lunch, and take a power nap if you want." },
+                        { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to build the Smart Presentation Remote with me. We will write code, test websites, and plan the hardware." },
+                        { time: "05:00 PM - 07:00 PM", task: "Free time! Play video games, watch anime, or play chess. You earned it." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                        { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
+                        { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
+                    ]
+                },
+                {
+                    tabName: "Thursday",
+                    title: "📅 Thursday",
+                    subtitle: "Medium Day: 11 AM - 5 PM",
+                    schedule: [
+                        { time: "09:30 AM - 11:00 AM", task: "Travel / Relax." },
+                        { time: "11:00 AM - 05:00 PM", task: "College." },
+                        { time: "05:00 PM - 07:00 PM", task: "Travel back, unwind, finish college assignments." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                        { time: "08:00 PM - 10:00 PM (2 hours)", task: "Coding Practice / Project Work." },
+                        { time: "10:00 PM - 11:00 PM", task: "Free time / Anime / Chill." }
+                    ]
+                },
+                {
+                    tabName: "Saturday",
+                    title: "📅 Saturday",
+                    subtitle: "The 'Deep Work' Day. Since there are no college classes, this is the day you build the future. This is your Iron Man workshop day.",
+                    schedule: [
+                        { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath." },
+                        { time: "06:00 AM - 08:30 AM (2.5 hours)", task: "Supreme 4.0 (C++ Heavy Lifting). Since you have more time, use Saturdays to clear backlogs, revise tough concepts from Love Babbar's lectures, and solve extra coding problems." },
+                        { time: "08:30 AM - 09:30 AM", task: "Breakfast and relax." },
+                        { time: "09:30 AM - 01:00 PM (3.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to work on the Smart Presentation Remote. We will write code, test the ESP32, and build the website. 3.5 hours of uninterrupted project time every Saturday means you will make massive progress." },
+                        { time: "01:00 PM - 02:30 PM", task: "Lunch and a power nap." },
+                        { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "College Backlog. Finish any practical files, assignments, or pending work for Monday and Tuesday. Get it all out of the way now so Sunday is free." },
+                        { time: "05:00 PM - 07:00 PM", task: "Free Time! Play video games, watch anime, or play chess. You earned a break." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                        { time: "08:00 PM - 10:00 PM", task: "Light coding practice or just chill out." },
+                        { time: "10:00 PM - 11:00 PM", task: "Wind down and sleep." }
+                    ]
+                },
+                {
+                    tabName: "Sunday",
+                    title: "📅 Sunday",
+                    subtitle: "The 'Recharge & Reset' Day. Sunday is about resting your brain and preparing for the week ahead. No heavy new learning today.",
+                    schedule: [
+                        { time: "05:00 AM - 06:00 AM", task: "Wake up, bath, etc." },
+                        { time: "06:00 AM - 08:00 AM (2 hours)", task: "C++ Revision Only. Do NOT learn a new topic today. Just review what you learned from Monday to Saturday. Look at your notes, make sure you understand everything." },
+                        { time: "08:00 AM - 10:30 AM", task: "Long breakfast, watch an anime episode, relax." },
+                        { time: "10:30 AM - 01:00 PM", task: "Plan the Week. Pack your bag, check your college timetable for Monday, and organize your desk. Make a small list of what C++ topics you will cover next week." },
+                        { time: "01:00 PM - 02:30 PM", task: "Lunch and nap." },
+                        { time: "02:30 PM - 05:00 PM", task: "Completely Free. Go out, watch a movie, play chess online, do whatever makes you happy. No coding, no college work." },
+                        { time: "05:00 PM - 07:00 PM", task: "Free time / Hobbies." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                        { time: "08:00 PM - 10:00 PM", task: "Free time." },
+                        { time: "10:00 PM - 11:00 PM", task: "Sleep early and get ready to crush Monday." }
+                    ]
+                }
             ],
             roadmap: [
-                { title: "Semester 1 (Aug 2025 - Dec 2025)", focus: "Focus: C++ Basics & College Adaptation", months: [
-                    { month: "August 2025", goals: [ {text: "College starts!", done: false}, {text: "Buy Supreme 4.0", done: false}, {text: "Setup Dev Environment", done: false} ] },
-                    { month: "September 2025", goals: [ {text: "C++ Basics: Variables, Conditions, Loops", done: false}, {text: "Practice CodeChef", done: false}, {text: "Attend Classes & Make Notes", done: false} ] },
-                    { month: "October 2025", goals: [ {text: "Learn Functions & Arrays", done: false}, {text: "Calculator Project", done: false}, {text: "Mid-term Prep", done: false} ] },
-                    { month: "November 2025", goals: [ {text: "Learn Strings & Pointers", done: false}, {text: "CodeChef Contest", done: false}, {text: "Target: 30+ Solved", done: false} ] },
-                    { month: "December 2025", goals: [ {text: "Number Guessing Game Project", done: false}, {text: "End-term Exams", done: false}, {text: "Target GPA: 8.5+", done: false} ] }
-                ]},
-                { title: "Semester 2 (Jan 2026 - May 2026)", focus: "Focus: OOPs, DSA & SUPREME 4.0", months: [
-                    { month: "January 2026", goals: [ {text: "SUPREME 4.0: OOPs Basics", done: false}, {text: "University Reopening", done: false}, {text: "Maintain Attendance", done: false} ] },
-                    { month: "February 2026", goals: [ {text: "Advanced OOPs & Project", done: false}, {text: "LeetCode/CodeChef Practice", done: false} ] },
-                    { month: "March 2026", goals: [ {text: "DSA Introduction", done: false}, {text: "Start Codeforces", done: false} ] },
-                    { month: "April 2026", goals: [ {text: "Recursion & Sorting", done: false}, {text: "Mid-sem Exam Prep", done: false} ] },
-                    { month: "May 2026", goals: [ {text: "Linked Lists", done: false}, {text: "Revise & App Dev", done: false}, {text: "Target: Cumulative GPA 8.5+", done: false} ] }
-                ]},
-                { title: "Semester 3 (Aug 2026 - Dec 2026)", focus: "Focus: Advanced DSA & Web Basics", months: [
-                    { month: "August 2026", goals: [ {text: "Advanced DSA: Trees & Graphs", done: false}, {text: "HTML & CSS Basics", done: false} ] },
-                    { month: "September 2026", goals: [ {text: "JavaScript Basics", done: false}, {text: "Personal Project Setup", done: false} ] },
-                    { month: "October 2026", goals: [ {text: "DBMS Fundamentals", done: false}, {text: "Algorithm Practice", done: false} ] },
-                    { month: "November 2026", goals: [ {text: "Backend Integration", done: false}, {text: "DSA Contests", done: false} ] },
-                    { month: "December 2026", goals: [ {text: "Final Revisions & Exams", done: false}, {text: "Target: 400+ Total Solved", done: false} ] }
-                ]},
-                { title: "Semester 4 (Jan 2027 - May 2027)", focus: "Focus: DP, Web Dev & Projects", months: [
-                    { month: "January 2027", goals: [ {text: "DSA: Dynamic Programming", done: false}, {text: "Node.js & Express.js", done: false} ] },
-                    { month: "February 2027", goals: [ {text: "E-commerce Frontend Project", done: false}, {text: "LeetCode Hard Problems", done: false} ] },
-                    { month: "March 2027", goals: [ {text: "Blog Platform Full Stack", done: false}, {text: "Mock Interviews", done: false} ] },
-                    { month: "April 2027", goals: [ {text: "Internship Applications", done: false}, {text: "University Exams", done: false} ] },
-                    { month: "May 2027", goals: [ {text: "Target: 600+ Solved", done: false}, {text: "Project Deployment", done: false} ] }
-                ]},
-                { title: "Semester 5 (Aug 2027 - Dec 2027)", focus: "Focus: System Design & Internship Season", months: [
-                    { month: "August 2027", goals: [ {text: "Advanced DSA: Hard problems daily", done: false}, {text: "System Design Basics", done: false}, {text: "Personalized deep dives", done: false} ] },
-                    { month: "September 2027", goals: [ {text: "INTERNSHIP SEASON BEGINS!", done: false}, {text: "Update Resume", done: false}, {text: "Apply to Microsoft, Google, etc.", done: false} ] },
-                    { month: "October 2027", goals: [ {text: "Interview Prep (Mock Interviews)", done: false}, {text: "Codeforces Contests", done: false}, {text: "Network on LinkedIn", done: false} ] },
-                    { month: "November 2027", goals: [ {text: "Attend Internship Interviews", done: false}, {text: "Backup: Research Projects", done: false} ] },
-                    { month: "December 2027", goals: [ {text: "Internship Results", done: false}, {text: "Prep for Semester Exams", done: false}, {text: "Plan for next semester", done: false} ] }
-                ]},
-                { title: "Semester 6 (Jan 2028 - May 2028)", focus: "Focus: Internships or Heavy Projects", months: [
-                    { month: "January 2028", goals: [ {text: "Got Internship: Prep role/tech stack", done: false}, {text: "No Internship: Open Source & Small Cos", done: false}, {text: "DSA & Flagship Project", done: false} ] },
-                    { month: "February 2028", goals: [ {text: "Summer Internship OR Self-Project", done: false}, {text: "Build SaaS App Clones / AI Tools", done: false} ] },
-                    { month: "March 2028", goals: [ {text: "Open Source Contributions", done: false}, {text: "Write Tech Blogs", done: false} ] },
-                    { month: "April 2028", goals: [ {text: "LinkedIn Networking", done: false}, {text: "Project Completion", done: false} ] },
-                    { month: "May 2028", goals: [ {text: "Internship/Project Summary", done: false}, {text: "Exams & Reflection", done: false}, {text: "Prep for Aug Placement Season", done: false} ] }
-                ]},
-                { title: "Semester 7 (Aug 2028 - Dec 2028)", focus: "Focus: PLACEMENT SEASON!", months: [
-                    { month: "August 2028", goals: [ {text: "Register for Campus Placements", done: false}, {text: "Optimize Resume", done: false}, {text: "Company List Released", done: false}, {text: "Start Applying", done: false} ] },
-                    { month: "September 2028", goals: [ {text: "Placement Peak: Multiple Companies", done: false}, {text: "Continuous Interviews", done: false}, {text: "Analyze Rejections", done: false} ] },
-                    { month: "October 2028", goals: [ {text: "Keep Interviewing", done: false}, {text: "Networking with Alumni", done: false} ] },
-                    { month: "November 2028", goals: [ {text: "Final Placement Drives", done: false}, {text: "Backup Plans", done: false} ] },
-                    { month: "December 2028", goals: [ {text: "Placed: Celebrate & Keep Learning", done: false}, {text: "Unplaced: Keep trying, Referrals", done: false}, {text: "Consider Higher Studies (GATE/GRE)", done: false} ] }
-                ]},
-                { title: "Semester 8 (Jan 2029 - May 2029)", focus: "Focus: Final Year Project & Graduation", months: [
-                    { month: "January 2029", goals: [ {text: "Final Year Project (FYP) Dev", done: false}, {text: "Placed: Learn job skills", done: false}, {text: "Unplaced: Apply & strengthen resume", done: false} ] },
-                    { month: "February 2029", goals: [ {text: "FYP Documentation", done: false}, {text: "Freelance Projects", done: false}, {text: "Consider GATE/GRE", done: false} ] },
-                    { month: "March 2029", goals: [ {text: "FYP Presentation Prep", done: false}, {text: "Deploy Project", done: false} ] },
-                    { month: "April 2029", goals: [ {text: "FYP Final Defense", done: false}, {text: "Clear Backlogs", done: false}, {text: "End Semester Exams", done: false} ] },
-                    { month: "May 2029", goals: [ {text: "Graduation Day!", done: false}, {text: "Receive Degree", done: false}, {text: "Farewell Campus", done: false} ] }
-                ]}
+                {
+                    title: "Semester 1 (Aug 2025 - Dec 2025)",
+                    focus: "Focus: C++ Basics & College Adaptation",
+                    months: [
+                        { month: "August 2025", goals: [ {text: "College starts!", done: false}, {text: "Buy Supreme 4.0", done: false}, {text: "Setup Dev Environment", done: false} ] },
+                        { month: "September 2025", goals: [ {text: "C++ Basics: Variables, Conditions, Loops", done: false}, {text: "Practice CodeChef", done: false}, {text: "Attend Classes & Make Notes", done: false} ] },
+                        { month: "October 2025", goals: [ {text: "Learn Functions & Arrays", done: false}, {text: "Calculator Project", done: false}, {text: "Mid-term Prep", done: false} ] },
+                        { month: "November 2025", goals: [ {text: "Learn Strings & Pointers", done: false}, {text: "CodeChef Contest", done: false}, {text: "Target: 30+ Solved", done: false} ] },
+                        { month: "December 2025", goals: [ {text: "Number Guessing Game Project", done: false}, {text: "End-term Exams", done: false}, {text: "Target GPA: 8.5+", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 2 (Jan 2026 - May 2026)",
+                    focus: "Focus: OOPs, DSA & SUPREME 4.0",
+                    months: [
+                        { month: "January 2026", goals: [ {text: "SUPREME 4.0: OOPs Basics", done: false}, {text: "University Reopening", done: false}, {text: "Maintain Attendance", done: false} ] },
+                        { month: "February 2026", goals: [ {text: "Advanced OOPs & Project", done: false}, {text: "LeetCode/CodeChef Practice", done: false} ] },
+                        { month: "March 2026", goals: [ {text: "DSA Introduction", done: false}, {text: "Start Codeforces", done: false} ] },
+                        { month: "April 2026", goals: [ {text: "Recursion & Sorting", done: false}, {text: "Mid-sem Exam Prep", done: false} ] },
+                        { month: "May 2026", goals: [ {text: "Linked Lists", done: false}, {text: "Revise & App Dev", done: false}, {text: "Target: Cumulative GPA 8.5+", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 3 (Aug 2026 - Dec 2026)",
+                    focus: "Focus: Advanced DSA & Web Basics",
+                    months: [
+                        { month: "August 2026", goals: [ {text: "Advanced DSA: Trees & Graphs", done: false}, {text: "HTML & CSS Basics", done: false} ] },
+                        { month: "September 2026", goals: [ {text: "JavaScript Basics", done: false}, {text: "Personal Project Setup", done: false} ] },
+                        { month: "October 2026", goals: [ {text: "DBMS Fundamentals", done: false}, {text: "Algorithm Practice", done: false} ] },
+                        { month: "November 2026", goals: [ {text: "Backend Integration", done: false}, {text: "DSA Contests", done: false} ] },
+                        { month: "December 2026", goals: [ {text: "Final Revisions & Exams", done: false}, {text: "Target: 400+ Total Solved", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 4 (Jan 2027 - May 2027)",
+                    focus: "Focus: DP, Web Dev & Projects",
+                    months: [
+                        { month: "January 2027", goals: [ {text: "DSA: Dynamic Programming", done: false}, {text: "Node.js & Express.js", done: false} ] },
+                        { month: "February 2027", goals: [ {text: "E-commerce Frontend Project", done: false}, {text: "LeetCode Hard Problems", done: false} ] },
+                        { month: "March 2027", goals: [ {text: "Blog Platform Full Stack", done: false}, {text: "Mock Interviews", done: false} ] },
+                        { month: "April 2027", goals: [ {text: "Internship Applications", done: false}, {text: "University Exams", done: false} ] },
+                        { month: "May 2027", goals: [ {text: "Target: 600+ Solved", done: false}, {text: "Project Deployment", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 5 (Aug 2027 - Dec 2027)",
+                    focus: "Focus: System Design & Internship Season",
+                    months: [
+                        { month: "August 2027", goals: [ {text: "Advanced DSA: Hard problems daily", done: false}, {text: "System Design Basics", done: false}, {text: "Personalized deep dives", done: false} ] },
+                        { month: "September 2027", goals: [ {text: "INTERNSHIP SEASON BEGINS!", done: false}, {text: "Update Resume", done: false}, {text: "Apply to Microsoft, Google, etc.", done: false} ] },
+                        { month: "October 2027", goals: [ {text: "Interview Prep (Mock Interviews)", done: false}, {text: "Codeforces Contests", done: false}, {text: "Network on LinkedIn", done: false} ] },
+                        { month: "November 2027", goals: [ {text: "Attend Internship Interviews", done: false}, {text: "Backup: Research Projects", done: false} ] },
+                        { month: "December 2027", goals: [ {text: "Internship Results", done: false}, {text: "Prep for Semester Exams", done: false}, {text: "Plan for next semester", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 6 (Jan 2028 - May 2028)",
+                    focus: "Focus: Internships or Heavy Projects",
+                    months: [
+                        { month: "January 2028", goals: [ {text: "Got Internship: Prep role/tech stack", done: false}, {text: "No Internship: Open Source & Small Cos", done: false}, {text: "DSA & Flagship Project", done: false} ] },
+                        { month: "February 2028", goals: [ {text: "Summer Internship OR Self-Project", done: false}, {text: "Build SaaS App Clones / AI Tools", done: false} ] },
+                        { month: "March 2028", goals: [ {text: "Open Source Contributions", done: false}, {text: "Write Tech Blogs", done: false} ] },
+                        { month: "April 2028", goals: [ {text: "LinkedIn Networking", done: false}, {text: "Project Completion", done: false} ] },
+                        { month: "May 2028", goals: [ {text: "Internship/Project Summary", done: false}, {text: "Exams & Reflection", done: false}, {text: "Prep for Aug Placement Season", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 7 (Aug 2028 - Dec 2028)",
+                    focus: "Focus: PLACEMENT SEASON!",
+                    months: [
+                        { month: "August 2028", goals: [ {text: "Register for Campus Placements", done: false}, {text: "Optimize Resume", done: false}, {text: "Company List Released", done: false}, {text: "Start Applying", done: false} ] },
+                        { month: "September 2028", goals: [ {text: "Placement Peak: Multiple Companies", done: false}, {text: "Continuous Interviews", done: false}, {text: "Analyze Rejections", done: false} ] },
+                        { month: "October 2028", goals: [ {text: "Keep Interviewing", done: false}, {text: "Networking with Alumni", done: false} ] },
+                        { month: "November 2028", goals: [ {text: "Final Placement Drives", done: false}, {text: "Backup Plans", done: false} ] },
+                        { month: "December 2028", goals: [ {text: "Placed: Celebrate & Keep Learning", done: false}, {text: "Unplaced: Keep trying, Referrals", done: false}, {text: "Consider Higher Studies (GATE/GRE)", done: false} ] }
+                    ]
+                },
+                {
+                    title: "Semester 8 (Jan 2029 - May 2029)",
+                    focus: "Focus: Final Year Project & Graduation",
+                    months: [
+                        { month: "January 2029", goals: [ {text: "Final Year Project (FYP) Dev", done: false}, {text: "Placed: Learn job skills", done: false}, {text: "Unplaced: Apply & strengthen resume", done: false} ] },
+                        { month: "February 2029", goals: [ {text: "FYP Documentation", done: false}, {text: "Freelance Projects", done: false}, {text: "Consider GATE/GRE", done: false} ] },
+                        { month: "March 2029", goals: [ {text: "FYP Presentation Prep", done: false}, {text: "Deploy Project", done: false} ] },
+                        { month: "April 2029", goals: [ {text: "FYP Final Defense", done: false}, {text: "Clear Backlogs", done: false}, {text: "End Semester Exams", done: false} ] },
+                        { month: "May 2029", goals: [ {text: "Graduation Day!", done: false}, {text: "Receive Degree", done: false}, {text: "Farewell Campus", done: false} ] }
+                    ]
+                }
             ],
             pastReviews: [],
             projectBlogs: []
         };
 
+        // --- Global State ---
         let state = JSON.parse(JSON.stringify(defaultState));
 
+        // --- Cloud Save Logic ---
         function saveState() {
             if (auth.currentUser) {
                 setDoc(doc(db, "appData", "mainState"), state).catch(e => console.error("Firestore save error: ", e));
@@ -847,6 +994,7 @@
             }
         }
 
+        // --- Cloud Load Logic (Real-time) ---
         const stateDocRef = doc(db, "appData", "mainState");
         onSnapshot(stateDocRef, (docSnap) => {
             if (docSnap.exists()) {
@@ -854,17 +1002,25 @@
                 state = { ...defaultState, ...state };
                 state.quotes = defaultState.quotes; 
                 state.tags = Array.isArray(state.tags) ? state.tags : defaultState.tags;
-                if (!state.milestonesInitialized) { state.milestones = defaultState.milestones; state.milestonesInitialized = true; }
+                
+                if (!state.milestonesInitialized) {
+                    state.milestones = defaultState.milestones;
+                    state.milestonesInitialized = true;
+                }
                 state.milestones = Array.isArray(state.milestones) ? state.milestones : defaultState.milestones;
+                
                 state.todayTasks = Array.isArray(state.todayTasks) ? state.todayTasks : [];
                 state.upcomingGoals = Array.isArray(state.upcomingGoals) ? state.upcomingGoals : defaultState.upcomingGoals;
                 state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
+                
                 state.routines = Array.isArray(state.routines) ? state.routines : defaultState.routines;
-                if (state.routines.length > 0 && !state.routines[0].schedule) { state.routines = defaultState.routines; }
+                if (state.routines.length > 0 && !state.routines[0].schedule) {
+                    state.routines = defaultState.routines; 
+                }
+                
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
                 state.projectBlogs = Array.isArray(state.projectBlogs) ? state.projectBlogs : [];
-                state.customHolidays = Array.isArray(state.customHolidays) ? state.customHolidays : [];
                 state.totalXP = typeof state.totalXP === 'number' ? state.totalXP : 0;
                 state.todayXP = typeof state.todayXP === 'number' ? state.todayXP : 0;
                 state.weekXP = typeof state.weekXP === 'number' ? state.weekXP : 0;
@@ -874,14 +1030,18 @@
                 const localState = localStorage.getItem('letsCrackItLocal');
                 if (localState) {
                     state = JSON.parse(localState);
-                    if (!state.milestonesInitialized) { state.milestones = defaultState.milestones; state.milestonesInitialized = true; }
-                    if (!Array.isArray(state.customHolidays)) state.customHolidays = [];
-                } else { saveState(); }
+                    if (!state.milestonesInitialized) {
+                        state.milestones = defaultState.milestones;
+                        state.milestonesInitialized = true;
+                    }
+                } else {
+                    saveState();
+                }
             }
             initializeAll();
         });
 
-        // Auth Logic
+        // --- Auth Logic ---
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const loginOverlay = document.getElementById('loginOverlay');
@@ -895,8 +1055,10 @@
         loginSubmitBtn.addEventListener('click', () => {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
+            
             loginSubmitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Checking...`;
             loginSubmitBtn.disabled = true;
+
             signInWithEmailAndPassword(auth, email, pass)
                 .then(() => {
                     loginSubmitBtn.classList.add('success');
@@ -917,7 +1079,9 @@
         });
 
         logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => { alert("Logged out. You are now in read-only mode."); });
+            signOut(auth).then(() => {
+                alert("Logged out. You are now in read-only mode.");
+            });
         });
 
         onAuthStateChanged(auth, (user) => {
@@ -929,20 +1093,31 @@
                 document.body.classList.add('read-only');
                 loginBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
+                // Force exit edit modes if logged out
+                if (routineEditMode) { routineEditMode = false; renderRoutines(); }
+                if (roadmapEditMode) { roadmapEditMode = false; renderRoadmap(); }
+                if (specEditMode) { specEditMode = false; renderTags(); }
+                if (upcomingEditMode) { upcomingEditMode = false; renderUpcomingGoals(); }
+                if (milestoneEditMode) { milestoneEditMode = false; renderMilestones(); }
             }
         });
 
-        // Export & Import
+        // --- Export & Import Logic ---
         document.getElementById('exportBtn').addEventListener('click', () => {
             const dataStr = JSON.stringify(state, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url; a.download = `lets_crack_it_backup.json`;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            a.href = url;
+            a.download = `lets_crack_it_backup.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         });
 
-        document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
 
         document.getElementById('importFile').addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -950,58 +1125,74 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    state = { ...defaultState, ...JSON.parse(e.target.result) };
-                    saveState(); initializeAll(); alert("Data imported successfully!");
-                } catch (err) { alert("Error importing file."); }
+                    const importedData = JSON.parse(e.target.result);
+                    state = { ...defaultState, ...importedData };
+                    saveState();
+                    initializeAll();
+                    alert("Data imported successfully!");
+                } catch (err) {
+                    alert("Error importing file.");
+                }
             };
-            reader.readAsText(file); event.target.value = ''; 
+            reader.readAsText(file);
+            event.target.value = ''; 
         });
 
-        const levelIcons = {
-            "Beginner": "fa-seedling", "Learner": "fa-leaf", "Coder": "fa-code",
-            "Developer": "fa-laptop-code", "Expert": "fa-user-astronaut",
-            "Professional": "fa-briefcase", "Master": "fa-crown"
-        };
-
         const levels = [
-            { name: "Beginner", min: 0, max: 0, next: "Learner", nextMax: 500 },
-            { name: "Learner", min: 0, max: 500, next: "Coder", nextMax: 2000 },
-            { name: "Coder", min: 500, max: 2000, next: "Developer", nextMax: 4000 },
-            { name: "Developer", min: 2000, max: 4000, next: "Expert", nextMax: 8000 },
-            { name: "Expert", min: 4000, max: 8000, next: "Professional", nextMax: 15000 },
-            { name: "Professional", min: 8000, max: 15000, next: "Master", nextMax: 30000 },
-            { name: "Master", min: 15000, max: 30000, next: "Legend", nextMax: 30000 }
+            { name: "Beginner", min: 0, max: 0, next: "Learner", nextMax: 500, icon: "fa-seedling" },
+            { name: "Learner", min: 0, max: 500, next: "Coder", nextMax: 2000, icon: "fa-leaf" },
+            { name: "Coder", min: 500, max: 2000, next: "Developer", nextMax: 4000, icon: "fa-laptop-code" },
+            { name: "Developer", min: 2000, max: 4000, next: "Expert", nextMax: 8000, icon: "fa-code-branch" },
+            { name: "Expert", min: 4000, max: 8000, next: "Professional", nextMax: 15000, icon: "fa-cogs" },
+            { name: "Professional", min: 8000, max: 15000, next: "Master", nextMax: 30000, icon: "fa-user-tie" },
+            { name: "Master", min: 15000, max: 30000, next: "Legend", nextMax: 30000, icon: "fa-crown" }
         ];
 
         function getLevelData(xp) {
             if (xp <= 0) return levels[0];
-            for(let i = 1; i < levels.length; i++) { if(xp > levels[i-1].max && xp <= levels[i].max) return levels[i]; }
+            for(let i = 1; i < levels.length; i++) {
+                if(xp > levels[i-1].max && xp <= levels[i].max) return levels[i];
+            }
             return levels[levels.length - 1];
         }
 
-        // Levels Modal
+        // --- Levels Modal Logic ---
         const levelsOverlay = document.getElementById('levelsOverlay');
         const levelsList = document.getElementById('levelsList');
         const levelsCloseBtn = document.getElementById('levelsCloseBtn');
         
-        document.getElementById('navLevel').addEventListener('click', () => { renderLevelsList(); levelsOverlay.classList.add('active'); });
-        document.getElementById('levelBadge').addEventListener('click', () => { renderLevelsList(); levelsOverlay.classList.add('active'); });
+        document.getElementById('navLevel').addEventListener('click', () => {
+            renderLevelsList();
+            levelsOverlay.classList.add('active');
+        });
+        document.getElementById('levelBadge').addEventListener('click', () => {
+            renderLevelsList();
+            levelsOverlay.classList.add('active');
+        });
         levelsCloseBtn.addEventListener('click', () => levelsOverlay.classList.remove('active'));
         levelsOverlay.addEventListener('click', (e) => { if(e.target === levelsOverlay) levelsOverlay.classList.remove('active'); });
 
         function renderLevelsList() {
             levelsList.innerHTML = '';
             const currentLevelName = getLevelData(state.totalXP).name;
+            
             levels.forEach(l => {
                 let xpRange = '';
                 if (l.name === "Beginner") xpRange = "0 XP";
                 else if (l.name === "Master") xpRange = "15,000 - 30,000 XP";
                 else xpRange = `${l.min.toLocaleString()} - ${l.max.toLocaleString()} XP`;
+                
                 const isCurrent = l.name === currentLevelName;
-                const icon = levelIcons[l.name] || 'fa-star';
+                const isCompleted = state.totalXP > l.max;
+                
+                let iconClass = isCompleted ? 'fa-check-circle' : (isCurrent ? 'fa-circle-dot' : l.icon);
+                let styleColor = '';
+                if (isCompleted) styleColor = 'color: var(--secondary-light); font-weight: 700;';
+                else if (isCurrent) styleColor = 'color: var(--primary-light); font-weight: 700;';
+                
                 const div = document.createElement('div');
-                div.style.cssText = `padding: 12px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; ${isCurrent ? 'color: var(--secondary-light); font-weight: 700;' : ''}`;
-                div.innerHTML = `<span><i class="fas ${icon}" style="margin-right: 8px;"></i>${l.name}</span><span style="font-size: 13px;">${xpRange}</span>`;
+                div.style.cssText = `padding: 12px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; ${styleColor}`;
+                div.innerHTML = `<span><i class="fas ${iconClass}" style="margin-right: 8px;"></i>${l.name}</span><span style="font-size: 13px;">${xpRange}</span>`;
                 levelsList.appendChild(div);
             });
         }
@@ -1009,138 +1200,90 @@
         function updateXPDisplay(xp) {
             const level = getLevelData(xp);
             let progressPercent = 0, nextLevelName = level.next, xpToNext = 0, displayMax = level.max;
-            if (level.name === "Beginner") { progressPercent = (xp / level.nextMax) * 100; xpToNext = level.nextMax - xp; displayMax = level.nextMax; }
-            else if (level.name === "Master") { progressPercent = ((xp - level.min) / (level.max - level.min)) * 100; if (xp >= level.max) progressPercent = 100; xpToNext = Math.max(0, level.max - xp); displayMax = level.max; if (xp >= level.max) nextLevelName = "MAX"; }
-            else { const xpInLevel = xp - level.min; const xpForNext = level.max - level.min; progressPercent = (xpInLevel / xpForNext) * 100; xpToNext = level.max - xp; displayMax = level.max; }
-            
-            const icon = levelIcons[level.name] || 'fa-seedling';
-            document.getElementById('levelBadge').innerHTML = `<i class="fas ${icon}"></i> LEVEL: ${level.name.toUpperCase()}`;
+
+            if (level.name === "Beginner") {
+                progressPercent = (xp / level.nextMax) * 100; 
+                xpToNext = level.nextMax - xp;
+                displayMax = level.nextMax;
+            } else if (level.name === "Master") {
+                progressPercent = ((xp - level.min) / (level.max - level.min)) * 100;
+                if (xp >= level.max) progressPercent = 100;
+                xpToNext = Math.max(0, level.max - xp);
+                displayMax = level.max;
+                if (xp >= level.max) nextLevelName = "MAX";
+            } else {
+                const xpInLevel = xp - level.min;
+                const xpForNext = level.max - level.min;
+                progressPercent = (xpInLevel / xpForNext) * 100;
+                xpToNext = level.max - xp;
+                displayMax = level.max;
+            }
+
+            document.getElementById('levelBadge').innerHTML = `<i class="fas fa-seedling"></i> LEVEL: ${level.name.toUpperCase()}`;
             document.getElementById('xpValue').innerText = xp.toLocaleString();
             document.getElementById('xpLabel').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
-            if (level.name === "Master" && xp >= level.max) { document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`; }
-            else { document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`; }
+            
+            if (level.name === "Master" && xp >= level.max) {
+                document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`;
+            } else {
+                document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
+            }
+
             document.getElementById('xpCircleWrapper').style.setProperty('--progress', progressPercent);
             document.getElementById('navXp').innerText = xp.toLocaleString();
             document.getElementById('navLevel').innerText = level.name;
             document.getElementById('todayXPStat').innerText = state.todayXP;
             document.getElementById('weekXPStat').innerText = state.weekXP;
             document.getElementById('navStreak').innerText = state.streak;
-            
-            document.getElementById('nextLevelBar').style.width = `${progressPercent}%`;
-            document.getElementById('nextLevelXp').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
-            document.getElementById('nextLevelText').innerText = `${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
         }
 
-        // Holiday Logic
-        const holidayList = document.getElementById('holidayList');
-        
-        function getNextHolidays(limit = 5) {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const upcoming = [];
-            let checkDate = new Date(today);
-
-            while (upcoming.length < limit) {
-                const dateStr = checkDate.toISOString().split('T')[0];
-                const day = checkDate.getDay(); 
-                const isWeekend = (day === 0 || day === 6);
-                const mpHoliday = mpGovtHolidays.find(h => h.date === dateStr);
-                const customHoliday = state.customHolidays.find(h => h.date === dateStr);
-
-                let holidayName = null;
-                let isCustom = false;
-
-                if (customHoliday) { holidayName = customHoliday.name; isCustom = true; }
-                else if (mpHoliday) { holidayName = mpHoliday.name; }
-                else if (isWeekend) { holidayName = day === 0 ? "Sunday" : "Saturday"; }
-
-                if (holidayName) {
-                    upcoming.push({ date: dateStr, name: holidayName, isCustom: isCustom });
-                }
-                checkDate.setDate(checkDate.getDate() + 1);
-                if (checkDate.getFullYear() > today.getFullYear() + 2) break;
-            }
-            return upcoming;
-        }
-
-        function renderHolidays() {
-            const holidays = getNextHolidays(5);
-            holidayList.innerHTML = holidays.map(h => {
-                const dateObj = new Date(h.date + 'T00:00:00');
-                const day = dateObj.getDate();
-                const month = dateObj.toLocaleString('default', { month: 'short' });
-                const dayName = dateObj.toLocaleString('default', { weekday: 'short' });
-                const isWeekend = h.name === "Sunday" || h.name === "Saturday";
-                
-                return `
-                    <div class="holiday-item">
-                        <div class="holiday-date">
-                            <div class="holiday-day">${day}</div>
-                            <div class="holiday-month">${month}</div>
-                        </div>
-                        <div class="holiday-info">
-                            <div class="holiday-name ${isWeekend ? 'weekend' : ''}">${h.name}</div>
-                            <div class="holiday-day-name">${dayName} ${h.isCustom ? '(College)' : ''}</div>
-                        </div>
-                        ${h.isCustom ? `<button class="holiday-delete" onclick="deleteCustomHoliday('${h.date}')"><i class="fas fa-trash"></i></button>` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-
-        window.deleteCustomHoliday = (date) => {
-            state.customHolidays = state.customHolidays.filter(h => h.date !== date);
-            saveState();
-            renderHolidays();
-        };
-
-        document.getElementById('addHolidayBtn').addEventListener('click', () => {
-            const name = prompt("Enter holiday name (e.g., College Foundation Day):");
-            if (!name) return;
-            const date = prompt("Enter date (YYYY-MM-DD format, e.g., 2025-09-15):");
-            if (!date) return;
-            const d = new Date(date);
-            if (!isNaN(d.getTime())) {
-                state.customHolidays.push({ name, date });
-                saveState();
-                renderHolidays();
-            } else {
-                alert("Invalid date format.");
-            }
-        });
-
-        // Check-in
+        // --- Attendance / Check-in Logic ---
         const checkInBtn = document.getElementById('checkInBtn');
         function updateCheckInBtn() {
             const today = new Date().toLocaleDateString();
             if (state.lastCheckIn === today) {
                 checkInBtn.innerHTML = `<i class="fas fa-check-circle"></i> Checked In Today!`;
-                checkInBtn.classList.add('done'); checkInBtn.disabled = true;
+                checkInBtn.classList.add('done');
+                checkInBtn.disabled = true;
             } else {
                 checkInBtn.innerHTML = `<i class="fas fa-calendar-check"></i> Daily Check-in`;
-                checkInBtn.classList.remove('done'); checkInBtn.disabled = false;
+                checkInBtn.classList.remove('done');
+                checkInBtn.disabled = false;
             }
         }
 
         checkInBtn.addEventListener('click', () => {
             const today = new Date().toLocaleDateString();
             if (state.lastCheckIn === today) return;
-            const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
             const yStr = yesterday.toLocaleDateString();
-            if (state.lastCheckIn === yStr) { state.streak += 1; } else { state.streak = 1; }
+
+            if (state.lastCheckIn === yStr) {
+                state.streak += 1;
+            } else {
+                state.streak = 1;
+            }
+
             state.lastCheckIn = today;
-            saveState(); updateXPDisplay(state.totalXP); updateCheckInBtn();
-            alert(`Daily Check-in Successful!\nCurrent Streak: ${state.streak} days!`);
+            saveState();
+            updateXPDisplay(state.totalXP);
+            updateCheckInBtn();
+            alert(`Daily Check-in Successful! Current Streak: ${state.streak} days!`);
         });
 
-        // DOM Elements
+        // --- DOM Elements ---
         const nav = document.getElementById('navbar');
         const tabs = document.querySelectorAll('.tab-btn');
         const sections = document.querySelectorAll('.content-section');
 
-        window.addEventListener('scroll', () => { if (window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); });
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
 
-        // Password Protection
+        // --- Page Password Protection Logic ---
         const pagePassOverlay = document.getElementById('pagePassOverlay');
         const pagePassInput = document.getElementById('pagePassInput');
         const pagePassSubmitBtn = document.getElementById('pagePassSubmitBtn');
@@ -1159,22 +1302,45 @@
             if (pass === '341003') {
                 sessionStorage.setItem('pagePassUnlocked', 'true');
                 pagePassOverlay.classList.remove('active');
-                if (pendingTabSwitch) { pendingTabSwitch.click(); pendingTabSwitch = null; }
-            } else { alert("Incorrect password! Access denied."); pagePassInput.value = ''; }
+                if (pendingTabSwitch) {
+                    pendingTabSwitch.click(); 
+                    pendingTabSwitch = null;
+                }
+            } else {
+                alert("Incorrect password! Access denied.");
+                pagePassInput.value = '';
+            }
         });
 
-        pagePassCancelBtn.addEventListener('click', () => { pagePassOverlay.classList.remove('active'); pendingTabSwitch = null; });
-        pagePassOverlay.addEventListener('click', (e) => { if(e.target === pagePassOverlay) { pagePassOverlay.classList.remove('active'); pendingTabSwitch = null; } });
-        pagePassInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') pagePassSubmitBtn.click(); });
+        pagePassCancelBtn.addEventListener('click', () => {
+            pagePassOverlay.classList.remove('active');
+            pendingTabSwitch = null;
+        });
+
+        pagePassOverlay.addEventListener('click', (e) => { 
+            if(e.target === pagePassOverlay) {
+                pagePassOverlay.classList.remove('active');
+                pendingTabSwitch = null;
+            }
+        });
+
+        pagePassInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') pagePassSubmitBtn.click();
+        });
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetTab = tab.dataset.tab;
+                
                 if ((targetTab === 'projectBlogs' || targetTab === 'roadmap') && !auth.currentUser) {
-                    if (sessionStorage.getItem('pagePassUnlocked') !== 'true') { requestPagePass(tab); return; }
+                    if (sessionStorage.getItem('pagePassUnlocked') !== 'true') {
+                        requestPagePass(tab);
+                        return; 
+                    }
                 }
+
                 tabs.forEach(t => t.classList.remove('active'));
-                sections.forEach(s => s.classList.remove('active')); 
+                sections.forEach(s => s.classList.remove('active'));
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
             });
@@ -1186,7 +1352,7 @@
             document.getElementById('quoteAuthor').textContent = random.author;
         });
 
-        // Specialization Tags
+        // --- Specialization Tags ---
         const tagsContainer = document.getElementById('tagsContainer');
         const editSpecBtn = document.getElementById('editSpecBtn');
         const addTagGroup = document.getElementById('addTagGroup');
@@ -1206,19 +1372,870 @@
                 });
                 tagsContainer.appendChild(btn);
             });
+
             if (specEditMode) {
                 document.querySelectorAll('.tag-remove').forEach(span => {
                     span.addEventListener('click', (e) => {
                         e.stopPropagation();
                         const tagToRemove = span.dataset.tag;
                         state.tags = state.tags.filter(t => t !== tagToRemove);
-                        saveState(); renderTags();
+                        saveState();
+                        renderTags();
                     });
                 });
             }
         }
 
-        editSpecBtn.addEventListener('click', () => { specEditMode = !specEditMode; editSpecBtn.classList.toggle('active'); addTagGroup.classList.toggle('hidden'); renderTags(); });
+        editSpecBtn.addEventListener('click', () => {
+            specEditMode = !specEditMode;
+            editSpecBtn.classList.toggle('active');
+            addTagGroup.classList.toggle('hidden');
+            renderTags();
+        });
+
         document.getElementById('addTagBtn').addEventListener('click', () => {
             const val = document.getElementById('newTagInput').value.trim();
-            if (val && !state.tags.includes(val)) { state.tags.push(val); document.getElementById('newTagInput').value = ''; saveState(); renderTags(); }
+            if (val && !state.tags.includes(val)) {
+                state.tags.push(val);
+                document.getElementById('newTagInput').value = '';
+                saveState();
+                renderTags();
+            }
+        });
+
+        // --- Upcoming Holidays Logic ---
+        const allMpHolidays = [
+            // 2024
+            { d: '2024-08-15', n: 'Independence Day' }, { d: '2024-10-02', n: 'Gandhi Jayanti' },
+            { d: '2024-11-01', n: 'MP Foundation Day' }, { d: '2024-12-25', n: 'Christmas' },
+            // 2025
+            { d: '2025-01-26', n: 'Republic Day' }, { d: '2025-03-14', n: 'Holi' },
+            { d: '2025-03-31', n: 'Eid-ul-Fitr' }, { d: '2025-04-06', n: 'Ram Navami' },
+            { d: '2025-05-01', n: 'Labour Day' }, { d: '2025-08-15', n: 'Independence Day' },
+            { d: '2025-10-02', n: 'Gandhi Jayanti' }, { d: '2025-10-20', n: 'Dussehra' },
+            { d: '2025-11-01', n: 'MP Foundation Day' }, { d: '2025-12-25', n: 'Christmas' },
+            // 2026
+            { d: '2026-01-26', n: 'Republic Day' }, { d: '2026-03-04', n: 'Holi' },
+            { d: '2026-08-15', n: 'Independence Day' }, { d: '2026-10-02', n: 'Gandhi Jayanti' },
+            { d: '2026-10-09', n: 'Dussehra' }, { d: '2026-11-01', n: 'MP Foundation Day' },
+            { d: '2026-12-25', n: 'Christmas' },
+            // 2027
+            { d: '2027-01-26', n: 'Republic Day' }, { d: '2027-03-24', n: 'Holi' },
+            { d: '2027-08-15', n: 'Independence Day' }, { d: '2027-10-02', n: 'Gandhi Jayanti' },
+            { d: '2027-10-29', n: 'Dussehra' }, { d: '2027-11-01', n: 'MP Foundation Day' },
+            { d: '2027-12-25', n: 'Christmas' },
+            // 2028
+            { d: '2028-01-26', n: 'Republic Day' }, { d: '2028-03-12', n: 'Holi' },
+            { d: '2028-08-15', n: 'Independence Day' }, { d: '2028-10-02', n: 'Gandhi Jayanti' },
+            { d: '2028-10-17', n: 'Dussehra' }, { d: '2028-11-01', n: 'MP Foundation Day' },
+            { d: '2028-12-25', n: 'Christmas' },
+            // 2029
+            { d: '2029-01-26', n: 'Republic Day' }, { d: '2029-03-01', n: 'Holi' },
+            { d: '2029-08-15', n: 'Independence Day' }, { d: '2029-10-02', n: 'Gandhi Jayanti' },
+            { d: '2029-10-06', n: 'Dussehra' }, { d: '2029-11-01', n: 'MP Foundation Day' },
+            { d: '2029-12-25', n: 'Christmas' }
+        ];
+
+        function renderUpcomingHolidays() {
+            const list = document.getElementById('upcomingHolidaysList');
+            const modalList = document.getElementById('allHolidaysList');
+            list.innerHTML = '';
+            modalList.innerHTML = '';
+            
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const upcomingDates = [];
+            
+            // Add Weekends for the next 3 months
+            let tempDate = new Date(today);
+            for(let i=0; i<90; i++) {
+                if(tempDate.getDay() === 0) upcomingDates.push({ date: new Date(tempDate), name: "Sunday", type: "weekend" });
+                if(tempDate.getDay() === 6) upcomingDates.push({ date: new Date(tempDate), name: "Saturday", type: "weekend" });
+                tempDate.setDate(tempDate.getDate() + 1);
+            }
+            
+            // Add MP Govt Holidays
+            allMpHolidays.forEach(h => {
+                const d = new Date(h.d + 'T00:00:00');
+                if(d >= today) {
+                    upcomingDates.push({ date: d, name: h.n, type: "govt" });
+                }
+            });
+            
+            // Sort chronologically
+            upcomingDates.sort((a, b) => a.date - b.date);
+            
+            if(upcomingDates.length === 0) {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No upcoming holidays.</p></div>`;
+                return;
+            }
+            
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            
+            // Render first 4 in Dashboard
+            const next4 = upcomingDates.slice(0, 4);
+            next4.forEach(item => {
+                list.appendChild(createHolidayElement(item, monthNames, dayNames));
+            });
+
+            // Render ALL in Modal
+            upcomingDates.forEach(item => {
+                modalList.appendChild(createHolidayElement(item, monthNames, dayNames));
+            });
+        }
+
+        function createHolidayElement(item, monthNames, dayNames) {
+            const el = document.createElement('div');
+            el.className = `holiday-list-item holiday-${item.type}`;
+            const typeColor = item.type === 'weekend' ? 'var(--info)' : 'var(--danger)';
+            const descText = item.type === 'weekend' ? 'Weekend Leave' : 'MP Govt Holiday';
+            
+            el.innerHTML = `
+                <div class="holiday-date-box">
+                    <span class="day">${dayNames[item.date.getDay()]}</span>
+                    <span class="date">${item.date.getDate()}</span>
+                    <span class="month">${monthNames[item.date.getMonth()]}</span>
+                </div>
+                <div class="holiday-info">
+                    <div class="name">${item.name}</div>
+                    <div class="desc">${descText}</div>
+                </div>
+                <i class="fas fa-${item.type === 'weekend' ? 'umbrella-beach' : 'landmark'}" style="color: ${typeColor}; opacity: 0.5; margin-right: 10px;"></i>
+            `;
+            return el;
+        }
+
+        document.getElementById('seeMoreHolidaysBtn').addEventListener('click', () => {
+            document.getElementById('holidaysOverlay').classList.add('active');
+        });
+        document.getElementById('holidaysCloseBtn').addEventListener('click', () => {
+            document.getElementById('holidaysOverlay').classList.remove('active');
+        });
+        document.getElementById('holidaysOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'holidaysOverlay') e.target.classList.remove('active');
+        });
+
+        // --- Milestones Logic ---
+        const milestoneList = document.getElementById('milestoneList');
+        const editMilestoneBtn = document.getElementById('editMilestoneBtn');
+        let milestoneEditMode = false;
+
+        function renderMilestones() {
+            milestoneList.innerHTML = '';
+            state.milestones.forEach((m, index) => {
+                let progress = m.progress || 0;
+                let is_connected = false;
+                
+                if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
+                    is_connected = true;
+                    const sem = state.roadmap[m.connectedTo];
+                    let totalGoals = 0;
+                    let doneGoals = 0;
+                    sem.months.forEach(month => {
+                        month.goals.forEach(goal => {
+                            totalGoals++;
+                            if (goal.done) doneGoals++;
+                        });
+                    });
+                    progress = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
+                }
+                
+                const item = document.createElement('div');
+                item.className = 'progress-item';
+                
+                const labelHTML = milestoneEditMode ? 
+                    `<input type="text" class="progress-label-input" value="${m.label}" onchange="updateMilestoneLabel(${index}, this.value)">` : 
+                    m.label;
+                    
+                const valueHTML = milestoneEditMode ? 
+                    (is_connected ? 
+                        `<span style="color: var(--secondary-light); font-size: 14px; font-weight: 600;">${progress}% (Auto)</span>` :
+                        `<input type="number" min="0" max="100" value="${m.progress}" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: var(--primary-light); text-align: center; padding: 4px;" onchange="updateMilestoneProgress(${index}, this.value)">%`
+                    ) : 
+                    `${progress}%`;
+                    
+                const deleteHTML = milestoneEditMode ? `<button class="milestone-delete" onclick="deleteMilestone(${index})"><i class="fas fa-trash"></i></button>` : '';
+                
+                item.innerHTML = `
+                    <div class="progress-header">
+                        <span class="progress-label">
+                            ${labelHTML} ${is_connected ? '<small style="color: var(--secondary-light);">(Connected)</small>' : ''}
+                        </span>
+                        <span class="progress-value">
+                            ${valueHTML}
+                            ${deleteHTML}
+                        </span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
+                `;
+                milestoneList.appendChild(item);
+            });
+            
+            if(state.milestones.length > 0) {
+                let totalProgress = 0;
+                state.milestones.forEach(m => {
+                    let p = m.progress || 0;
+                    if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
+                        const sem = state.roadmap[m.connectedTo];
+                        let totalGoals = 0;
+                        let doneGoals = 0;
+                        sem.months.forEach(month => {
+                            month.goals.forEach(goal => {
+                                totalGoals++;
+                                if (goal.done) doneGoals++;
+                            });
+                        });
+                        p = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
+                    }
+                    totalProgress += p;
+                });
+                const avgRate = totalProgress / state.milestones.length;
+                document.getElementById('milestoneRateStat').innerText = Math.round(avgRate) + '%';
+            } else {
+                document.getElementById('milestoneRateStat').innerText = '0%';
+            }
+        }
+
+        editMilestoneBtn.addEventListener('click', () => {
+            milestoneEditMode = !milestoneEditMode;
+            editMilestoneBtn.classList.toggle('active');
+            renderMilestones();
+        });
+
+        document.getElementById('addMilestoneBtn').addEventListener('click', () => {
+            const name = prompt("Enter milestone name:", "New Milestone");
+            if (!name) return;
+            const connect = prompt("Connect to 4-Year Roadmap?\nEnter semester number (1-8) to connect, or leave empty for manual progress:", "");
+            if (connect !== null && connect !== "" && !isNaN(connect) && connect >= 1 && connect <= 8) {
+                state.milestones.push({ label: name, connectedTo: parseInt(connect) - 1 });
+            } else {
+                state.milestones.push({ label: name, progress: 0 });
+            }
+            saveState();
+            renderMilestones();
+        });
+
+        window.updateMilestoneLabel = (i, val) => { state.milestones[i].label = val; saveState(); };
+        window.updateMilestoneProgress = (i, val) => { 
+            state.milestones[i].progress = Math.max(0, Math.min(100, parseInt(val) || 0)); 
+            saveState(); 
+            renderMilestones(); 
+        };
+        window.deleteMilestone = (i) => { state.milestones.splice(i, 1); saveState(); renderMilestones(); };
+
+        // --- Today's Focus Quick Add ---
+        const todayFocusList = document.getElementById('todayFocusList');
+        const todayFocusInput = document.getElementById('todayFocusInput');
+
+        function renderTodayFocus() {
+            todayFocusList.innerHTML = '';
+            if(state.todayTasks.length === 0) {
+                todayFocusList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-mug-hot"></i>
+                        <p>No tasks added yet</p>
+                    </div>
+                `;
+                return;
+            }
+            state.todayTasks.forEach((task, index) => {
+                const el = document.createElement('div');
+                el.className = `task-item ${task.completed ? 'completed' : ''}`;
+                el.innerHTML = `
+                    <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTodayTask(${index})">
+                        ${task.completed ? '<i class="fas fa-check"></i>' : ''}
+                    </div>
+                    <div class="task-content">
+                        <div class="task-text">${task.text}</div>
+                    </div>
+                    <button class="task-delete" onclick="deleteTodayTask(${index})"><i class="fas fa-trash"></i></button>
+                `;
+                todayFocusList.appendChild(el);
+            });
+        }
+
+        window.toggleTodayTask = (index) => {
+            state.todayTasks[index].completed = !state.todayTasks[index].completed;
+            saveState();
+            renderTodayFocus();
+        };
+
+        window.deleteTodayTask = (index) => {
+            state.todayTasks.splice(index, 1);
+            saveState();
+            renderTodayFocus();
+        };
+
+        document.getElementById('addTodayFocusBtn').addEventListener('click', () => {
+            const text = todayFocusInput.value.trim();
+            if (text === '') return;
+            state.todayTasks.push({ text, completed: false });
+            todayFocusInput.value = '';
+            saveState();
+            renderTodayFocus();
+        });
+
+        // --- Upcoming Goals Logic ---
+        const goalsTimeline = document.getElementById('goalsTimeline');
+        const editUpcomingBtn = document.getElementById('editUpcomingBtn');
+        let upcomingEditMode = false;
+
+        function renderUpcomingGoals() {
+            goalsTimeline.innerHTML = '';
+            if (state.upcomingGoals.length === 0) {
+                goalsTimeline.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No upcoming goals added.</p></div>`;
+                return;
+            }
+
+            state.upcomingGoals.forEach((g, index) => {
+                const el = document.createElement('div');
+                el.className = 'goal-timeline-item';
+                if (upcomingEditMode) {
+                    el.innerHTML = `
+                        <div class="goal-date" style="border: 1px solid var(--primary); border-radius: 8px; padding: 8px;">
+                            <div class="date-edit-group" style="flex-direction: column; gap: 4px; border: none; padding: 0; min-width: 50px;">
+                                <input type="text" class="goal-edit-input" value="${g.day}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'day', this.value)">
+                                <input type="text" class="goal-edit-input" value="${g.month}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'month', this.value)">
+                            </div>
+                        </div>
+                        <div class="goal-content">
+                            <input type="text" class="goal-edit-input" value="${g.title}" onchange="updateUpcomingGoal(${index}, 'title', this.value)">
+                            <textarea class="goal-edit-textarea" onchange="updateUpcomingGoal(${index}, 'desc', this.value)">${g.desc}</textarea>
+                        </div>
+                        <button class="goal-delete-btn" onclick="deleteUpcomingGoal(${index})"><i class="fas fa-trash"></i> Delete</button>
+                    `;
+                } else {
+                    el.innerHTML = `
+                        <div class="goal-date"><span>${g.day}</span> ${g.month}</div>
+                        <div class="goal-content">
+                            <h4>${g.title}</h4>
+                            <p>${g.desc}</p>
+                        </div>
+                    `;
+                }
+                goalsTimeline.appendChild(el);
+            });
+        }
+
+        editUpcomingBtn.addEventListener('click', () => {
+            upcomingEditMode = !upcomingEditMode;
+            editUpcomingBtn.classList.toggle('active');
+            renderUpcomingGoals();
+        });
+
+        document.getElementById('addUpcomingGoalBtn').addEventListener('click', () => {
+            state.upcomingGoals.push({ day: "01", month: "Jan", title: "New Goal", desc: "Goal description..." });
+            upcomingEditMode = true;
+            editUpcomingBtn.classList.add('active');
+            saveState();
+            renderUpcomingGoals();
+        });
+
+        window.updateUpcomingGoal = (i, field, val) => {
+            state.upcomingGoals[i][field] = val;
+            saveState();
+        };
+
+        window.deleteUpcomingGoal = (i) => {
+            state.upcomingGoals.splice(i, 1);
+            saveState();
+            renderUpcomingGoals();
+        };
+
+        // --- Hackathons Logic ---
+        const hackathonList = document.getElementById('hackathonList');
+        function renderHackathons() {
+            hackathonList.innerHTML = '';
+            if(state.hackathons.length === 0) {
+                hackathonList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-trophy"></i>
+                        <p>No hackathons added yet.</p>
+                    </div>
+                `;
+                return;
+            }
+            const isReadOnly = document.body.classList.contains('read-only');
+            const statusOptions = [
+                { val: 'upcoming', text: 'Upcoming' },
+                { val: 'participated', text: 'Participated' },
+                { val: 'won', text: 'Won!' },
+                { val: 'missed', text: "Didn't Participate" }
+            ];
+
+            state.hackathons.forEach((h, index) => {
+                const el = document.createElement('div');
+                el.className = 'hackathon-card';
+                
+                let statusHtml = '';
+                if (isReadOnly) {
+                    statusHtml = `<span class="status-badge status-${h.status}">${h.status}</span>`;
+                } else {
+                    statusHtml = `<select class="hackathon-status-select" onchange="updateHackathonStatus(${index}, this.value)">`;
+                    statusOptions.forEach(opt => {
+                        statusHtml += `<option value="${opt.val}" ${h.status === opt.val ? 'selected' : ''}>${opt.text}</option>`;
+                    });
+                    statusHtml += `</select>`;
+                }
+
+                el.innerHTML = `
+                    <div class="hackathon-info">
+                        <h4>${h.name}</h4>
+                        <p><i class="fas fa-calendar-alt"></i> ${h.date}</p>
+                    </div>
+                    <div style="display:flex; align-items:center; gap: 12px;">
+                        ${statusHtml}
+                        <button class="action-btn danger" onclick="removeHackathon(${index})"><i class="fas fa-trash"></i> Remove</button>
+                    </div>
+                `;
+                hackathonList.appendChild(el);
+            });
+        }
+
+        window.removeHackathon = (index) => {
+            state.hackathons.splice(index, 1);
+            saveState();
+            renderHackathons();
+        };
+
+        window.updateHackathonStatus = (index, newStatus) => {
+            state.hackathons[index].status = newStatus;
+            saveState();
+        };
+
+        document.getElementById('addHackathonBtn').addEventListener('click', () => {
+            const name = document.getElementById('hackathonName').value.trim();
+            const date = document.getElementById('hackathonDate').value;
+            const status = document.getElementById('hackathonStatus').value;
+            if (!name || !date) return;
+            state.hackathons.push({ name, date, status });
+            saveState();
+            renderHackathons();
+
+            if (status === 'upcoming') {
+                const subject = `Upcoming Hackathon: ${name}`;
+                const body = `Hackathon: ${name}%0D%0ADate: ${date}%0D%0AStatus: ${status}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
+            }
+
+            document.getElementById('hackathonName').value = '';
+            document.getElementById('hackathonDate').value = '';
+        });
+
+        // --- Routine Logic (Interactive Day Tabs with Edit Mode & Sorting) ---
+        const routineTabs = document.getElementById('routineTabs');
+        const routineContent = document.getElementById('routineContent');
+        const editRoutineBtn = document.getElementById('editRoutineBtn');
+        let routineEditMode = false;
+        let activeRoutineTab = 0;
+
+        editRoutineBtn.addEventListener('click', () => {
+            routineEditMode = !routineEditMode;
+            editRoutineBtn.classList.toggle('active');
+            if (routineEditMode) {
+                editRoutineBtn.innerHTML = `<i class="fas fa-save"></i> Done Editing`;
+            } else {
+                editRoutineBtn.innerHTML = `<i class="fas fa-edit"></i> Edit Routine`;
+            }
+            renderRoutines();
+        });
+
+        function timeToMinutes(t) {
+            if (!t) return 9999;
+            let [time, period] = t.toUpperCase().trim().split(/\s+/);
+            if (!time) return 9999;
+            let [h, m] = time.split(':').map(Number);
+            if (isNaN(h)) return 9999;
+            if (isNaN(m)) m = 0;
+            if (period === 'PM' && h !== 12) h += 12;
+            if (period === 'AM' && h === 12) h = 0;
+            return (h * 60) + m;
+        }
+
+        function renderRoutines() {
+            routineTabs.innerHTML = '';
+            routineContent.innerHTML = '';
+            
+            const isReadOnly = document.body.classList.contains('read-only');
+            const canEdit = routineEditMode && !isReadOnly;
+            
+            state.routines.forEach((dayData, index) => {
+                dayData.schedule.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+                const tabBtn = document.createElement('button');
+                tabBtn.className = 'routine-tab' + (index === activeRoutineTab ? ' active' : '');
+                tabBtn.textContent = dayData.tabName;
+                tabBtn.addEventListener('click', () => {
+                    activeRoutineTab = index;
+                    renderRoutines();
+                });
+                routineTabs.appendChild(tabBtn);
+
+                const dayContent = document.createElement('div');
+                dayContent.className = 'routine-day-content' + (index === activeRoutineTab ? ' active' : '');
+                dayContent.id = `routine-day-${index}`;
+                
+                const subtitleHTML = canEdit 
+                    ? `<textarea class="routine-subtitle-input" placeholder="Subtitle / Notes..." onchange="updateRoutineSubtitle(${index}, this.value)">${dayData.subtitle || ''}</textarea>`
+                    : `<div class="routine-day-subtitle">${dayData.subtitle || ''}</div>`;
+                
+                let scheduleHTML = '';
+                dayData.schedule.forEach((item, itemIndex) => {
+                    if (canEdit) {
+                        scheduleHTML += `
+                            <div class="routine-item-edit">
+                                <input type="text" class="routine-time-input" value="${item.time}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'time', this.value)">
+                                <input type="text" class="routine-task-input" value="${item.task}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'task', this.value)">
+                                <button class="routine-delete-btn" onclick="deleteRoutineItem(${index}, ${itemIndex})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        `;
+                    } else {
+                        scheduleHTML += `
+                            <div class="routine-item">
+                                <div class="routine-time">${item.time}</div>
+                                <div class="routine-task">${item.task}</div>
+                            </div>
+                        `;
+                    }
+                });
+
+                let addSlotHTML = canEdit ? `<button class="add-goal-btn" onclick="addRoutineItem(${index})" style="margin-top: 15px;"><i class="fas fa-plus"></i> Add Slot</button>` : '';
+
+                dayContent.innerHTML = `
+                    <h3 class="routine-day-title">${dayData.title}</h3>
+                    ${subtitleHTML}
+                    <div class="routine-list">${scheduleHTML}</div>
+                    ${addSlotHTML}
+                `;
+                routineContent.appendChild(dayContent);
+            });
+        }
+
+        window.updateRoutineSubtitle = (dayIdx, val) => {
+            state.routines[dayIdx].subtitle = val;
+            saveState();
+        };
+
+        window.updateRoutineItem = (dayIdx, itemIdx, field, val) => {
+            state.routines[dayIdx].schedule[itemIdx][field] = val;
+            saveState();
+        };
+
+        window.deleteRoutineItem = (dayIdx, itemIdx) => {
+            state.routines[dayIdx].schedule.splice(itemIdx, 1);
+            saveState();
+            renderRoutines();
+        };
+
+        window.addRoutineItem = (dayIdx) => {
+            state.routines[dayIdx].schedule.push({ time: "00:00 AM - 00:00 AM", task: "New Task" });
+            saveState();
+            renderRoutines();
+        };
+
+        // --- Roadmap Logic (With Months & Edit Mode Toggle) ---
+        const timeline = document.getElementById('timeline');
+        const editRoadmapBtn = document.getElementById('editRoadmapBtn');
+        let roadmapEditMode = false;
+
+        editRoadmapBtn.addEventListener('click', () => {
+            roadmapEditMode = !roadmapEditMode;
+            editRoadmapBtn.classList.toggle('active');
+            if (roadmapEditMode) {
+                editRoadmapBtn.innerHTML = `<i class="fas fa-save"></i> Done Editing`;
+            } else {
+                editRoadmapBtn.innerHTML = `<i class="fas fa-edit"></i> Edit Roadmap`;
+            }
+            renderRoadmap();
+        });
+
+        function renderRoadmap() {
+            timeline.innerHTML = '';
+            const isReadOnly = document.body.classList.contains('read-only');
+            const canEdit = roadmapEditMode && !isReadOnly;
+            
+            state.roadmap.forEach((sem, semIndex) => {
+                const semBlock = document.createElement('div');
+                semBlock.className = 'sem-block';
+                
+                const titleHtml = canEdit 
+                    ? `<input type="text" class="sem-title" value="${sem.title}" onchange="updateSemTitle(${semIndex}, this.value)">`
+                    : `<div class="sem-title">${sem.title}</div>`;
+                    
+                const focusHtml = canEdit 
+                    ? `<input type="text" class="sem-focus" value="${sem.focus}" onchange="updateSemFocus(${semIndex}, this.value)">`
+                    : `<div class="sem-focus">${sem.focus}</div>`;
+
+                let monthsHTML = '';
+                sem.months.forEach((monthData, mIndex) => {
+                    let goalsHTML = '';
+                    monthData.goals.forEach((goal, gIndex) => {
+                        const goalTextHtml = canEdit 
+                            ? `<input type="text" class="goal-text ${goal.done ? 'completed' : ''}" value="${goal.text}" onchange="updateGoal(${semIndex}, ${mIndex}, ${gIndex}, this.value)">`
+                            : `<div class="goal-text ${goal.done ? 'completed' : ''}">${goal.text}</div>`;
+
+                        const deleteBtnHtml = canEdit 
+                            ? `<button class="goal-delete" onclick="deleteGoal(${semIndex}, ${mIndex}, ${gIndex})"><i class="fas fa-times"></i></button>`
+                            : '';
+
+                        goalsHTML += `
+                            <li class="goal-item">
+                                <div class="goal-checkbox ${goal.done ? 'checked' : ''}" onclick="toggleGoal(${semIndex}, ${mIndex}, ${gIndex})">
+                                    ${goal.done ? '<i class="fas fa-check"></i>' : ''}
+                                </div>
+                                ${goalTextHtml}
+                                ${deleteBtnHtml}
+                            </li>
+                        `;
+                    });
+
+                    const addGoalBtnHtml = canEdit 
+                        ? `<button class="add-goal-btn" onclick="addGoal(${semIndex}, ${mIndex})"><i class="fas fa-plus"></i> Add Task</button>`
+                        : '';
+
+                    monthsHTML += `
+                        <div class="month-card">
+                            <div class="month-title"><i class="fas fa-calendar-day"></i> ${monthData.month}</div>
+                            <ul class="goal-list">${goalsHTML}</ul>
+                            ${addGoalBtnHtml}
+                        </div>
+                    `;
+                });
+
+                semBlock.innerHTML = `
+                    <div class="sem-marker"></div>
+                    <div class="sem-header">
+                        <div class="sem-header-left">
+                            ${titleHtml}
+                            ${focusHtml}
+                        </div>
+                    </div>
+                    <div class="month-grid">${monthsHTML}</div>
+                `;
+                timeline.appendChild(semBlock);
+            });
+        }
+
+        window.toggleGoal = (s, m, g) => {
+            state.roadmap[s].months[m].goals[g].done = !state.roadmap[s].months[m].goals[g].done;
+            saveState();
+            renderRoadmap();
+            renderMilestones();
+        };
+
+        window.updateGoal = (s, m, g, val) => {
+            state.roadmap[s].months[m].goals[g].text = val;
+            saveState();
+        };
+
+        window.deleteGoal = (s, m, g) => {
+            state.roadmap[s].months[m].goals.splice(g, 1);
+            saveState();
+            renderRoadmap();
+        };
+
+        window.addGoal = (s, m) => {
+            state.roadmap[s].months[m].goals.push({ text: "New Task", done: false });
+            saveState();
+            renderRoadmap();
+        };
+
+        window.updateSemTitle = (s, val) => { state.roadmap[s].title = val; saveState(); };
+        window.updateSemFocus = (s, val) => { state.roadmap[s].focus = val; saveState(); };
+
+        // --- Reviews Logic ---
+        const motivationSlider = document.getElementById('motivationSlider');
+        const motivationValue = document.getElementById('motivationValue');
+        const pastReviewsList = document.getElementById('pastReviewsList');
+
+        motivationSlider.addEventListener('input', (e) => {
+            motivationValue.textContent = e.target.value;
+        });
+
+        document.getElementById('saveReviewBtn').addEventListener('click', () => {
+            const easy = parseInt(document.getElementById('revEasy').textContent) || 0;
+            const medium = parseInt(document.getElementById('revMedium').textContent) || 0;
+            const hard = parseInt(document.getElementById('revHard').textContent) || 0;
+            const videos = parseInt(document.getElementById('revVideos').textContent) || 0;
+            const hours = parseInt(document.getElementById('revHours').textContent) || 0;
+            const contests = parseInt(document.getElementById('revContests').textContent) || 0;
+            
+            const textareas = document.querySelectorAll('#reviews .review-textarea');
+            
+            const problemXP = (easy * 15) + (medium * 25) + (hard * 40);
+            const videoXP = videos * 5; 
+            const hoursXP = hours * 10; 
+            const bonusXP = 15;
+            const earnedXP = problemXP + videoXP + hoursXP + bonusXP;
+            
+            state.totalXP += earnedXP;
+            state.todayXP += earnedXP;
+            state.weekXP += earnedXP;
+            
+            updateXPDisplay(state.totalXP);
+            
+            const reviewData = {
+                date: new Date().toLocaleDateString(),
+                easy, medium, hard, videos, hours, contests,
+                earnedXP,
+                completed: textareas[0].value,
+                goals: textareas[1].value,
+                learned: textareas[2].value,
+                improvements: textareas[3].value,
+                motivation: motivationSlider.value
+            };
+
+            state.pastReviews.unshift(reviewData);
+            saveState();
+            renderPastReviews();
+            
+            document.getElementById('revEasy').textContent = '0';
+            document.getElementById('revMedium').textContent = '0';
+            document.getElementById('revHard').textContent = '0';
+            document.getElementById('revVideos').textContent = '0';
+            document.getElementById('revHours').textContent = '0';
+            document.getElementById('revContests').textContent = '0';
+            textareas.forEach(t => t.value = '');
+            motivationSlider.value = 5;
+            motivationValue.textContent = '5';
+            
+            alert(`Weekly Review Saved!\nYou earned ${earnedXP} XP!`);
+        });
+
+        function renderPastReviews() {
+            if(state.pastReviews.length === 0) {
+                pastReviewsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No reviews yet. Complete your first weekly review above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            pastReviewsList.innerHTML = '';
+            state.pastReviews.forEach((r, index) => {
+                const el = document.createElement('div');
+                el.className = 'past-review-item';
+                el.innerHTML = `
+                    <div class="past-review-header">
+                        <div class="past-review-date"><i class="fas fa-calendar-day"></i> ${r.date} <span style="color: var(--secondary); margin-left: 10px;">(Earned ${r.earnedXP} XP)</span></div>
+                        <button class="delete-review-btn" onclick="deleteReview(${index})"><i class="fas fa-trash"></i> Delete</button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 12px; text-align: center;">
+                        <div><strong>${r.easy}</strong><br><small style="color:var(--text-muted)">Easy</small></div>
+                        <div><strong>${r.medium}</strong><br><small style="color:var(--text-muted)">Medium</small></div>
+                        <div><strong>${r.hard}</strong><br><small style="color:var(--text-muted)">Hard</small></div>
+                        <div><strong>${r.videos}</strong><br><small style="color:var(--text-muted)">Videos</small></div>
+                        <div><strong>${r.hours}</strong><br><small style="color:var(--text-muted)">Hours</small></div>
+                        <div><strong>${r.contests}</strong><br><small style="color:var(--text-muted)">Contests</small></div>
+                    </div>
+                    <p style="margin-bottom: 8px;"><strong>Completed:</strong> ${r.completed || '-'}</p>
+                    <p style="margin-bottom: 8px;"><strong>Goals:</strong> ${r.goals || '-'}</p>
+                    <p style="margin-bottom: 8px;"><strong>Learned:</strong> ${r.learned || '-'}</p>
+                    <p style="margin-bottom: 8px;"><strong>Improvements:</strong> ${r.improvements || '-'}</p>
+                    <p><strong>Motivation Level:</strong> <span style="color: var(--primary-light);">${r.motivation}/10</span></p>
+                `;
+                pastReviewsList.appendChild(el);
+            });
+        }
+
+        window.deleteReview = (index) => {
+            const reviewToDelete = state.pastReviews[index];
+            const xpToRemove = reviewToDelete.earnedXP || 0;
+
+            state.totalXP = Math.max(0, state.totalXP - xpToRemove);
+            state.todayXP = Math.max(0, state.todayXP - xpToRemove);
+            state.weekXP = Math.max(0, state.weekXP - xpToRemove);
+
+            state.pastReviews.splice(index, 1);
+
+            saveState();
+            updateXPDisplay(state.totalXP);
+            renderPastReviews();
+        };
+
+        // --- Project Blogs Logic ---
+        const projectBlogList = document.getElementById('projectBlogList');
+
+        function renderProjectBlogs() {
+            projectBlogList.innerHTML = '';
+            if (state.projectBlogs.length === 0) {
+                projectBlogList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No project blogs yet. Add your first project above!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            state.projectBlogs.forEach((b, index) => {
+                const el = document.createElement('div');
+                el.className = 'blog-item';
+                el.innerHTML = `
+                    <div class="blog-header">
+                        <div class="blog-title">${b.title}</div>
+                        <div class="header-actions">
+                            <button class="action-btn danger" onclick="deleteBlog(${index})"><i class="fas fa-trash"></i> Remove</button>
+                        </div>
+                    </div>
+                    <div class="blog-section">
+                        <h4><i class="fas fa-lightbulb"></i> Project Idea</h4>
+                        <p>${b.idea}</p>
+                    </div>
+                    <div class="blog-section">
+                        <h4><i class="fas fa-code"></i> What I Did</h4>
+                        <p>${b.did}</p>
+                    </div>
+                    <div class="blog-section">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Problems Faced</h4>
+                        <p>${b.problems}</p>
+                    </div>
+                `;
+                projectBlogList.appendChild(el);
+            });
+        }
+
+        window.deleteBlog = (index) => {
+            state.projectBlogs.splice(index, 1);
+            saveState();
+            renderProjectBlogs();
+        };
+
+        document.getElementById('addBlogBtn').addEventListener('click', () => {
+            const title = document.getElementById('blogTitleInput').value.trim();
+            const idea = document.getElementById('blogIdeaInput').value.trim();
+            const did = document.getElementById('blogDidInput').value.trim();
+            const problems = document.getElementById('blogProblemsInput').value.trim();
+            
+            if (!title || !idea || !did || !problems) return alert("Please fill in all fields.");
+            
+            state.projectBlogs.unshift({ title, idea, did, problems });
+            saveState();
+            document.getElementById('blogTitleInput').value = '';
+            document.getElementById('blogIdeaInput').value = '';
+            document.getElementById('blogDidInput').value = '';
+            document.getElementById('blogProblemsInput').value = '';
+            renderProjectBlogs();
+        });
+
+        // --- Initialize All Render Functions ---
+        function initializeAll() {
+            updateXPDisplay(state.totalXP);
+            updateCheckInBtn();
+            renderTags();
+            renderMilestones();
+            renderTodayFocus();
+            renderUpcomingGoals();
+            renderHackathons();
+            renderRoutines();
+            renderRoadmap();
+            renderPastReviews();
+            renderProjectBlogs();
+            renderUpcomingHolidays();
+        }
+    </script>
+</body>
+</html>
