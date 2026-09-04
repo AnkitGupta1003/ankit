@@ -13,7 +13,7 @@
             --secondary: #10b981; --secondary-light: #34d399;
             --accent: #f59e0b; --accent-light: #fbbf24;
             --danger: #ef4444; --info: #3b82f6;
-            --bg-primary: #000000; --bg-secondary: #0a0a0f;
+            --bg-primary: #000000; --bg-secondary: #0a0a0f; --bg-track: #15151c;
             --bg-card: rgba(255,255,255,0.03); --bg-card-hover: rgba(255,255,255,0.06);
             --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.7); --text-muted: rgba(255,255,255,0.4);
             --border-color: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.15);
@@ -88,7 +88,8 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Cards */
-        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; margin-bottom: 32px; }
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; }
+        @media (min-width: 1024px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
         .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 24px; padding: 28px; transition: all 0.4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent); opacity: 0; transition: opacity 0.3s ease; }
         .card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-lg); transform: translateY(-6px); }
@@ -96,7 +97,9 @@
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
         .card-title { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 12px; color: var(--text-primary); }
         .card-icon { width: 40px; height: 40px; background: rgba(99,102,241,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary-light); font-size: 16px; }
-        .span-2 { grid-column: span 2; }
+        .span-2 { grid-column: span 1; }
+        .span-3 { grid-column: span 1; }
+        @media (min-width: 1024px) { .span-2 { grid-column: span 2; } .span-3 { grid-column: span 3; } }
         .header-actions { display: flex; gap: 8px; }
         .action-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; font-family: inherit; -webkit-tap-highlight-color: transparent; }
         .action-btn:hover { border-color: var(--primary); color: var(--primary-light); background: rgba(99,102,241,0.1); }
@@ -118,7 +121,7 @@
         .xp-display { text-align: center; padding: 20px 0; }
         .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; }
         .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
-        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.05) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
+        .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), var(--bg-track) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
         .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .xp-value { font-family: 'Space Grotesk', sans-serif; font-size: 48px; font-weight: 800; background: var(--gradient-3); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
         .xp-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 4px; }
@@ -131,6 +134,19 @@
         .check-in-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,158,11,0.4); }
         .check-in-btn.done { background: rgba(255,255,255,0.05); color: var(--secondary); cursor: default; box-shadow: none; }
 
+        /* Holiday Calendar */
+        .holiday-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 10px; }
+        .holiday-item:last-child { margin-bottom: 0; }
+        .holiday-date { text-align: center; min-width: 50px; border-right: 1px solid var(--border-color); padding-right: 10px; }
+        .holiday-day { font-size: 20px; font-weight: 700; color: var(--primary-light); line-height: 1; }
+        .holiday-month { font-size: 12px; color: var(--text-muted); text-transform: uppercase; }
+        .holiday-info { flex: 1; }
+        .holiday-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .holiday-name.weekend { color: var(--accent-light); }
+        .holiday-day-name { font-size: 12px; color: var(--text-muted); }
+        .holiday-delete { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.3s ease; }
+        .holiday-delete:hover { color: var(--danger); }
+
         /* Progress / Milestones */
         .progress-item { margin-bottom: 24px; }
         .progress-item:last-child { margin-bottom: 0; }
@@ -138,10 +154,8 @@
         .progress-label { font-size: 14px; color: var(--text-secondary); font-weight: 500; flex: 1; display: flex; align-items: center; gap: 8px; }
         .progress-label-input { background: transparent; border: none; border-bottom: 1px dashed var(--primary); color: var(--text-primary); font-size: 14px; outline: none; width: 100%; font-family: inherit; font-weight: 500; }
         .progress-value { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; color: var(--primary-light); display: flex; align-items: center; gap: 8px; }
-        .progress-bar { height: 10px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-bar { height: 10px; background: var(--bg-track); border-radius: 10px; overflow: hidden; position: relative; }
         .progress-fill { height: 100%; background: var(--gradient-1); border-radius: 10px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); position: relative; }
-        .progress-fill::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); animation: shimmer 2s infinite; }
-        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
         .milestone-delete { background: transparent; border: none; color: var(--danger); cursor: pointer; font-size: 12px; opacity: 0.5; transition: opacity 0.3s; }
         .milestone-delete:hover { opacity: 1; }
 
@@ -213,6 +227,7 @@
         .status-upcoming { background: rgba(59,130,246,0.15); color: var(--info); border: 1px solid rgba(59,130,246,0.3); }
         .status-won { background: rgba(16,185,129,0.15); color: var(--secondary); border: 1px solid rgba(16,185,129,0.3); }
         .status-participated { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid var(--border-color); }
+        .status-not_participated { background: rgba(107,114,128,0.15); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
 
         /* Reviews */
         .review-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 32px; }
@@ -305,7 +320,9 @@
         body.read-only #addBlogBtn,
         body.read-only #editRoadmapBtn,
         body.read-only #editRoutineBtn,
-        body.read-only .task-delete {
+        body.read-only .task-delete,
+        body.read-only #addHolidayBtn,
+        body.read-only .holiday-delete {
             display: none !important; 
         }
         body.read-only #revEasy,
@@ -339,10 +356,8 @@
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .span-2 { grid-column: span 1; }
-            .review-stats { grid-template-columns: repeat(2, 1fr); }
-            .blog-title { margin-top: 0; }
+        @media (max-width: 1023px) {
+            .span-2, .span-3 { grid-column: span 1; }
         }
         @media (max-width: 768px) {
             .nav-stats { display: none; }
@@ -513,6 +528,17 @@
                     <button class="check-in-btn" id="checkInBtn"><i class="fas fa-calendar-check"></i> Daily Check-in</button>
                 </div>
 
+                <!-- MP Holidays Calendar -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-times"></i></div> Upcoming Holidays</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="addHolidayBtn"><i class="fas fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div id="holidayList"></div>
+                </div>
+
                 <!-- Milestone Progress -->
                 <div class="card span-2">
                     <div class="card-header">
@@ -543,7 +569,7 @@
                 </div>
 
                 <!-- Upcoming Goals -->
-                <div class="card span-2">
+                <div class="card span-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
                         <div class="header-actions">
@@ -560,7 +586,7 @@
         <!-- Hackathons Section -->
         <section id="hackathons" class="content-section">
             <div class="cards-grid">
-                <div class="card span-2">
+                <div class="card span-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-trophy"></i></div> Hackathon Tracker</div>
                         <span style="font-size: 12px; color: var(--text-muted);">Track schedules & wins</span>
@@ -572,6 +598,7 @@
                             <option value="upcoming">Upcoming</option>
                             <option value="participated">Participated</option>
                             <option value="won">Won!</option>
+                            <option value="not_participated">Didn't Participated</option>
                         </select>
                         <button class="add-task-btn" id="addHackathonBtn"><i class="fas fa-plus"></i> Add</button>
                     </div>
@@ -583,7 +610,7 @@
         <!-- Routine Section -->
         <section id="routine" class="content-section">
             <div class="cards-grid">
-                <div class="card span-2">
+                <div class="card span-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-week"></i></div> Daily Routine</div>
                         <button class="action-btn" id="editRoutineBtn"><i class="fas fa-edit"></i> Edit Routine</button>
@@ -702,12 +729,10 @@
     </div>
 
     <script type="module">
-        // --- Firebase Imports ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // --- Your Firebase Config ---
         const firebaseConfig = {
           apiKey: "AIzaSyB-KJJDu19pPMPob0priaNztk5excPRES4",
           authDomain: "lets-crack-it-f50e5.firebaseapp.com",
@@ -717,19 +742,38 @@
           appId: "1:475697383303:web:c83e01e2b912676b733522"
         };
 
-        // --- Initialize Firebase ---
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // --- Default Data State ---
+        // MP Government Holidays List (2025-2026)
+        const mpGovtHolidays = [
+            { name: "New Year's Day", date: "2025-01-01" }, { name: "Guru Gobind Singh Jayanti", date: "2025-01-02" },
+            { name: "Republic Day", date: "2025-01-26" }, { name: "Maha Shivaratri", date: "2025-02-26" },
+            { name: "Holi", date: "2025-03-14" }, { name: "Rama Navami", date: "2025-04-06" },
+            { name: "Mahavir Jayanti", date: "2025-04-10" }, { name: "Dr. B.R. Ambedkar Jayanti", date: "2025-04-14" },
+            { name: "Good Friday", date: "2025-04-18" }, { name: "Eid-ul-Fitr", date: "2025-03-31" },
+            { name: "Bakrid", date: "2025-06-07" }, { name: "Budha Purnima", date: "2025-05-12" },
+            { name: "Independence Day", date: "2025-08-15" }, { name: "Janmashtami", date: "2025-08-16" },
+            { name: "Muharram", date: "2025-07-06" }, { name: "Gandhi Jayanti", date: "2025-10-02" },
+            { name: "Dussehra (Vijayadashami)", date: "2025-10-02" }, { name: "Diwali (Deepavali)", date: "2025-10-21" },
+            { name: "Bhai Dooj", date: "2025-10-23" }, { name: "MP Foundation Day", date: "2025-11-01" },
+            { name: "Guru Nanak Jayanti", date: "2025-11-15" }, { name: "Christmas Day", date: "2025-12-25" },
+            
+            { name: "New Year's Day", date: "2026-01-01" }, { name: "Republic Day", date: "2026-01-26" },
+            { name: "Maha Shivaratri", date: "2026-02-15" }, { name: "Holi", date: "2026-03-04" },
+            { name: "Rama Navami", date: "2026-03-26" }, { name: "Mahavir Jayanti", date: "2026-03-30" },
+            { name: "Good Friday", date: "2026-04-03" }, { name: "Dr. B.R. Ambedkar Jayanti", date: "2026-04-14" },
+            { name: "Eid-ul-Fitr", date: "2026-03-20" }, { name: "Bakrid", date: "2026-05-27" },
+            { name: "Budha Purnima", date: "2026-05-01" }, { name: "Independence Day", date: "2026-08-15" },
+            { name: "Janmashtami", date: "2026-09-04" }, { name: "Muharram", date: "2026-06-26" },
+            { name: "Gandhi Jayanti", date: "2026-10-02" }, { name: "Dussehra (Vijayadashami)", date: "2026-10-20" },
+            { name: "Diwali (Deepavali)", date: "2026-11-09" }, { name: "MP Foundation Day", date: "2026-11-01" },
+            { name: "Guru Nanak Jayanti", date: "2026-11-04" }, { name: "Christmas Day", date: "2026-12-25" }
+        ];
+
         const defaultState = {
-            totalXP: 0,
-            todayXP: 0,
-            weekXP: 0,
-            streak: 0,
-            lastCheckIn: null,
-            milestonesInitialized: false,
+            totalXP: 0, todayXP: 0, weekXP: 0, streak: 0, lastCheckIn: null, milestonesInitialized: false, customHolidays: [],
             quotes: [
                 { text: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
                 { text: "It always seems impossible until it's done.", author: "Nelson Mandela" },
@@ -739,14 +783,10 @@
             ],
             tags: ["React.js", "Node.js", "Python/AI", "Cloud (AWS)", "Java Spring"],
             milestones: [
-                { label: "Semester 1", connectedTo: 0 },
-                { label: "Semester 2", connectedTo: 1 },
-                { label: "Semester 3", connectedTo: 2 },
-                { label: "Semester 4", connectedTo: 3 },
-                { label: "Semester 5", connectedTo: 4 },
-                { label: "Semester 6", connectedTo: 5 },
-                { label: "Semester 7", connectedTo: 6 },
-                { label: "Semester 8", connectedTo: 7 }
+                { label: "Semester 1", connectedTo: 0 }, { label: "Semester 2", connectedTo: 1 },
+                { label: "Semester 3", connectedTo: 2 }, { label: "Semester 4", connectedTo: 3 },
+                { label: "Semester 5", connectedTo: 4 }, { label: "Semester 6", connectedTo: 5 },
+                { label: "Semester 7", connectedTo: 6 }, { label: "Semester 8", connectedTo: 7 }
             ],
             todayTasks: [],
             upcomingGoals: [
@@ -756,191 +796,127 @@
             ],
             hackathons: [],
             routines: [
-                {
-                    tabName: "Everyday",
-                    title: "🌅 The Morning Routine (Same Every Day)",
-                    subtitle: "",
-                    schedule: [
-                        { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath, and get ready." },
-                        { time: "06:00 AM - 08:00 AM (2 hours)", task: "Supreme 4.0 (C++ Learning)" },
-                        { time: "08:00 AM - 09:30 AM", task: "Breakfast, relax a bit, and get your bag ready for college." }
-                    ]
-                },
-                {
-                    tabName: "Mon & Wed",
-                    title: "📅 Monday & Wednesday",
-                    subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.",
-                    schedule: [
-                        { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
-                        { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
-                        { time: "06:00 PM - 07:00 PM", task: "Travel back to your room. Unwind. Don't look at code right now." },
-                        { time: "07:00 PM - 08:00 PM", task: "Dinner & Chill." },
-                        { time: "08:00 PM - 09:30 PM (1.5 hours)", task: "College Work / Assignments. Finish whatever homework or practical files are due tomorrow." },
-                        { time: "09:30 PM - 11:00 PM (1.5 hours)", task: "Coding Practice / Project Work. Type out the C++ code you learned in the morning. If you have energy, work on our 'Smart Presentation Remote' website." },
-                        { time: "11:00 PM", task: "Sleep." }
-                    ]
-                },
-                {
-                    tabName: "Tue & Fri",
-                    title: "📅 Tuesday & Friday",
-                    subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.",
-                    schedule: [
-                        { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
-                        { time: "10:00 AM - 01:00 PM", task: "College." },
-                        { time: "01:00 PM - 02:30 PM", task: "Travel back, lunch, and take a power nap if you want." },
-                        { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to build the Smart Presentation Remote with me. We will write code, test websites, and plan the hardware." },
-                        { time: "05:00 PM - 07:00 PM", task: "Free time! Play video games, watch anime, or play chess. You earned it." },
-                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                        { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
-                        { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
-                    ]
-                },
-                {
-                    tabName: "Thursday",
-                    title: "📅 Thursday",
-                    subtitle: "Medium Day: 11 AM - 5 PM",
-                    schedule: [
-                        { time: "09:30 AM - 11:00 AM", task: "Travel / Relax." },
-                        { time: "11:00 AM - 05:00 PM", task: "College." },
-                        { time: "05:00 PM - 07:00 PM", task: "Travel back, unwind, finish college assignments." },
-                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                        { time: "08:00 PM - 10:00 PM (2 hours)", task: "Coding Practice / Project Work." },
-                        { time: "10:00 PM - 11:00 PM", task: "Free time / Anime / Chill." }
-                    ]
-                },
-                {
-                    tabName: "Saturday",
-                    title: "📅 Saturday",
-                    subtitle: "The 'Deep Work' Day. Since there are no college classes, this is the day you build the future. This is your Iron Man workshop day.",
-                    schedule: [
-                        { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath." },
-                        { time: "06:00 AM - 08:30 AM (2.5 hours)", task: "Supreme 4.0 (C++ Heavy Lifting). Since you have more time, use Saturdays to clear backlogs, revise tough concepts from Love Babbar's lectures, and solve extra coding problems." },
-                        { time: "08:30 AM - 09:30 AM", task: "Breakfast and relax." },
-                        { time: "09:30 AM - 01:00 PM (3.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to work on the Smart Presentation Remote. We will write code, test the ESP32, and build the website. 3.5 hours of uninterrupted project time every Saturday means you will make massive progress." },
-                        { time: "01:00 PM - 02:30 PM", task: "Lunch and a power nap." },
-                        { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "College Backlog. Finish any practical files, assignments, or pending work for Monday and Tuesday. Get it all out of the way now so Sunday is free." },
-                        { time: "05:00 PM - 07:00 PM", task: "Free Time! Play video games, watch anime, or play chess. You earned a break." },
-                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                        { time: "08:00 PM - 10:00 PM", task: "Light coding practice or just chill out." },
-                        { time: "10:00 PM - 11:00 PM", task: "Wind down and sleep." }
-                    ]
-                },
-                {
-                    tabName: "Sunday",
-                    title: "📅 Sunday",
-                    subtitle: "The 'Recharge & Reset' Day. Sunday is about resting your brain and preparing for the week ahead. No heavy new learning today.",
-                    schedule: [
-                        { time: "05:00 AM - 06:00 AM", task: "Wake up, bath, etc." },
-                        { time: "06:00 AM - 08:00 AM (2 hours)", task: "C++ Revision Only. Do NOT learn a new topic today. Just review what you learned from Monday to Saturday. Look at your notes, make sure you understand everything." },
-                        { time: "08:00 AM - 10:30 AM", task: "Long breakfast, watch an anime episode, relax." },
-                        { time: "10:30 AM - 01:00 PM", task: "Plan the Week. Pack your bag, check your college timetable for Monday, and organize your desk. Make a small list of what C++ topics you will cover next week." },
-                        { time: "01:00 PM - 02:30 PM", task: "Lunch and nap." },
-                        { time: "02:30 PM - 05:00 PM", task: "Completely Free. Go out, watch a movie, play chess online, do whatever makes you happy. No coding, no college work." },
-                        { time: "05:00 PM - 07:00 PM", task: "Free time / Hobbies." },
-                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
-                        { time: "08:00 PM - 10:00 PM", task: "Free time." },
-                        { time: "10:00 PM - 11:00 PM", task: "Sleep early and get ready to crush Monday." }
-                    ]
-                }
+                { tabName: "Everyday", title: "🌅 The Morning Routine (Same Every Day)", subtitle: "", schedule: [
+                    { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath, and get ready." },
+                    { time: "06:00 AM - 08:00 AM (2 hours)", task: "Supreme 4.0 (C++ Learning)" },
+                    { time: "08:00 AM - 09:30 AM", task: "Breakfast, relax a bit, and get your bag ready for college." }
+                ]},
+                { tabName: "Mon & Wed", title: "📅 Monday & Wednesday", subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.", schedule: [
+                    { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
+                    { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
+                    { time: "06:00 PM - 07:00 PM", task: "Travel back to your room. Unwind. Don't look at code right now." },
+                    { time: "07:00 PM - 08:00 PM", task: "Dinner & Chill." },
+                    { time: "08:00 PM - 09:30 PM (1.5 hours)", task: "College Work / Assignments. Finish whatever homework or practical files are due tomorrow." },
+                    { time: "09:30 PM - 11:00 PM (1.5 hours)", task: "Coding Practice / Project Work. Type out the C++ code you learned in the morning. If you have energy, work on our 'Smart Presentation Remote' website." },
+                    { time: "11:00 PM", task: "Sleep." }
+                ]},
+                { tabName: "Tue & Fri", title: "📅 Tuesday & Friday", subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.", schedule: [
+                    { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
+                    { time: "10:00 AM - 01:00 PM", task: "College." },
+                    { time: "01:00 PM - 02:30 PM", task: "Travel back, lunch, and take a power nap if you want." },
+                    { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to build the Smart Presentation Remote with me. We will write code, test websites, and plan the hardware." },
+                    { time: "05:00 PM - 07:00 PM", task: "Free time! Play video games, watch anime, or play chess. You earned it." },
+                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                    { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
+                    { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
+                ]},
+                { tabName: "Thursday", title: "📅 Thursday", subtitle: "Medium Day: 11 AM - 5 PM", schedule: [
+                    { time: "09:30 AM - 11:00 AM", task: "Travel / Relax." },
+                    { time: "11:00 AM - 05:00 PM", task: "College." },
+                    { time: "05:00 PM - 07:00 PM", task: "Travel back, unwind, finish college assignments." },
+                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                    { time: "08:00 PM - 10:00 PM (2 hours)", task: "Coding Practice / Project Work." },
+                    { time: "10:00 PM - 11:00 PM", task: "Free time / Anime / Chill." }
+                ]},
+                { tabName: "Saturday", title: "📅 Saturday", subtitle: "The 'Deep Work' Day. Since there are no college classes, this is the day you build the future. This is your Iron Man workshop day.", schedule: [
+                    { time: "05:00 AM - 06:00 AM", task: "Wake up, freshen up, take a bath." },
+                    { time: "06:00 AM - 08:30 AM (2.5 hours)", task: "Supreme 4.0 (C++ Heavy Lifting). Since you have more time, use Saturdays to clear backlogs, revise tough concepts from Love Babbar's lectures, and solve extra coding problems." },
+                    { time: "08:30 AM - 09:30 AM", task: "Breakfast and relax." },
+                    { time: "09:30 AM - 01:00 PM (3.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to work on the Smart Presentation Remote. We will write code, test the ESP32, and build the website. 3.5 hours of uninterrupted project time every Saturday means you will make massive progress." },
+                    { time: "01:00 PM - 02:30 PM", task: "Lunch and a power nap." },
+                    { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "College Backlog. Finish any practical files, assignments, or pending work for Monday and Tuesday. Get it all out of the way now so Sunday is free." },
+                    { time: "05:00 PM - 07:00 PM", task: "Free Time! Play video games, watch anime, or play chess. You earned a break." },
+                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                    { time: "08:00 PM - 10:00 PM", task: "Light coding practice or just chill out." },
+                    { time: "10:00 PM - 11:00 PM", task: "Wind down and sleep." }
+                ]},
+                { tabName: "Sunday", title: "📅 Sunday", subtitle: "The 'Recharge & Reset' Day. Sunday is about resting your brain and preparing for the week ahead. No heavy new learning today.", schedule: [
+                    { time: "05:00 AM - 06:00 AM", task: "Wake up, bath, etc." },
+                    { time: "06:00 AM - 08:00 AM (2 hours)", task: "C++ Revision Only. Do NOT learn a new topic today. Just review what you learned from Monday to Saturday. Look at your notes, make sure you understand everything." },
+                    { time: "08:00 AM - 10:30 AM", task: "Long breakfast, watch an anime episode, relax." },
+                    { time: "10:30 AM - 01:00 PM", task: "Plan the Week. Pack your bag, check your college timetable for Monday, and organize your desk. Make a small list of what C++ topics you will cover next week." },
+                    { time: "01:00 PM - 02:30 PM", task: "Lunch and nap." },
+                    { time: "02:30 PM - 05:00 PM", task: "Completely Free. Go out, watch a movie, play chess online, do whatever makes you happy. No coding, no college work." },
+                    { time: "05:00 PM - 07:00 PM", task: "Free time / Hobbies." },
+                    { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                    { time: "08:00 PM - 10:00 PM", task: "Free time." },
+                    { time: "10:00 PM - 11:00 PM", task: "Sleep early and get ready to crush Monday." }
+                ]}
             ],
             roadmap: [
-                {
-                    title: "Semester 1 (Aug 2025 - Dec 2025)",
-                    focus: "Focus: C++ Basics & College Adaptation",
-                    months: [
-                        { month: "August 2025", goals: [ {text: "College starts!", done: false}, {text: "Buy Supreme 4.0", done: false}, {text: "Setup Dev Environment", done: false} ] },
-                        { month: "September 2025", goals: [ {text: "C++ Basics: Variables, Conditions, Loops", done: false}, {text: "Practice CodeChef", done: false}, {text: "Attend Classes & Make Notes", done: false} ] },
-                        { month: "October 2025", goals: [ {text: "Learn Functions & Arrays", done: false}, {text: "Calculator Project", done: false}, {text: "Mid-term Prep", done: false} ] },
-                        { month: "November 2025", goals: [ {text: "Learn Strings & Pointers", done: false}, {text: "CodeChef Contest", done: false}, {text: "Target: 30+ Solved", done: false} ] },
-                        { month: "December 2025", goals: [ {text: "Number Guessing Game Project", done: false}, {text: "End-term Exams", done: false}, {text: "Target GPA: 8.5+", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 2 (Jan 2026 - May 2026)",
-                    focus: "Focus: OOPs, DSA & SUPREME 4.0",
-                    months: [
-                        { month: "January 2026", goals: [ {text: "SUPREME 4.0: OOPs Basics", done: false}, {text: "University Reopening", done: false}, {text: "Maintain Attendance", done: false} ] },
-                        { month: "February 2026", goals: [ {text: "Advanced OOPs & Project", done: false}, {text: "LeetCode/CodeChef Practice", done: false} ] },
-                        { month: "March 2026", goals: [ {text: "DSA Introduction", done: false}, {text: "Start Codeforces", done: false} ] },
-                        { month: "April 2026", goals: [ {text: "Recursion & Sorting", done: false}, {text: "Mid-sem Exam Prep", done: false} ] },
-                        { month: "May 2026", goals: [ {text: "Linked Lists", done: false}, {text: "Revise & App Dev", done: false}, {text: "Target: Cumulative GPA 8.5+", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 3 (Aug 2026 - Dec 2026)",
-                    focus: "Focus: Advanced DSA & Web Basics",
-                    months: [
-                        { month: "August 2026", goals: [ {text: "Advanced DSA: Trees & Graphs", done: false}, {text: "HTML & CSS Basics", done: false} ] },
-                        { month: "September 2026", goals: [ {text: "JavaScript Basics", done: false}, {text: "Personal Project Setup", done: false} ] },
-                        { month: "October 2026", goals: [ {text: "DBMS Fundamentals", done: false}, {text: "Algorithm Practice", done: false} ] },
-                        { month: "November 2026", goals: [ {text: "Backend Integration", done: false}, {text: "DSA Contests", done: false} ] },
-                        { month: "December 2026", goals: [ {text: "Final Revisions & Exams", done: false}, {text: "Target: 400+ Total Solved", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 4 (Jan 2027 - May 2027)",
-                    focus: "Focus: DP, Web Dev & Projects",
-                    months: [
-                        { month: "January 2027", goals: [ {text: "DSA: Dynamic Programming", done: false}, {text: "Node.js & Express.js", done: false} ] },
-                        { month: "February 2027", goals: [ {text: "E-commerce Frontend Project", done: false}, {text: "LeetCode Hard Problems", done: false} ] },
-                        { month: "March 2027", goals: [ {text: "Blog Platform Full Stack", done: false}, {text: "Mock Interviews", done: false} ] },
-                        { month: "April 2027", goals: [ {text: "Internship Applications", done: false}, {text: "University Exams", done: false} ] },
-                        { month: "May 2027", goals: [ {text: "Target: 600+ Solved", done: false}, {text: "Project Deployment", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 5 (Aug 2027 - Dec 2027)",
-                    focus: "Focus: System Design & Internship Season",
-                    months: [
-                        { month: "August 2027", goals: [ {text: "Advanced DSA: Hard problems daily", done: false}, {text: "System Design Basics", done: false}, {text: "Personalized deep dives", done: false} ] },
-                        { month: "September 2027", goals: [ {text: "INTERNSHIP SEASON BEGINS!", done: false}, {text: "Update Resume", done: false}, {text: "Apply to Microsoft, Google, etc.", done: false} ] },
-                        { month: "October 2027", goals: [ {text: "Interview Prep (Mock Interviews)", done: false}, {text: "Codeforces Contests", done: false}, {text: "Network on LinkedIn", done: false} ] },
-                        { month: "November 2027", goals: [ {text: "Attend Internship Interviews", done: false}, {text: "Backup: Research Projects", done: false} ] },
-                        { month: "December 2027", goals: [ {text: "Internship Results", done: false}, {text: "Prep for Semester Exams", done: false}, {text: "Plan for next semester", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 6 (Jan 2028 - May 2028)",
-                    focus: "Focus: Internships or Heavy Projects",
-                    months: [
-                        { month: "January 2028", goals: [ {text: "Got Internship: Prep role/tech stack", done: false}, {text: "No Internship: Open Source & Small Cos", done: false}, {text: "DSA & Flagship Project", done: false} ] },
-                        { month: "February 2028", goals: [ {text: "Summer Internship OR Self-Project", done: false}, {text: "Build SaaS App Clones / AI Tools", done: false} ] },
-                        { month: "March 2028", goals: [ {text: "Open Source Contributions", done: false}, {text: "Write Tech Blogs", done: false} ] },
-                        { month: "April 2028", goals: [ {text: "LinkedIn Networking", done: false}, {text: "Project Completion", done: false} ] },
-                        { month: "May 2028", goals: [ {text: "Internship/Project Summary", done: false}, {text: "Exams & Reflection", done: false}, {text: "Prep for Aug Placement Season", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 7 (Aug 2028 - Dec 2028)",
-                    focus: "Focus: PLACEMENT SEASON!",
-                    months: [
-                        { month: "August 2028", goals: [ {text: "Register for Campus Placements", done: false}, {text: "Optimize Resume", done: false}, {text: "Company List Released", done: false}, {text: "Start Applying", done: false} ] },
-                        { month: "September 2028", goals: [ {text: "Placement Peak: Multiple Companies", done: false}, {text: "Continuous Interviews", done: false}, {text: "Analyze Rejections", done: false} ] },
-                        { month: "October 2028", goals: [ {text: "Keep Interviewing", done: false}, {text: "Networking with Alumni", done: false} ] },
-                        { month: "November 2028", goals: [ {text: "Final Placement Drives", done: false}, {text: "Backup Plans", done: false} ] },
-                        { month: "December 2028", goals: [ {text: "Placed: Celebrate & Keep Learning", done: false}, {text: "Unplaced: Keep trying, Referrals", done: false}, {text: "Consider Higher Studies (GATE/GRE)", done: false} ] }
-                    ]
-                },
-                {
-                    title: "Semester 8 (Jan 2029 - May 2029)",
-                    focus: "Focus: Final Year Project & Graduation",
-                    months: [
-                        { month: "January 2029", goals: [ {text: "Final Year Project (FYP) Dev", done: false}, {text: "Placed: Learn job skills", done: false}, {text: "Unplaced: Apply & strengthen resume", done: false} ] },
-                        { month: "February 2029", goals: [ {text: "FYP Documentation", done: false}, {text: "Freelance Projects", done: false}, {text: "Consider GATE/GRE", done: false} ] },
-                        { month: "March 2029", goals: [ {text: "FYP Presentation Prep", done: false}, {text: "Deploy Project", done: false} ] },
-                        { month: "April 2029", goals: [ {text: "FYP Final Defense", done: false}, {text: "Clear Backlogs", done: false}, {text: "End Semester Exams", done: false} ] },
-                        { month: "May 2029", goals: [ {text: "Graduation Day!", done: false}, {text: "Receive Degree", done: false}, {text: "Farewell Campus", done: false} ] }
-                    ]
-                }
+                { title: "Semester 1 (Aug 2025 - Dec 2025)", focus: "Focus: C++ Basics & College Adaptation", months: [
+                    { month: "August 2025", goals: [ {text: "College starts!", done: false}, {text: "Buy Supreme 4.0", done: false}, {text: "Setup Dev Environment", done: false} ] },
+                    { month: "September 2025", goals: [ {text: "C++ Basics: Variables, Conditions, Loops", done: false}, {text: "Practice CodeChef", done: false}, {text: "Attend Classes & Make Notes", done: false} ] },
+                    { month: "October 2025", goals: [ {text: "Learn Functions & Arrays", done: false}, {text: "Calculator Project", done: false}, {text: "Mid-term Prep", done: false} ] },
+                    { month: "November 2025", goals: [ {text: "Learn Strings & Pointers", done: false}, {text: "CodeChef Contest", done: false}, {text: "Target: 30+ Solved", done: false} ] },
+                    { month: "December 2025", goals: [ {text: "Number Guessing Game Project", done: false}, {text: "End-term Exams", done: false}, {text: "Target GPA: 8.5+", done: false} ] }
+                ]},
+                { title: "Semester 2 (Jan 2026 - May 2026)", focus: "Focus: OOPs, DSA & SUPREME 4.0", months: [
+                    { month: "January 2026", goals: [ {text: "SUPREME 4.0: OOPs Basics", done: false}, {text: "University Reopening", done: false}, {text: "Maintain Attendance", done: false} ] },
+                    { month: "February 2026", goals: [ {text: "Advanced OOPs & Project", done: false}, {text: "LeetCode/CodeChef Practice", done: false} ] },
+                    { month: "March 2026", goals: [ {text: "DSA Introduction", done: false}, {text: "Start Codeforces", done: false} ] },
+                    { month: "April 2026", goals: [ {text: "Recursion & Sorting", done: false}, {text: "Mid-sem Exam Prep", done: false} ] },
+                    { month: "May 2026", goals: [ {text: "Linked Lists", done: false}, {text: "Revise & App Dev", done: false}, {text: "Target: Cumulative GPA 8.5+", done: false} ] }
+                ]},
+                { title: "Semester 3 (Aug 2026 - Dec 2026)", focus: "Focus: Advanced DSA & Web Basics", months: [
+                    { month: "August 2026", goals: [ {text: "Advanced DSA: Trees & Graphs", done: false}, {text: "HTML & CSS Basics", done: false} ] },
+                    { month: "September 2026", goals: [ {text: "JavaScript Basics", done: false}, {text: "Personal Project Setup", done: false} ] },
+                    { month: "October 2026", goals: [ {text: "DBMS Fundamentals", done: false}, {text: "Algorithm Practice", done: false} ] },
+                    { month: "November 2026", goals: [ {text: "Backend Integration", done: false}, {text: "DSA Contests", done: false} ] },
+                    { month: "December 2026", goals: [ {text: "Final Revisions & Exams", done: false}, {text: "Target: 400+ Total Solved", done: false} ] }
+                ]},
+                { title: "Semester 4 (Jan 2027 - May 2027)", focus: "Focus: DP, Web Dev & Projects", months: [
+                    { month: "January 2027", goals: [ {text: "DSA: Dynamic Programming", done: false}, {text: "Node.js & Express.js", done: false} ] },
+                    { month: "February 2027", goals: [ {text: "E-commerce Frontend Project", done: false}, {text: "LeetCode Hard Problems", done: false} ] },
+                    { month: "March 2027", goals: [ {text: "Blog Platform Full Stack", done: false}, {text: "Mock Interviews", done: false} ] },
+                    { month: "April 2027", goals: [ {text: "Internship Applications", done: false}, {text: "University Exams", done: false} ] },
+                    { month: "May 2027", goals: [ {text: "Target: 600+ Solved", done: false}, {text: "Project Deployment", done: false} ] }
+                ]},
+                { title: "Semester 5 (Aug 2027 - Dec 2027)", focus: "Focus: System Design & Internship Season", months: [
+                    { month: "August 2027", goals: [ {text: "Advanced DSA: Hard problems daily", done: false}, {text: "System Design Basics", done: false}, {text: "Personalized deep dives", done: false} ] },
+                    { month: "September 2027", goals: [ {text: "INTERNSHIP SEASON BEGINS!", done: false}, {text: "Update Resume", done: false}, {text: "Apply to Microsoft, Google, etc.", done: false} ] },
+                    { month: "October 2027", goals: [ {text: "Interview Prep (Mock Interviews)", done: false}, {text: "Codeforces Contests", done: false}, {text: "Network on LinkedIn", done: false} ] },
+                    { month: "November 2027", goals: [ {text: "Attend Internship Interviews", done: false}, {text: "Backup: Research Projects", done: false} ] },
+                    { month: "December 2027", goals: [ {text: "Internship Results", done: false}, {text: "Prep for Semester Exams", done: false}, {text: "Plan for next semester", done: false} ] }
+                ]},
+                { title: "Semester 6 (Jan 2028 - May 2028)", focus: "Focus: Internships or Heavy Projects", months: [
+                    { month: "January 2028", goals: [ {text: "Got Internship: Prep role/tech stack", done: false}, {text: "No Internship: Open Source & Small Cos", done: false}, {text: "DSA & Flagship Project", done: false} ] },
+                    { month: "February 2028", goals: [ {text: "Summer Internship OR Self-Project", done: false}, {text: "Build SaaS App Clones / AI Tools", done: false} ] },
+                    { month: "March 2028", goals: [ {text: "Open Source Contributions", done: false}, {text: "Write Tech Blogs", done: false} ] },
+                    { month: "April 2028", goals: [ {text: "LinkedIn Networking", done: false}, {text: "Project Completion", done: false} ] },
+                    { month: "May 2028", goals: [ {text: "Internship/Project Summary", done: false}, {text: "Exams & Reflection", done: false}, {text: "Prep for Aug Placement Season", done: false} ] }
+                ]},
+                { title: "Semester 7 (Aug 2028 - Dec 2028)", focus: "Focus: PLACEMENT SEASON!", months: [
+                    { month: "August 2028", goals: [ {text: "Register for Campus Placements", done: false}, {text: "Optimize Resume", done: false}, {text: "Company List Released", done: false}, {text: "Start Applying", done: false} ] },
+                    { month: "September 2028", goals: [ {text: "Placement Peak: Multiple Companies", done: false}, {text: "Continuous Interviews", done: false}, {text: "Analyze Rejections", done: false} ] },
+                    { month: "October 2028", goals: [ {text: "Keep Interviewing", done: false}, {text: "Networking with Alumni", done: false} ] },
+                    { month: "November 2028", goals: [ {text: "Final Placement Drives", done: false}, {text: "Backup Plans", done: false} ] },
+                    { month: "December 2028", goals: [ {text: "Placed: Celebrate & Keep Learning", done: false}, {text: "Unplaced: Keep trying, Referrals", done: false}, {text: "Consider Higher Studies (GATE/GRE)", done: false} ] }
+                ]},
+                { title: "Semester 8 (Jan 2029 - May 2029)", focus: "Focus: Final Year Project & Graduation", months: [
+                    { month: "January 2029", goals: [ {text: "Final Year Project (FYP) Dev", done: false}, {text: "Placed: Learn job skills", done: false}, {text: "Unplaced: Apply & strengthen resume", done: false} ] },
+                    { month: "February 2029", goals: [ {text: "FYP Documentation", done: false}, {text: "Freelance Projects", done: false}, {text: "Consider GATE/GRE", done: false} ] },
+                    { month: "March 2029", goals: [ {text: "FYP Presentation Prep", done: false}, {text: "Deploy Project", done: false} ] },
+                    { month: "April 2029", goals: [ {text: "FYP Final Defense", done: false}, {text: "Clear Backlogs", done: false}, {text: "End Semester Exams", done: false} ] },
+                    { month: "May 2029", goals: [ {text: "Graduation Day!", done: false}, {text: "Receive Degree", done: false}, {text: "Farewell Campus", done: false} ] }
+                ]}
             ],
             pastReviews: [],
             projectBlogs: []
         };
 
-        // --- Global State ---
         let state = JSON.parse(JSON.stringify(defaultState));
 
-        // --- Cloud Save Logic ---
         function saveState() {
             if (auth.currentUser) {
                 setDoc(doc(db, "appData", "mainState"), state).catch(e => console.error("Firestore save error: ", e));
@@ -949,7 +925,6 @@
             }
         }
 
-        // --- Cloud Load Logic (Real-time) ---
         const stateDocRef = doc(db, "appData", "mainState");
         onSnapshot(stateDocRef, (docSnap) => {
             if (docSnap.exists()) {
@@ -957,25 +932,17 @@
                 state = { ...defaultState, ...state };
                 state.quotes = defaultState.quotes; 
                 state.tags = Array.isArray(state.tags) ? state.tags : defaultState.tags;
-                
-                if (!state.milestonesInitialized) {
-                    state.milestones = defaultState.milestones;
-                    state.milestonesInitialized = true;
-                }
+                if (!state.milestonesInitialized) { state.milestones = defaultState.milestones; state.milestonesInitialized = true; }
                 state.milestones = Array.isArray(state.milestones) ? state.milestones : defaultState.milestones;
-                
                 state.todayTasks = Array.isArray(state.todayTasks) ? state.todayTasks : [];
                 state.upcomingGoals = Array.isArray(state.upcomingGoals) ? state.upcomingGoals : defaultState.upcomingGoals;
                 state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
-                
                 state.routines = Array.isArray(state.routines) ? state.routines : defaultState.routines;
-                if (state.routines.length > 0 && !state.routines[0].schedule) {
-                    state.routines = defaultState.routines; 
-                }
-                
+                if (state.routines.length > 0 && !state.routines[0].schedule) { state.routines = defaultState.routines; }
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
                 state.projectBlogs = Array.isArray(state.projectBlogs) ? state.projectBlogs : [];
+                state.customHolidays = Array.isArray(state.customHolidays) ? state.customHolidays : [];
                 state.totalXP = typeof state.totalXP === 'number' ? state.totalXP : 0;
                 state.todayXP = typeof state.todayXP === 'number' ? state.todayXP : 0;
                 state.weekXP = typeof state.weekXP === 'number' ? state.weekXP : 0;
@@ -985,18 +952,14 @@
                 const localState = localStorage.getItem('letsCrackItLocal');
                 if (localState) {
                     state = JSON.parse(localState);
-                    if (!state.milestonesInitialized) {
-                        state.milestones = defaultState.milestones;
-                        state.milestonesInitialized = true;
-                    }
-                } else {
-                    saveState();
-                }
+                    if (!state.milestonesInitialized) { state.milestones = defaultState.milestones; state.milestonesInitialized = true; }
+                    if (!Array.isArray(state.customHolidays)) state.customHolidays = [];
+                } else { saveState(); }
             }
             initializeAll();
         });
 
-        // --- Auth Logic ---
+        // Auth Logic
         const loginBtn = document.getElementById('loginBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const loginOverlay = document.getElementById('loginOverlay');
@@ -1010,10 +973,8 @@
         loginSubmitBtn.addEventListener('click', () => {
             const email = document.getElementById('loginEmail').value;
             const pass = document.getElementById('loginPassword').value;
-            
             loginSubmitBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Checking...`;
             loginSubmitBtn.disabled = true;
-
             signInWithEmailAndPassword(auth, email, pass)
                 .then(() => {
                     loginSubmitBtn.classList.add('success');
@@ -1034,9 +995,7 @@
         });
 
         logoutBtn.addEventListener('click', () => {
-            signOut(auth).then(() => {
-                alert("Logged out. You are now in read-only mode.");
-            });
+            signOut(auth).then(() => { alert("Logged out. You are now in read-only mode."); });
         });
 
         onAuthStateChanged(auth, (user) => {
@@ -1051,22 +1010,17 @@
             }
         });
 
-        // --- Export & Import Logic ---
+        // Export & Import
         document.getElementById('exportBtn').addEventListener('click', () => {
             const dataStr = JSON.stringify(state, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `lets_crack_it_backup.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            a.href = url; a.download = `lets_crack_it_backup.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
         });
 
-        document.getElementById('importBtn').addEventListener('click', () => {
-            document.getElementById('importFile').click();
-        });
+        document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
 
         document.getElementById('importFile').addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -1074,18 +1028,18 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
-                    const importedData = JSON.parse(e.target.result);
-                    state = { ...defaultState, ...importedData };
-                    saveState();
-                    initializeAll();
-                    alert("Data imported successfully!");
-                } catch (err) {
-                    alert("Error importing file.");
-                }
+                    state = { ...defaultState, ...JSON.parse(e.target.result) };
+                    saveState(); initializeAll(); alert("Data imported successfully!");
+                } catch (err) { alert("Error importing file."); }
             };
-            reader.readAsText(file);
-            event.target.value = ''; 
+            reader.readAsText(file); event.target.value = ''; 
         });
+
+        const levelIcons = {
+            "Beginner": "fa-seedling", "Learner": "fa-leaf", "Coder": "fa-code",
+            "Developer": "fa-laptop-code", "Expert": "fa-user-astronaut",
+            "Professional": "fa-briefcase", "Master": "fa-crown"
+        };
 
         const levels = [
             { name: "Beginner", min: 0, max: 0, next: "Learner", nextMax: 500 },
@@ -1099,43 +1053,33 @@
 
         function getLevelData(xp) {
             if (xp <= 0) return levels[0];
-            for(let i = 1; i < levels.length; i++) {
-                if(xp > levels[i-1].max && xp <= levels[i].max) return levels[i];
-            }
+            for(let i = 1; i < levels.length; i++) { if(xp > levels[i-1].max && xp <= levels[i].max) return levels[i]; }
             return levels[levels.length - 1];
         }
 
-        // --- Levels Modal Logic ---
+        // Levels Modal
         const levelsOverlay = document.getElementById('levelsOverlay');
         const levelsList = document.getElementById('levelsList');
         const levelsCloseBtn = document.getElementById('levelsCloseBtn');
         
-        document.getElementById('navLevel').addEventListener('click', () => {
-            renderLevelsList();
-            levelsOverlay.classList.add('active');
-        });
-        document.getElementById('levelBadge').addEventListener('click', () => {
-            renderLevelsList();
-            levelsOverlay.classList.add('active');
-        });
+        document.getElementById('navLevel').addEventListener('click', () => { renderLevelsList(); levelsOverlay.classList.add('active'); });
+        document.getElementById('levelBadge').addEventListener('click', () => { renderLevelsList(); levelsOverlay.classList.add('active'); });
         levelsCloseBtn.addEventListener('click', () => levelsOverlay.classList.remove('active'));
         levelsOverlay.addEventListener('click', (e) => { if(e.target === levelsOverlay) levelsOverlay.classList.remove('active'); });
 
         function renderLevelsList() {
             levelsList.innerHTML = '';
             const currentLevelName = getLevelData(state.totalXP).name;
-            
             levels.forEach(l => {
                 let xpRange = '';
                 if (l.name === "Beginner") xpRange = "0 XP";
                 else if (l.name === "Master") xpRange = "15,000 - 30,000 XP";
                 else xpRange = `${l.min.toLocaleString()} - ${l.max.toLocaleString()} XP`;
-                
                 const isCurrent = l.name === currentLevelName;
-                
+                const icon = levelIcons[l.name] || 'fa-star';
                 const div = document.createElement('div');
                 div.style.cssText = `padding: 12px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; ${isCurrent ? 'color: var(--secondary-light); font-weight: 700;' : ''}`;
-                div.innerHTML = `<span><i class="fas fa-${isCurrent ? 'check-circle' : 'star'}" style="margin-right: 8px;"></i>${l.name}</span><span style="font-size: 13px;">${xpRange}</span>`;
+                div.innerHTML = `<span><i class="fas ${icon}" style="margin-right: 8px;"></i>${l.name}</span><span style="font-size: 13px;">${xpRange}</span>`;
                 levelsList.appendChild(div);
             });
         }
@@ -1143,35 +1087,16 @@
         function updateXPDisplay(xp) {
             const level = getLevelData(xp);
             let progressPercent = 0, nextLevelName = level.next, xpToNext = 0, displayMax = level.max;
-
-            if (level.name === "Beginner") {
-                progressPercent = (xp / level.nextMax) * 100; 
-                xpToNext = level.nextMax - xp;
-                displayMax = level.nextMax;
-            } else if (level.name === "Master") {
-                progressPercent = ((xp - level.min) / (level.max - level.min)) * 100;
-                if (xp >= level.max) progressPercent = 100;
-                xpToNext = Math.max(0, level.max - xp);
-                displayMax = level.max;
-                if (xp >= level.max) nextLevelName = "MAX";
-            } else {
-                const xpInLevel = xp - level.min;
-                const xpForNext = level.max - level.min;
-                progressPercent = (xpInLevel / xpForNext) * 100;
-                xpToNext = level.max - xp;
-                displayMax = level.max;
-            }
-
-            document.getElementById('levelBadge').innerHTML = `<i class="fas fa-seedling"></i> LEVEL: ${level.name.toUpperCase()}`;
+            if (level.name === "Beginner") { progressPercent = (xp / level.nextMax) * 100; xpToNext = level.nextMax - xp; displayMax = level.nextMax; }
+            else if (level.name === "Master") { progressPercent = ((xp - level.min) / (level.max - level.min)) * 100; if (xp >= level.max) progressPercent = 100; xpToNext = Math.max(0, level.max - xp); displayMax = level.max; if (xp >= level.max) nextLevelName = "MAX"; }
+            else { const xpInLevel = xp - level.min; const xpForNext = level.max - level.min; progressPercent = (xpInLevel / xpForNext) * 100; xpToNext = level.max - xp; displayMax = level.max; }
+            
+            const icon = levelIcons[level.name] || 'fa-seedling';
+            document.getElementById('levelBadge').innerHTML = `<i class="fas ${icon}"></i> LEVEL: ${level.name.toUpperCase()}`;
             document.getElementById('xpValue').innerText = xp.toLocaleString();
             document.getElementById('xpLabel').innerText = `${xp.toLocaleString()} / ${displayMax.toLocaleString()} XP`;
-            
-            if (level.name === "Master" && xp >= level.max) {
-                document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`;
-            } else {
-                document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`;
-            }
-
+            if (level.name === "Master" && xp >= level.max) { document.getElementById('levelProgressText').innerText = `Max Level Achieved! 🚀`; }
+            else { document.getElementById('levelProgressText').innerText = `Earn ${xpToNext.toLocaleString()} XP to reach ${nextLevelName}`; }
             document.getElementById('xpCircleWrapper').style.setProperty('--progress', progressPercent);
             document.getElementById('navXp').innerText = xp.toLocaleString();
             document.getElementById('navLevel').innerText = level.name;
@@ -1180,53 +1105,125 @@
             document.getElementById('navStreak').innerText = state.streak;
         }
 
-        // --- Attendance / Check-in Logic ---
+        // Holiday Logic
+        const holidayList = document.getElementById('holidayList');
+        
+        function getNextHolidays(limit = 5) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const upcoming = [];
+            let checkDate = new Date(today);
+
+            while (upcoming.length < limit) {
+                const dateStr = checkDate.toISOString().split('T')[0];
+                const day = checkDate.getDay(); // 0=Sun, 6=Sat
+                const isWeekend = (day === 0 || day === 6);
+                const mpHoliday = mpGovtHolidays.find(h => h.date === dateStr);
+                const customHoliday = state.customHolidays.find(h => h.date === dateStr);
+
+                let holidayName = null;
+                let isCustom = false;
+
+                if (customHoliday) {
+                    holidayName = customHoliday.name;
+                    isCustom = true;
+                } else if (mpHoliday) {
+                    holidayName = mpHoliday.name;
+                } else if (isWeekend) {
+                    holidayName = day === 0 ? "Sunday" : "Saturday";
+                }
+
+                if (holidayName) {
+                    upcoming.push({
+                        date: dateStr,
+                        name: holidayName,
+                        isCustom: isCustom
+                    });
+                }
+                checkDate.setDate(checkDate.getDate() + 1);
+                if (checkDate.getFullYear() > today.getFullYear() + 2) break;
+            }
+            return upcoming;
+        }
+
+        function renderHolidays() {
+            const holidays = getNextHolidays(5);
+            holidayList.innerHTML = holidays.map(h => {
+                const dateObj = new Date(h.date + 'T00:00:00');
+                const day = dateObj.getDate();
+                const month = dateObj.toLocaleString('default', { month: 'short' });
+                const dayName = dateObj.toLocaleString('default', { weekday: 'short' });
+                const isWeekend = h.name === "Sunday" || h.name === "Saturday";
+                
+                return `
+                    <div class="holiday-item">
+                        <div class="holiday-date">
+                            <div class="holiday-day">${day}</div>
+                            <div class="holiday-month">${month}</div>
+                        </div>
+                        <div class="holiday-info">
+                            <div class="holiday-name ${isWeekend ? 'weekend' : ''}">${h.name}</div>
+                            <div class="holiday-day-name">${dayName} ${h.isCustom ? '(College)' : ''}</div>
+                        </div>
+                        ${h.isCustom ? `<button class="holiday-delete" onclick="deleteCustomHoliday('${h.date}')"><i class="fas fa-trash"></i></button>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.deleteCustomHoliday = (date) => {
+            state.customHolidays = state.customHolidays.filter(h => h.date !== date);
+            saveState();
+            renderHolidays();
+        };
+
+        document.getElementById('addHolidayBtn').addEventListener('click', () => {
+            const name = prompt("Enter holiday name (e.g., College Foundation Day):");
+            if (!name) return;
+            const date = prompt("Enter date (YYYY-MM-DD format, e.g., 2025-09-15):");
+            if (!date) return;
+            const d = new Date(date);
+            if (!isNaN(d.getTime())) {
+                state.customHolidays.push({ name, date });
+                saveState();
+                renderHolidays();
+            } else {
+                alert("Invalid date format.");
+            }
+        });
+
+        // Check-in
         const checkInBtn = document.getElementById('checkInBtn');
         function updateCheckInBtn() {
             const today = new Date().toLocaleDateString();
             if (state.lastCheckIn === today) {
                 checkInBtn.innerHTML = `<i class="fas fa-check-circle"></i> Checked In Today!`;
-                checkInBtn.classList.add('done');
-                checkInBtn.disabled = true;
+                checkInBtn.classList.add('done'); checkInBtn.disabled = true;
             } else {
                 checkInBtn.innerHTML = `<i class="fas fa-calendar-check"></i> Daily Check-in`;
-                checkInBtn.classList.remove('done');
-                checkInBtn.disabled = false;
+                checkInBtn.classList.remove('done'); checkInBtn.disabled = false;
             }
         }
 
         checkInBtn.addEventListener('click', () => {
             const today = new Date().toLocaleDateString();
             if (state.lastCheckIn === today) return;
-
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
+            const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
             const yStr = yesterday.toLocaleDateString();
-
-            if (state.lastCheckIn === yStr) {
-                state.streak += 1;
-            } else {
-                state.streak = 1;
-            }
-
+            if (state.lastCheckIn === yStr) { state.streak += 1; } else { state.streak = 1; }
             state.lastCheckIn = today;
-            saveState();
-            updateXPDisplay(state.totalXP);
-            updateCheckInBtn();
-            alert(`Daily Check-in Successful! Current Streak: ${state.streak} days!`);
+            saveState(); updateXPDisplay(state.totalXP); updateCheckInBtn();
+            alert(`Daily Check-in Successful!\nCurrent Streak: ${state.streak} days!`);
         });
 
-        // --- DOM Elements ---
+        // DOM Elements
         const nav = document.getElementById('navbar');
         const tabs = document.querySelectorAll('.tab-btn');
         const sections = document.querySelectorAll('.content-section');
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-        });
+        window.addEventListener('scroll', () => { if (window.scrollY > 50) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); });
 
-        // --- Page Password Protection Logic ---
+        // Password Protection
         const pagePassOverlay = document.getElementById('pagePassOverlay');
         const pagePassInput = document.getElementById('pagePassInput');
         const pagePassSubmitBtn = document.getElementById('pagePassSubmitBtn');
@@ -1245,45 +1242,22 @@
             if (pass === '341003') {
                 sessionStorage.setItem('pagePassUnlocked', 'true');
                 pagePassOverlay.classList.remove('active');
-                if (pendingTabSwitch) {
-                    pendingTabSwitch.click(); 
-                    pendingTabSwitch = null;
-                }
-            } else {
-                alert("Incorrect password! Access denied.");
-                pagePassInput.value = '';
-            }
+                if (pendingTabSwitch) { pendingTabSwitch.click(); pendingTabSwitch = null; }
+            } else { alert("Incorrect password! Access denied."); pagePassInput.value = ''; }
         });
 
-        pagePassCancelBtn.addEventListener('click', () => {
-            pagePassOverlay.classList.remove('active');
-            pendingTabSwitch = null;
-        });
-
-        pagePassOverlay.addEventListener('click', (e) => { 
-            if(e.target === pagePassOverlay) {
-                pagePassOverlay.classList.remove('active');
-                pendingTabSwitch = null;
-            }
-        });
-
-        pagePassInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') pagePassSubmitBtn.click();
-        });
+        pagePassCancelBtn.addEventListener('click', () => { pagePassOverlay.classList.remove('active'); pendingTabSwitch = null; });
+        pagePassOverlay.addEventListener('click', (e) => { if(e.target === pagePassOverlay) { pagePassOverlay.classList.remove('active'); pendingTabSwitch = null; } });
+        pagePassInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') pagePassSubmitBtn.click(); });
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 const targetTab = tab.dataset.tab;
-                
                 if ((targetTab === 'projectBlogs' || targetTab === 'roadmap') && !auth.currentUser) {
-                    if (sessionStorage.getItem('pagePassUnlocked') !== 'true') {
-                        requestPagePass(tab);
-                        return; 
-                    }
+                    if (sessionStorage.getItem('pagePassUnlocked') !== 'true') { requestPagePass(tab); return; }
                 }
-
                 tabs.forEach(t => t.classList.remove('active'));
-                sections.forEach(s => s.classList.remove('active')); // Fixed typo here
+                sections.forEach(s => s.classList.remove('active')); 
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.tab).classList.add('active');
             });
@@ -1295,7 +1269,7 @@
             document.getElementById('quoteAuthor').textContent = random.author;
         });
 
-        // --- Specialization Tags ---
+        // Specialization Tags
         const tagsContainer = document.getElementById('tagsContainer');
         const editSpecBtn = document.getElementById('editSpecBtn');
         const addTagGroup = document.getElementById('addTagGroup');
@@ -1315,38 +1289,25 @@
                 });
                 tagsContainer.appendChild(btn);
             });
-
             if (specEditMode) {
                 document.querySelectorAll('.tag-remove').forEach(span => {
                     span.addEventListener('click', (e) => {
                         e.stopPropagation();
                         const tagToRemove = span.dataset.tag;
                         state.tags = state.tags.filter(t => t !== tagToRemove);
-                        saveState();
-                        renderTags();
+                        saveState(); renderTags();
                     });
                 });
             }
         }
 
-        editSpecBtn.addEventListener('click', () => {
-            specEditMode = !specEditMode;
-            editSpecBtn.classList.toggle('active');
-            addTagGroup.classList.toggle('hidden');
-            renderTags();
-        });
-
+        editSpecBtn.addEventListener('click', () => { specEditMode = !specEditMode; editSpecBtn.classList.toggle('active'); addTagGroup.classList.toggle('hidden'); renderTags(); });
         document.getElementById('addTagBtn').addEventListener('click', () => {
             const val = document.getElementById('newTagInput').value.trim();
-            if (val && !state.tags.includes(val)) {
-                state.tags.push(val);
-                document.getElementById('newTagInput').value = '';
-                saveState();
-                renderTags();
-            }
+            if (val && !state.tags.includes(val)) { state.tags.push(val); document.getElementById('newTagInput').value = ''; saveState(); renderTags(); }
         });
 
-        // --- Milestones Logic ---
+        // Milestones
         const milestoneList = document.getElementById('milestoneList');
         const editMilestoneBtn = document.getElementById('editMilestoneBtn');
         let milestoneEditMode = false;
@@ -1354,282 +1315,139 @@
         function renderMilestones() {
             milestoneList.innerHTML = '';
             state.milestones.forEach((m, index) => {
-                let progress = m.progress || 0;
-                let is_connected = false;
-                
+                let progress = m.progress || 0; let is_connected = false;
                 if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
                     is_connected = true;
                     const sem = state.roadmap[m.connectedTo];
-                    let totalGoals = 0;
-                    let doneGoals = 0;
-                    sem.months.forEach(month => {
-                        month.goals.forEach(goal => {
-                            totalGoals++;
-                            if (goal.done) doneGoals++;
-                        });
-                    });
+                    let totalGoals = 0; let doneGoals = 0;
+                    sem.months.forEach(month => { month.goals.forEach(goal => { totalGoals++; if (goal.done) doneGoals++; }); });
                     progress = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
                 }
-                
                 const item = document.createElement('div');
                 item.className = 'progress-item';
-                
-                const labelHTML = milestoneEditMode ? 
-                    `<input type="text" class="progress-label-input" value="${m.label}" onchange="updateMilestoneLabel(${index}, this.value)">` : 
-                    m.label;
-                    
-                const valueHTML = milestoneEditMode ? 
-                    (is_connected ? 
-                        `<span style="color: var(--secondary-light); font-size: 14px; font-weight: 600;">${progress}% (Auto)</span>` :
-                        `<input type="number" min="0" max="100" value="${m.progress}" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: var(--primary-light); text-align: center; padding: 4px;" onchange="updateMilestoneProgress(${index}, this.value)">%`
-                    ) : 
-                    `${progress}%`;
-                    
+                const labelHTML = milestoneEditMode ? `<input type="text" class="progress-label-input" value="${m.label}" onchange="updateMilestoneLabel(${index}, this.value)">` : m.label;
+                const valueHTML = milestoneEditMode ? (is_connected ? `<span style="color: var(--secondary-light); font-size: 14px; font-weight: 600;">${progress}% (Auto)</span>` : `<input type="number" min="0" max="100" value="${m.progress}" style="width: 60px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); border-radius: 6px; color: var(--primary-light); text-align: center; padding: 4px;" onchange="updateMilestoneProgress(${index}, this.value)">%`) : `${progress}%`;
                 const deleteHTML = milestoneEditMode ? `<button class="milestone-delete" onclick="deleteMilestone(${index})"><i class="fas fa-trash"></i></button>` : '';
-                
-                item.innerHTML = `
-                    <div class="progress-header">
-                        <span class="progress-label">
-                            ${labelHTML} ${is_connected ? '<small style="color: var(--secondary-light);">(Connected)</small>' : ''}
-                        </span>
-                        <span class="progress-value">
-                            ${valueHTML}
-                            ${deleteHTML}
-                        </span>
-                    </div>
-                    <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>
-                `;
+                item.innerHTML = `<div class="progress-header"><span class="progress-label">${labelHTML} ${is_connected ? '<small style="color: var(--secondary-light);">(Connected)</small>' : ''}</span><span class="progress-value">${valueHTML}${deleteHTML}</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${progress}%;"></div></div>`;
                 milestoneList.appendChild(item);
             });
-            
             if(state.milestones.length > 0) {
                 let totalProgress = 0;
                 state.milestones.forEach(m => {
                     let p = m.progress || 0;
                     if (typeof m.connectedTo === 'number' && state.roadmap[m.connectedTo]) {
                         const sem = state.roadmap[m.connectedTo];
-                        let totalGoals = 0;
-                        let doneGoals = 0;
-                        sem.months.forEach(month => {
-                            month.goals.forEach(goal => {
-                                totalGoals++;
-                                if (goal.done) doneGoals++;
-                            });
-                        });
+                        let totalGoals = 0; let doneGoals = 0;
+                        sem.months.forEach(month => { month.goals.forEach(goal => { totalGoals++; if (goal.done) doneGoals++; }); });
                         p = totalGoals > 0 ? Math.round((doneGoals / totalGoals) * 100) : 0;
                     }
                     totalProgress += p;
                 });
-                const avgRate = totalProgress / state.milestones.length;
-                document.getElementById('milestoneRateStat').innerText = Math.round(avgRate) + '%';
-            } else {
-                document.getElementById('milestoneRateStat').innerText = '0%';
-            }
+                document.getElementById('milestoneRateStat').innerText = Math.round(totalProgress / state.milestones.length) + '%';
+            } else { document.getElementById('milestoneRateStat').innerText = '0%'; }
         }
 
-        editMilestoneBtn.addEventListener('click', () => {
-            milestoneEditMode = !milestoneEditMode;
-            editMilestoneBtn.classList.toggle('active');
-            renderMilestones();
-        });
-
+        editMilestoneBtn.addEventListener('click', () => { milestoneEditMode = !milestoneEditMode; editMilestoneBtn.classList.toggle('active'); renderMilestones(); });
         document.getElementById('addMilestoneBtn').addEventListener('click', () => {
             const name = prompt("Enter milestone name:", "New Milestone");
             if (!name) return;
             const connect = prompt("Connect to 4-Year Roadmap?\nEnter semester number (1-8) to connect, or leave empty for manual progress:", "");
-            if (connect !== null && connect !== "" && !isNaN(connect) && connect >= 1 && connect <= 8) {
-                state.milestones.push({ label: name, connectedTo: parseInt(connect) - 1 });
-            } else {
-                state.milestones.push({ label: name, progress: 0 });
-            }
-            saveState();
-            renderMilestones();
+            if (connect !== null && connect !== "" && !isNaN(connect) && connect >= 1 && connect <= 8) { state.milestones.push({ label: name, connectedTo: parseInt(connect) - 1 }); }
+            else { state.milestones.push({ label: name, progress: 0 }); }
+            saveState(); renderMilestones();
         });
 
         window.updateMilestoneLabel = (i, val) => { state.milestones[i].label = val; saveState(); };
-        window.updateMilestoneProgress = (i, val) => { 
-            state.milestones[i].progress = Math.max(0, Math.min(100, parseInt(val) || 0)); 
-            saveState(); 
-            renderMilestones(); 
-        };
+        window.updateMilestoneProgress = (i, val) => { state.milestones[i].progress = Math.max(0, Math.min(100, parseInt(val) || 0)); saveState(); renderMilestones(); };
         window.deleteMilestone = (i) => { state.milestones.splice(i, 1); saveState(); renderMilestones(); };
 
-        // --- Today's Focus Quick Add ---
+        // Today's Focus
         const todayFocusList = document.getElementById('todayFocusList');
         const todayFocusInput = document.getElementById('todayFocusInput');
 
         function renderTodayFocus() {
             todayFocusList.innerHTML = '';
             if(state.todayTasks.length === 0) {
-                todayFocusList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-mug-hot"></i>
-                        <p>No tasks added yet</p>
-                    </div>
-                `;
+                todayFocusList.innerHTML = `<div class="empty-state"><i class="fas fa-mug-hot"></i><p>No tasks added yet</p></div>`;
                 return;
             }
             state.todayTasks.forEach((task, index) => {
                 const el = document.createElement('div');
                 el.className = `task-item ${task.completed ? 'completed' : ''}`;
-                el.innerHTML = `
-                    <div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTodayTask(${index})">
-                        ${task.completed ? '<i class="fas fa-check"></i>' : ''}
-                    </div>
-                    <div class="task-content">
-                        <div class="task-text">${task.text}</div>
-                    </div>
-                    <button class="task-delete" onclick="deleteTodayTask(${index})"><i class="fas fa-trash"></i></button>
-                `;
+                el.innerHTML = `<div class="task-checkbox ${task.completed ? 'checked' : ''}" onclick="toggleTodayTask(${index})">${task.completed ? '<i class="fas fa-check"></i>' : ''}</div><div class="task-content"><div class="task-text">${task.text}</div></div><button class="task-delete" onclick="deleteTodayTask(${index})"><i class="fas fa-trash"></i></button>`;
                 todayFocusList.appendChild(el);
             });
         }
 
-        window.toggleTodayTask = (index) => {
-            state.todayTasks[index].completed = !state.todayTasks[index].completed;
-            saveState();
-            renderTodayFocus();
-        };
-
-        window.deleteTodayTask = (index) => {
-            state.todayTasks.splice(index, 1);
-            saveState();
-            renderTodayFocus();
-        };
-
+        window.toggleTodayTask = (index) => { state.todayTasks[index].completed = !state.todayTasks[index].completed; saveState(); renderTodayFocus(); };
+        window.deleteTodayTask = (index) => { state.todayTasks.splice(index, 1); saveState(); renderTodayFocus(); };
         document.getElementById('addTodayFocusBtn').addEventListener('click', () => {
             const text = todayFocusInput.value.trim();
             if (text === '') return;
             state.todayTasks.push({ text, completed: false });
-            todayFocusInput.value = '';
-            saveState();
-            renderTodayFocus();
+            todayFocusInput.value = ''; saveState(); renderTodayFocus();
         });
 
-        // --- Upcoming Goals Logic ---
+        // Upcoming Goals
         const goalsTimeline = document.getElementById('goalsTimeline');
         const editUpcomingBtn = document.getElementById('editUpcomingBtn');
         let upcomingEditMode = false;
 
         function renderUpcomingGoals() {
             goalsTimeline.innerHTML = '';
-            if (state.upcomingGoals.length === 0) {
-                goalsTimeline.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No upcoming goals added.</p></div>`;
-                return;
-            }
-
+            if (state.upcomingGoals.length === 0) { goalsTimeline.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No upcoming goals added.</p></div>`; return; }
             state.upcomingGoals.forEach((g, index) => {
                 const el = document.createElement('div');
                 el.className = 'goal-timeline-item';
                 if (upcomingEditMode) {
-                    el.innerHTML = `
-                        <div class="goal-date" style="border: 1px solid var(--primary); border-radius: 8px; padding: 8px;">
-                            <div class="date-edit-group" style="flex-direction: column; gap: 4px; border: none; padding: 0; min-width: 50px;">
-                                <input type="text" class="goal-edit-input" value="${g.day}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'day', this.value)">
-                                <input type="text" class="goal-edit-input" value="${g.month}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'month', this.value)">
-                            </div>
-                        </div>
-                        <div class="goal-content">
-                            <input type="text" class="goal-edit-input" value="${g.title}" onchange="updateUpcomingGoal(${index}, 'title', this.value)">
-                            <textarea class="goal-edit-textarea" onchange="updateUpcomingGoal(${index}, 'desc', this.value)">${g.desc}</textarea>
-                        </div>
-                        <button class="goal-delete-btn" onclick="deleteUpcomingGoal(${index})"><i class="fas fa-trash"></i> Delete</button>
-                    `;
+                    el.innerHTML = `<div class="goal-date" style="border: 1px solid var(--primary); border-radius: 8px; padding: 8px;"><div class="date-edit-group" style="flex-direction: column; gap: 4px; border: none; padding: 0; min-width: 50px;"><input type="text" class="goal-edit-input" value="${g.day}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'day', this.value)"><input type="text" class="goal-edit-input" value="${g.month}" style="margin: 0; text-align: center;" onchange="updateUpcomingGoal(${index}, 'month', this.value)"></div></div><div class="goal-content"><input type="text" class="goal-edit-input" value="${g.title}" onchange="updateUpcomingGoal(${index}, 'title', this.value)"><textarea class="goal-edit-textarea" onchange="updateUpcomingGoal(${index}, 'desc', this.value)">${g.desc}</textarea></div><button class="goal-delete-btn" onclick="deleteUpcomingGoal(${index})"><i class="fas fa-trash"></i> Delete</button>`;
                 } else {
-                    el.innerHTML = `
-                        <div class="goal-date"><span>${g.day}</span> ${g.month}</div>
-                        <div class="goal-content">
-                            <h4>${g.title}</h4>
-                            <p>${g.desc}</p>
-                        </div>
-                    `;
+                    el.innerHTML = `<div class="goal-date"><span>${g.day}</span> ${g.month}</div><div class="goal-content"><h4>${g.title}</h4><p>${g.desc}</p></div>`;
                 }
                 goalsTimeline.appendChild(el);
             });
         }
 
-        editUpcomingBtn.addEventListener('click', () => {
-            upcomingEditMode = !upcomingEditMode;
-            editUpcomingBtn.classList.toggle('active');
-            renderUpcomingGoals();
-        });
-
+        editUpcomingBtn.addEventListener('click', () => { upcomingEditMode = !upcomingEditMode; editUpcomingBtn.classList.toggle('active'); renderUpcomingGoals(); });
         document.getElementById('addUpcomingGoalBtn').addEventListener('click', () => {
             state.upcomingGoals.push({ day: "01", month: "Jan", title: "New Goal", desc: "Goal description..." });
-            upcomingEditMode = true;
-            editUpcomingBtn.classList.add('active');
-            saveState();
-            renderUpcomingGoals();
+            upcomingEditMode = true; editUpcomingBtn.classList.add('active'); saveState(); renderUpcomingGoals();
         });
 
-        window.updateUpcomingGoal = (i, field, val) => {
-            state.upcomingGoals[i][field] = val;
-            saveState();
-        };
+        window.updateUpcomingGoal = (i, field, val) => { state.upcomingGoals[i][field] = val; saveState(); };
+        window.deleteUpcomingGoal = (i) => { state.upcomingGoals.splice(i, 1); saveState(); renderUpcomingGoals(); };
 
-        window.deleteUpcomingGoal = (i) => {
-            state.upcomingGoals.splice(i, 1);
-            saveState();
-            renderUpcomingGoals();
-        };
-
-        // --- Hackathons Logic ---
+        // Hackathons
         const hackathonList = document.getElementById('hackathonList');
         function renderHackathons() {
             hackathonList.innerHTML = '';
-            if(state.hackathons.length === 0) {
-                hackathonList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-trophy"></i>
-                        <p>No hackathons added yet.</p>
-                    </div>
-                `;
-                return;
-            }
+            if(state.hackathons.length === 0) { hackathonList.innerHTML = `<div class="empty-state"><i class="fas fa-trophy"></i><p>No hackathons added yet.</p></div>`; return; }
             state.hackathons.forEach((h, index) => {
                 const el = document.createElement('div');
                 el.className = 'hackathon-card';
-                const statusClass = `status-${h.status}`;
-                el.innerHTML = `
-                    <div class="hackathon-info">
-                        <h4>${h.name}</h4>
-                        <p><i class="fas fa-calendar-alt"></i> ${h.date}</p>
-                    </div>
-                    <div style="display:flex; align-items:center; gap: 12px;">
-                        <span class="status-badge ${statusClass}">${h.status}</span>
-                        <button class="action-btn danger" onclick="removeHackathon(${index})"><i class="fas fa-trash"></i> Remove</button>
-                    </div>
-                `;
+                el.innerHTML = `<div class="hackathon-info"><h4>${h.name}</h4><p><i class="fas fa-calendar-alt"></i> ${h.date}</p></div><div style="display:flex; align-items:center; gap: 12px;"><span class="status-badge status-${h.status}">${h.status.replace('_', ' ')}</span><button class="action-btn danger" onclick="removeHackathon(${index})"><i class="fas fa-trash"></i> Remove</button></div>`;
                 hackathonList.appendChild(el);
             });
         }
 
-        window.removeHackathon = (index) => {
-            state.hackathons.splice(index, 1);
-            saveState();
-            renderHackathons();
-        };
-
+        window.removeHackathon = (index) => { state.hackathons.splice(index, 1); saveState(); renderHackathons(); };
         document.getElementById('addHackathonBtn').addEventListener('click', () => {
             const name = document.getElementById('hackathonName').value.trim();
             const date = document.getElementById('hackathonDate').value;
             const status = document.getElementById('hackathonStatus').value;
             if (!name || !date) return;
             state.hackathons.push({ name, date, status });
-            saveState();
-            renderHackathons();
-
+            saveState(); renderHackathons();
             if (status === 'upcoming') {
                 const subject = `Upcoming Hackathon: ${name}`;
                 const body = `Hackathon: ${name}%0D%0ADate: ${date}%0D%0AStatus: ${status}`;
                 window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${body}`;
             }
-
             document.getElementById('hackathonName').value = '';
             document.getElementById('hackathonDate').value = '';
         });
 
-        // --- Routine Logic (Interactive Day Tabs with Edit Mode & Sorting) ---
+        // Routine
         const routineTabs = document.getElementById('routineTabs');
         const routineContent = document.getElementById('routineContent');
         const editRoutineBtn = document.getElementById('editRoutineBtn');
@@ -1639,11 +1457,7 @@
         editRoutineBtn.addEventListener('click', () => {
             routineEditMode = !routineEditMode;
             editRoutineBtn.classList.toggle('active');
-            if (routineEditMode) {
-                editRoutineBtn.innerHTML = `<i class="fas fa-save"></i> Done Editing`;
-            } else {
-                editRoutineBtn.innerHTML = `<i class="fas fa-edit"></i> Edit Routine`;
-            }
+            editRoutineBtn.innerHTML = routineEditMode ? `<i class="fas fa-save"></i> Done Editing` : `<i class="fas fa-edit"></i> Edit Routine`;
             renderRoutines();
         });
 
@@ -1662,73 +1476,35 @@
         function renderRoutines() {
             routineTabs.innerHTML = '';
             routineContent.innerHTML = '';
-            
             state.routines.forEach((dayData, index) => {
                 dayData.schedule.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
-
                 const tabBtn = document.createElement('button');
                 tabBtn.className = 'routine-tab' + (index === activeRoutineTab ? ' active' : '');
                 tabBtn.textContent = dayData.tabName;
-                tabBtn.addEventListener('click', () => {
-                    activeRoutineTab = index;
-                    renderRoutines();
-                });
+                tabBtn.addEventListener('click', () => { activeRoutineTab = index; renderRoutines(); });
                 routineTabs.appendChild(tabBtn);
 
                 const dayContent = document.createElement('div');
                 dayContent.className = 'routine-day-content' + (index === activeRoutineTab ? ' active' : '');
-                dayContent.id = `routine-day-${index}`;
-                
                 let scheduleHTML = '';
                 dayData.schedule.forEach((item, itemIndex) => {
                     if (routineEditMode) {
-                        scheduleHTML += `
-                            <div class="routine-item-edit">
-                                <input type="text" class="routine-time-input" value="${item.time}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'time', this.value)">
-                                <input type="text" class="routine-task-input" value="${item.task}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'task', this.value)">
-                                <button class="routine-delete-btn" onclick="deleteRoutineItem(${index}, ${itemIndex})"><i class="fas fa-trash"></i></button>
-                            </div>
-                        `;
+                        scheduleHTML += `<div class="routine-item-edit"><input type="text" class="routine-time-input" value="${item.time}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'time', this.value)"><input type="text" class="routine-task-input" value="${item.task}" onchange="updateRoutineItem(${index}, ${itemIndex}, 'task', this.value)"><button class="routine-delete-btn" onclick="deleteRoutineItem(${index}, ${itemIndex})"><i class="fas fa-trash"></i></button></div>`;
                     } else {
-                        scheduleHTML += `
-                            <div class="routine-item">
-                                <div class="routine-time">${item.time}</div>
-                                <div class="routine-task">${item.task}</div>
-                            </div>
-                        `;
+                        scheduleHTML += `<div class="routine-item"><div class="routine-time">${item.time}</div><div class="routine-task">${item.task}</div></div>`;
                     }
                 });
-
                 let addSlotHTML = routineEditMode ? `<button class="add-goal-btn" onclick="addRoutineItem(${index})" style="margin-top: 15px;"><i class="fas fa-plus"></i> Add Slot</button>` : '';
-
-                dayContent.innerHTML = `
-                    <h3 class="routine-day-title">${dayData.title}</h3>
-                    <div class="routine-day-subtitle">${dayData.subtitle || ''}</div>
-                    <div class="routine-list">${scheduleHTML}</div>
-                    ${addSlotHTML}
-                `;
+                dayContent.innerHTML = `<h3 class="routine-day-title">${dayData.title}</h3><div class="routine-day-subtitle">${dayData.subtitle || ''}</div><div class="routine-list">${scheduleHTML}</div>${addSlotHTML}`;
                 routineContent.appendChild(dayContent);
             });
         }
 
-        window.updateRoutineItem = (dayIdx, itemIdx, field, val) => {
-            state.routines[dayIdx].schedule[itemIdx][field] = val;
-            saveState();
-        };
+        window.updateRoutineItem = (dayIdx, itemIdx, field, val) => { state.routines[dayIdx].schedule[itemIdx][field] = val; saveState(); };
+        window.deleteRoutineItem = (dayIdx, itemIdx) => { state.routines[dayIdx].schedule.splice(itemIdx, 1); saveState(); renderRoutines(); };
+        window.addRoutineItem = (dayIdx) => { state.routines[dayIdx].schedule.push({ time: "00:00 AM - 00:00 AM", task: "New Task" }); saveState(); renderRoutines(); };
 
-        window.deleteRoutineItem = (dayIdx, itemIdx) => {
-            state.routines[dayIdx].schedule.splice(itemIdx, 1);
-            saveState();
-            renderRoutines();
-        };
-
-        window.addRoutineItem = (dayIdx) => {
-            state.routines[dayIdx].schedule.push({ time: "00:00 AM - 00:00 AM", task: "New Task" });
-            saveState();
-            renderRoutines();
-        };
-
-        // --- Roadmap Logic (With Months & Edit Mode Toggle) ---
+        // Roadmap
         const timeline = document.getElementById('timeline');
         const editRoadmapBtn = document.getElementById('editRoadmapBtn');
         let roadmapEditMode = false;
@@ -1736,11 +1512,7 @@
         editRoadmapBtn.addEventListener('click', () => {
             roadmapEditMode = !roadmapEditMode;
             editRoadmapBtn.classList.toggle('active');
-            if (roadmapEditMode) {
-                editRoadmapBtn.innerHTML = `<i class="fas fa-save"></i> Done Editing`;
-            } else {
-                editRoadmapBtn.innerHTML = `<i class="fas fa-edit"></i> Edit Roadmap`;
-            }
+            editRoadmapBtn.innerHTML = roadmapEditMode ? `<i class="fas fa-save"></i> Done Editing` : `<i class="fas fa-edit"></i> Edit Roadmap`;
             renderRoadmap();
         });
 
@@ -1749,100 +1521,37 @@
             state.roadmap.forEach((sem, semIndex) => {
                 const semBlock = document.createElement('div');
                 semBlock.className = 'sem-block';
-                
-                const titleHtml = roadmapEditMode 
-                    ? `<input type="text" class="sem-title" value="${sem.title}" onchange="updateSemTitle(${semIndex}, this.value)">`
-                    : `<div class="sem-title">${sem.title}</div>`;
-                    
-                const focusHtml = roadmapEditMode 
-                    ? `<input type="text" class="sem-focus" value="${sem.focus}" onchange="updateSemFocus(${semIndex}, this.value)">`
-                    : `<div class="sem-focus">${sem.focus}</div>`;
-
+                const titleHtml = roadmapEditMode ? `<input type="text" class="sem-title" value="${sem.title}" onchange="updateSemTitle(${semIndex}, this.value)">` : `<div class="sem-title">${sem.title}</div>`;
+                const focusHtml = roadmapEditMode ? `<input type="text" class="sem-focus" value="${sem.focus}" onchange="updateSemFocus(${semIndex}, this.value)">` : `<div class="sem-focus">${sem.focus}</div>`;
                 let monthsHTML = '';
                 sem.months.forEach((monthData, mIndex) => {
                     let goalsHTML = '';
                     monthData.goals.forEach((goal, gIndex) => {
-                        const goalTextHtml = roadmapEditMode 
-                            ? `<input type="text" class="goal-text ${goal.done ? 'completed' : ''}" value="${goal.text}" onchange="updateGoal(${semIndex}, ${mIndex}, ${gIndex}, this.value)">`
-                            : `<div class="goal-text ${goal.done ? 'completed' : ''}">${goal.text}</div>`;
-
-                        const deleteBtnHtml = roadmapEditMode 
-                            ? `<button class="goal-delete" onclick="deleteGoal(${semIndex}, ${mIndex}, ${gIndex})"><i class="fas fa-times"></i></button>`
-                            : '';
-
-                        goalsHTML += `
-                            <li class="goal-item">
-                                <div class="goal-checkbox ${goal.done ? 'checked' : ''}" onclick="toggleGoal(${semIndex}, ${mIndex}, ${gIndex})">
-                                    ${goal.done ? '<i class="fas fa-check"></i>' : ''}
-                                </div>
-                                ${goalTextHtml}
-                                ${deleteBtnHtml}
-                            </li>
-                        `;
+                        const goalTextHtml = roadmapEditMode ? `<input type="text" class="goal-text ${goal.done ? 'completed' : ''}" value="${goal.text}" onchange="updateGoal(${semIndex}, ${mIndex}, ${gIndex}, this.value)">` : `<div class="goal-text ${goal.done ? 'completed' : ''}">${goal.text}</div>`;
+                        const deleteBtnHtml = roadmapEditMode ? `<button class="goal-delete" onclick="deleteGoal(${semIndex}, ${mIndex}, ${gIndex})"><i class="fas fa-times"></i></button>` : '';
+                        goalsHTML += `<li class="goal-item"><div class="goal-checkbox ${goal.done ? 'checked' : ''}" onclick="toggleGoal(${semIndex}, ${mIndex}, ${gIndex})">${goal.done ? '<i class="fas fa-check"></i>' : ''}</div>${goalTextHtml}${deleteBtnHtml}</li>`;
                     });
-
-                    const addGoalBtnHtml = roadmapEditMode 
-                        ? `<button class="add-goal-btn" onclick="addGoal(${semIndex}, ${mIndex})"><i class="fas fa-plus"></i> Add Task</button>`
-                        : '';
-
-                    monthsHTML += `
-                        <div class="month-card">
-                            <div class="month-title"><i class="fas fa-calendar-day"></i> ${monthData.month}</div>
-                            <ul class="goal-list">${goalsHTML}</ul>
-                            ${addGoalBtnHtml}
-                        </div>
-                    `;
+                    const addGoalBtnHtml = roadmapEditMode ? `<button class="add-goal-btn" onclick="addGoal(${semIndex}, ${mIndex})"><i class="fas fa-plus"></i> Add Task</button>` : '';
+                    monthsHTML += `<div class="month-card"><div class="month-title"><i class="fas fa-calendar-day"></i> ${monthData.month}</div><ul class="goal-list">${goalsHTML}</ul>${addGoalBtnHtml}</div>`;
                 });
-
-                semBlock.innerHTML = `
-                    <div class="sem-marker"></div>
-                    <div class="sem-header">
-                        <div class="sem-header-left">
-                            ${titleHtml}
-                            ${focusHtml}
-                        </div>
-                    </div>
-                    <div class="month-grid">${monthsHTML}</div>
-                `;
+                semBlock.innerHTML = `<div class="sem-marker"></div><div class="sem-header"><div class="sem-header-left">${titleHtml}${focusHtml}</div></div><div class="month-grid">${monthsHTML}</div>`;
                 timeline.appendChild(semBlock);
             });
         }
 
-        window.toggleGoal = (s, m, g) => {
-            state.roadmap[s].months[m].goals[g].done = !state.roadmap[s].months[m].goals[g].done;
-            saveState();
-            renderRoadmap();
-            renderMilestones();
-        };
-
-        window.updateGoal = (s, m, g, val) => {
-            state.roadmap[s].months[m].goals[g].text = val;
-            saveState();
-        };
-
-        window.deleteGoal = (s, m, g) => {
-            state.roadmap[s].months[m].goals.splice(g, 1);
-            saveState();
-            renderRoadmap();
-        };
-
-        window.addGoal = (s, m) => {
-            state.roadmap[s].months[m].goals.push({ text: "New Task", done: false });
-            saveState();
-            renderRoadmap();
-        };
-
+        window.toggleGoal = (s, m, g) => { state.roadmap[s].months[m].goals[g].done = !state.roadmap[s].months[m].goals[g].done; saveState(); renderRoadmap(); renderMilestones(); };
+        window.updateGoal = (s, m, g, val) => { state.roadmap[s].months[m].goals[g].text = val; saveState(); };
+        window.deleteGoal = (s, m, g) => { state.roadmap[s].months[m].goals.splice(g, 1); saveState(); renderRoadmap(); };
+        window.addGoal = (s, m) => { state.roadmap[s].months[m].goals.push({ text: "New Task", done: false }); saveState(); renderRoadmap(); };
         window.updateSemTitle = (s, val) => { state.roadmap[s].title = val; saveState(); };
         window.updateSemFocus = (s, val) => { state.roadmap[s].focus = val; saveState(); };
 
-        // --- Reviews Logic ---
+        // Reviews
         const motivationSlider = document.getElementById('motivationSlider');
         const motivationValue = document.getElementById('motivationValue');
         const pastReviewsList = document.getElementById('pastReviewsList');
 
-        motivationSlider.addEventListener('input', (e) => {
-            motivationValue.textContent = e.target.value;
-        });
+        motivationSlider.addEventListener('input', (e) => { motivationValue.textContent = e.target.value; });
 
         document.getElementById('saveReviewBtn').addEventListener('click', () => {
             const easy = parseInt(document.getElementById('revEasy').textContent) || 0;
@@ -1851,83 +1560,35 @@
             const videos = parseInt(document.getElementById('revVideos').textContent) || 0;
             const hours = parseInt(document.getElementById('revHours').textContent) || 0;
             const contests = parseInt(document.getElementById('revContests').textContent) || 0;
-            
             const textareas = document.querySelectorAll('#reviews .review-textarea');
-            
             const problemXP = (easy * 15) + (medium * 25) + (hard * 40);
             const videoXP = videos * 5; 
             const hoursXP = hours * 10; 
             const bonusXP = 15;
             const earnedXP = problemXP + videoXP + hoursXP + bonusXP;
-            
-            state.totalXP += earnedXP;
-            state.todayXP += earnedXP;
-            state.weekXP += earnedXP;
-            
+            state.totalXP += earnedXP; state.todayXP += earnedXP; state.weekXP += earnedXP;
             updateXPDisplay(state.totalXP);
-            
             const reviewData = {
-                date: new Date().toLocaleDateString(),
-                easy, medium, hard, videos, hours, contests,
-                earnedXP,
-                completed: textareas[0].value,
-                goals: textareas[1].value,
-                learned: textareas[2].value,
-                improvements: textareas[3].value,
-                motivation: motivationSlider.value
+                date: new Date().toLocaleDateString(), easy, medium, hard, videos, hours, contests, earnedXP,
+                completed: textareas[0].value, goals: textareas[1].value, learned: textareas[2].value,
+                improvements: textareas[3].value, motivation: motivationSlider.value
             };
-
             state.pastReviews.unshift(reviewData);
-            saveState();
-            renderPastReviews();
-            
-            document.getElementById('revEasy').textContent = '0';
-            document.getElementById('revMedium').textContent = '0';
-            document.getElementById('revHard').textContent = '0';
-            document.getElementById('revVideos').textContent = '0';
-            document.getElementById('revHours').textContent = '0';
-            document.getElementById('revContests').textContent = '0';
-            textareas.forEach(t => t.value = '');
-            motivationSlider.value = 5;
-            motivationValue.textContent = '5';
-            
-            alert(`Weekly Review Saved!\nYou earned ${earnedXP} XP!`);
+            saveState(); renderPastReviews();
+            document.getElementById('revEasy').textContent = '0'; document.getElementById('revMedium').textContent = '0';
+            document.getElementById('revHard').textContent = '0'; document.getElementById('revVideos').textContent = '0';
+            document.getElementById('revHours').textContent = '0'; document.getElementById('revContests').textContent = '0';
+            textareas.forEach(t => t.value = ''); motivationSlider.value = 5; motivationValue.textContent = '5';
+            alert(`Weekly Review Saved!\n+${earnedXP} XP earned!`);
         });
 
         function renderPastReviews() {
-            if(state.pastReviews.length === 0) {
-                pastReviewsList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <p>No reviews yet. Complete your first weekly review above!</p>
-                    </div>
-                `;
-                return;
-            }
-
+            if(state.pastReviews.length === 0) { pastReviewsList.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>No reviews yet. Complete your first weekly review above!</p></div>`; return; }
             pastReviewsList.innerHTML = '';
             state.pastReviews.forEach((r, index) => {
                 const el = document.createElement('div');
                 el.className = 'past-review-item';
-                el.innerHTML = `
-                    <div class="past-review-header">
-                        <div class="past-review-date"><i class="fas fa-calendar-day"></i> ${r.date} <span style="color: var(--secondary); margin-left: 10px;">(Earned ${r.earnedXP} XP)</span></div>
-                        <button class="delete-review-btn" onclick="deleteReview(${index})"><i class="fas fa-trash"></i> Delete</button>
-                    </div>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 12px; text-align: center;">
-                        <div><strong>${r.easy}</strong><br><small style="color:var(--text-muted)">Easy</small></div>
-                        <div><strong>${r.medium}</strong><br><small style="color:var(--text-muted)">Medium</small></div>
-                        <div><strong>${r.hard}</strong><br><small style="color:var(--text-muted)">Hard</small></div>
-                        <div><strong>${r.videos}</strong><br><small style="color:var(--text-muted)">Videos</small></div>
-                        <div><strong>${r.hours}</strong><br><small style="color:var(--text-muted)">Hours</small></div>
-                        <div><strong>${r.contests}</strong><br><small style="color:var(--text-muted)">Contests</small></div>
-                    </div>
-                    <p style="margin-bottom: 8px;"><strong>Completed:</strong> ${r.completed || '-'}</p>
-                    <p style="margin-bottom: 8px;"><strong>Goals:</strong> ${r.goals || '-'}</p>
-                    <p style="margin-bottom: 8px;"><strong>Learned:</strong> ${r.learned || '-'}</p>
-                    <p style="margin-bottom: 8px;"><strong>Improvements:</strong> ${r.improvements || '-'}</p>
-                    <p><strong>Motivation Level:</strong> <span style="color: var(--primary-light);">${r.motivation}/10</span></p>
-                `;
+                el.innerHTML = `<div class="past-review-header"><div class="past-review-date"><i class="fas fa-calendar-day"></i> ${r.date} <span style="color: var(--secondary); margin-left: 10px;">(Earned ${r.earnedXP} XP)</span></div><button class="delete-review-btn" onclick="deleteReview(${index})"><i class="fas fa-trash"></i> Delete</button></div><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 12px; text-align: center;"><div><strong>${r.easy}</strong><br><small style="color:var(--text-muted)">Easy</small></div><div><strong>${r.medium}</strong><br><small style="color:var(--text-muted)">Medium</small></div><div><strong>${r.hard}</strong><br><small style="color:var(--text-muted)">Hard</small></div><div><strong>${r.videos}</strong><br><small style="color:var(--text-muted)">Videos</small></div><div><strong>${r.hours}</strong><br><small style="color:var(--text-muted)">Hours</small></div><div><strong>${r.contests}</strong><br><small style="color:var(--text-muted)">Contests</small></div></div><p style="margin-bottom: 8px;"><strong>Completed:</strong> ${r.completed || '-'}</p><p style="margin-bottom: 8px;"><strong>Goals:</strong> ${r.goals || '-'}</p><p style="margin-bottom: 8px;"><strong>Learned:</strong> ${r.learned || '-'}</p><p style="margin-bottom: 8px;"><strong>Improvements:</strong> ${r.improvements || '-'}</p><p><strong>Motivation Level:</strong> <span style="color: var(--primary-light);">${r.motivation}/10</span></p>`;
                 pastReviewsList.appendChild(el);
             });
         }
@@ -1935,87 +1596,46 @@
         window.deleteReview = (index) => {
             const reviewToDelete = state.pastReviews[index];
             const xpToRemove = reviewToDelete.earnedXP || 0;
-
             state.totalXP = Math.max(0, state.totalXP - xpToRemove);
             state.todayXP = Math.max(0, state.todayXP - xpToRemove);
             state.weekXP = Math.max(0, state.weekXP - xpToRemove);
-
             state.pastReviews.splice(index, 1);
-
-            saveState();
-            updateXPDisplay(state.totalXP);
-            renderPastReviews();
+            saveState(); updateXPDisplay(state.totalXP); renderPastReviews();
         };
 
-        // --- Project Blogs Logic ---
+        // Project Blogs
         const projectBlogList = document.getElementById('projectBlogList');
 
         function renderProjectBlogs() {
             projectBlogList.innerHTML = '';
-            if (state.projectBlogs.length === 0) {
-                projectBlogList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <p>No project blogs yet. Add your first project above!</p>
-                    </div>
-                `;
-                return;
-            }
-
+            if (state.projectBlogs.length === 0) { projectBlogList.innerHTML = `<div class="empty-state"><i class="fas fa-folder-open"></i><p>No project blogs yet. Add your first project above!</p></div>`; return; }
             state.projectBlogs.forEach((b, index) => {
                 const el = document.createElement('div');
                 el.className = 'blog-item';
-                el.innerHTML = `
-                    <div class="blog-header">
-                        <div class="blog-title">${b.title}</div>
-                        <div class="header-actions">
-                            <button class="action-btn danger" onclick="deleteBlog(${index})"><i class="fas fa-trash"></i> Remove</button>
-                        </div>
-                    </div>
-                    <div class="blog-section">
-                        <h4><i class="fas fa-lightbulb"></i> Project Idea</h4>
-                        <p>${b.idea}</p>
-                    </div>
-                    <div class="blog-section">
-                        <h4><i class="fas fa-code"></i> What I Did</h4>
-                        <p>${b.did}</p>
-                    </div>
-                    <div class="blog-section">
-                        <h4><i class="fas fa-exclamation-triangle"></i> Problems Faced</h4>
-                        <p>${b.problems}</p>
-                    </div>
-                `;
+                el.innerHTML = `<div class="blog-header"><div class="blog-title">${b.title}</div><div class="header-actions"><button class="action-btn danger" onclick="deleteBlog(${index})"><i class="fas fa-trash"></i> Remove</button></div></div><div class="blog-section"><h4><i class="fas fa-lightbulb"></i> Project Idea</h4><p>${b.idea}</p></div><div class="blog-section"><h4><i class="fas fa-code"></i> What I Did</h4><p>${b.did}</p></div><div class="blog-section"><h4><i class="fas fa-exclamation-triangle"></i> Problems Faced</h4><p>${b.problems}</p></div>`;
                 projectBlogList.appendChild(el);
             });
         }
 
-        window.deleteBlog = (index) => {
-            state.projectBlogs.splice(index, 1);
-            saveState();
-            renderProjectBlogs();
-        };
-
+        window.deleteBlog = (index) => { state.projectBlogs.splice(index, 1); saveState(); renderProjectBlogs(); };
         document.getElementById('addBlogBtn').addEventListener('click', () => {
             const title = document.getElementById('blogTitleInput').value.trim();
             const idea = document.getElementById('blogIdeaInput').value.trim();
             const did = document.getElementById('blogDidInput').value.trim();
             const problems = document.getElementById('blogProblemsInput').value.trim();
-            
             if (!title || !idea || !did || !problems) return alert("Please fill in all fields.");
-            
             state.projectBlogs.unshift({ title, idea, did, problems });
             saveState();
-            document.getElementById('blogTitleInput').value = '';
-            document.getElementById('blogIdeaInput').value = '';
-            document.getElementById('blogDidInput').value = '';
-            document.getElementById('blogProblemsInput').value = '';
+            document.getElementById('blogTitleInput').value = ''; document.getElementById('blogIdeaInput').value = '';
+            document.getElementById('blogDidInput').value = ''; document.getElementById('blogProblemsInput').value = '';
             renderProjectBlogs();
         });
 
-        // --- Initialize All Render Functions ---
+        // Initialize All
         function initializeAll() {
             updateXPDisplay(state.totalXP);
             updateCheckInBtn();
+            renderHolidays();
             renderTags();
             renderMilestones();
             renderTodayFocus();
