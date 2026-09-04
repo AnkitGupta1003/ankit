@@ -166,9 +166,13 @@
         .todo-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
         .todo-input::placeholder { color: var(--text-muted); }
         .todo-input[type="date"] { color-scheme: dark; }
-        .add-task-btn { background: var(--gradient-1); border: none; color: white; padding: 16px 28px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--shadow-glow); -webkit-tap-highlight-color: transparent; }
+        .add-task-btn { background: var(--gradient-1); border: none; color: white; padding: 16px 28px; border-radius: 14px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; transition: all 0.3s ease; font-family: inherit; box-shadow: var(--shadow-glow); -webkit-tap-highlight-color: transparent; justify-content: center; }
         .add-task-btn:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
+        
         .task-list { max-height: 220px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; flex: 1; }
+        /* FIX: Stretch Today's Focus List to push the input to the bottom */
+        #todayFocusList { max-height: none; }
+
         .task-item { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
         .task-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); }
         .task-checkbox { width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; flex-shrink: 0; }
@@ -179,6 +183,8 @@
         .task-item.completed .task-text { text-decoration: line-through; color: var(--text-muted); }
         .task-delete { background: transparent; border: none; color: var(--text-muted); cursor: pointer; padding: 8px; border-radius: 8px; transition: all 0.3s ease; }
         .task-delete:hover { color: var(--danger); background: rgba(239,68,68,0.1); }
+
+        .focus-add-container { display: flex; flex-direction: column; gap: 12px; width: 100%; }
 
         /* Goals Timeline */
         .goals-timeline { display: grid; gap: 16px; }
@@ -567,7 +573,7 @@
                             <p>No tasks added yet</p>
                         </div>
                     </div>
-                    <div class="todo-input-group" style="flex-direction: column; gap: 12px; width: 100%;">
+                    <div class="todo-input-group focus-add-container">
                         <input type="text" class="todo-input" id="todayFocusInput" placeholder="Add a quick task..." style="width: 100%;">
                         <button class="add-task-btn" id="addTodayFocusBtn" style="width: 100%;"><i class="fas fa-plus"></i> Add Task</button>
                     </div>
