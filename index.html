@@ -1038,6 +1038,34 @@
             }
         }
 
+        // --- SAFE MIGRATION LOGIC ---
+        // Splits combined days without deleting user data
+        function migrateRoutines() {
+            if (!Array.isArray(state.routines)) return;
+            
+            let needsMigrate = false;
+            const newRoutines = [];
+            
+            state.routines.forEach(r => {
+                if (r.tabName === "Mon & Wed") {
+                    needsMigrate = true;
+                    newRoutines.push({ ...r, tabName: "Monday", title: "📅 Monday" });
+                    newRoutines.push({ ...r, tabName: "Wednesday", title: "📅 Wednesday" });
+                } else if (r.tabName === "Tue & Fri") {
+                    needsMigrate = true;
+                    newRoutines.push({ ...r, tabName: "Tuesday", title: "📅 Tuesday" });
+                    newRoutines.push({ ...r, tabName: "Friday", title: "📅 Friday" });
+                } else {
+                    newRoutines.push(r);
+                }
+            });
+            
+            if (needsMigrate) {
+                state.routines = newRoutines;
+                saveState(); // Save the migrated data
+            }
+        }
+
         // --- Cloud Load Logic (Real-time) ---
         const stateDocRef = doc(db, "appData", "mainState");
         onSnapshot(stateDocRef, (docSnap) => {
@@ -1062,6 +1090,9 @@
                     state.routines = defaultState.routines; 
                 }
                 
+                // Run safe migration
+                migrateRoutines();
+                
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
                 state.projectBlogs = Array.isArray(state.projectBlogs) ? state.projectBlogs : [];
@@ -1078,6 +1109,9 @@
                         state.milestones = defaultState.milestones;
                         state.milestonesInitialized = true;
                     }
+                    
+                    // Run safe migration
+                    migrateRoutines();
                 } else {
                     saveState();
                 }
