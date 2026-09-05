@@ -203,7 +203,10 @@
 
         /* Upcoming Holidays List */
         .holiday-list-container { max-height: 300px; overflow-y: auto; padding-right: 8px; }
-        .holiday-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 10px; transition: all 0.3s ease; }
+        
+        /* FIX: Make Upcoming Holidays stretch exactly like XP tracking */
+        #upcomingHolidaysList { display: flex; flex-direction: column; gap: 10px; flex: 1; margin-bottom: 12px; }
+        .holiday-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; transition: all 0.3s ease; flex: 1; }
         .holiday-list-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); transform: translateX(4px); }
         .holiday-date-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 55px; padding-right: 14px; border-right: 1px solid var(--border-color); }
         .holiday-date-box .day { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
@@ -216,7 +219,7 @@
         .holiday-weekend .holiday-date-box { border-color: rgba(59,130,246,0.2); }
         .holiday-govt .holiday-date-box, .holiday-govt .holiday-info .name, .holiday-govt .holiday-info .desc { color: var(--pink-holiday); }
         .holiday-govt .holiday-date-box { border-color: rgba(244, 114, 182, 0.2); }
-        .see-more-btn { width: 100%; margin-top: 12px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); color: var(--primary-light); padding: 10px; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
+        .see-more-btn { width: 100%; margin-top: auto; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.2); color: var(--primary-light); padding: 10px; border-radius: 12px; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
         .see-more-btn:hover { background: rgba(99,102,241,0.1); border-color: var(--primary); }
 
         .holiday-year-header { font-size: 18px; font-weight: 700; margin: 20px 0 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
@@ -587,18 +590,7 @@
                     <button class="see-more-btn" id="seeMoreHolidaysBtn">See All Holidays <i class="fas fa-arrow-right"></i></button>
                 </div>
 
-                <!-- Row 3: Bottom Left (Upcoming Goals) & Bottom Right (Milestone Progress) -->
-                <div class="card d-col-3">
-                    <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="addUpcomingGoalBtn"><i class="fas fa-plus"></i> Add</button>
-                            <button class="action-btn" id="editUpcomingBtn"><i class="fas fa-edit"></i> Edit</button>
-                        </div>
-                    </div>
-                    <div class="goals-timeline" id="goalsTimeline"></div>
-                </div>
-
+                <!-- Row 3: Bottom Left (Milestone Progress) & Bottom Right (Upcoming Goals) -->
                 <div class="card d-col-3">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-flag-checkered"></i></div> Milestone Progress</div>
@@ -608,6 +600,17 @@
                         </div>
                     </div>
                     <div id="milestoneList"></div>
+                </div>
+
+                <div class="card d-col-3">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-calendar-alt"></i></div> Upcoming Goals</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="addUpcomingGoalBtn"><i class="fas fa-plus"></i> Add</button>
+                            <button class="action-btn" id="editUpcomingBtn"><i class="fas fa-edit"></i> Edit</button>
+                        </div>
+                    </div>
+                    <div class="goals-timeline" id="goalsTimeline"></div>
                 </div>
 
             </div>
@@ -824,9 +827,9 @@
                     ]
                 },
                 {
-                    tabName: "Mon & Wed",
-                    title: "📅 Monday & Wednesday",
-                    subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.",
+                    tabName: "Monday",
+                    title: "📅 Monday",
+                    subtitle: "Long Day: 11 AM - 6 PM. This is your survival day. You just need to get through college and do a little work at night.",
                     schedule: [
                         { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
                         { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
@@ -838,9 +841,9 @@
                     ]
                 },
                 {
-                    tabName: "Tue & Fri",
-                    title: "📅 Tuesday & Friday",
-                    subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.",
+                    tabName: "Tuesday",
+                    title: "📅 Tuesday",
+                    subtitle: "Short Day: 10 AM - 1 PM. This is your Golden Day. You get back early, so this is where the magic happens.",
                     schedule: [
                         { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
                         { time: "10:00 AM - 01:00 PM", task: "College." },
@@ -850,6 +853,20 @@
                         { time: "07:00 PM - 08:00 PM", task: "Dinner." },
                         { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
                         { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
+                    ]
+                },
+                {
+                    tabName: "Wednesday",
+                    title: "📅 Wednesday",
+                    subtitle: "Long Day: 11 AM - 6 PM. This is your survival day. You just need to get through college and do a little work at night.",
+                    schedule: [
+                        { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
+                        { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
+                        { time: "06:00 PM - 07:00 PM", task: "Travel back to your room. Unwind. Don't look at code right now." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner & Chill." },
+                        { time: "08:00 PM - 09:30 PM (1.5 hours)", task: "College Work / Assignments. Finish whatever homework or practical files are due tomorrow." },
+                        { time: "09:30 PM - 11:00 PM (1.5 hours)", task: "Coding Practice / Project Work. Type out the C++ code you learned in the morning. If you have energy, work on our 'Smart Presentation Remote' website." },
+                        { time: "11:00 PM", task: "Sleep." }
                     ]
                 },
                 {
@@ -863,6 +880,21 @@
                         { time: "07:00 PM - 08:00 PM", task: "Dinner." },
                         { time: "08:00 PM - 10:00 PM (2 hours)", task: "Coding Practice / Project Work." },
                         { time: "10:00 PM - 11:00 PM", task: "Free time / Anime / Chill." }
+                    ]
+                },
+                {
+                    tabName: "Friday",
+                    title: "📅 Friday",
+                    subtitle: "Short Day: 10 AM - 1 PM. This is your Golden Day. You get back early, so this is where the magic happens.",
+                    schedule: [
+                        { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
+                        { time: "10:00 AM - 01:00 PM", task: "College." },
+                        { time: "01:00 PM - 02:30 PM", task: "Travel back, lunch, and take a power nap if you want." },
+                        { time: "02:30 PM - 05:00 PM (2.5 hours)", task: "THE PROJECT ZONE. This is your dedicated time to build the Smart Presentation Remote with me. We will write code, test websites, and plan the hardware." },
+                        { time: "05:00 PM - 07:00 PM", task: "Free time! Play video games, watch anime, or play chess. You earned it." },
+                        { time: "07:00 PM - 08:00 PM", task: "Dinner." },
+                        { time: "08:00 PM - 10:00 PM (2 hours)", task: "C++ Code Practice & College Work." },
+                        { time: "10:00 PM - 11:00 PM", task: "Wind down, pack your bag, relax." }
                     ]
                 },
                 {
