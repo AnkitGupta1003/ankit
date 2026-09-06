@@ -829,7 +829,7 @@
                 {
                     tabName: "Monday",
                     title: "📅 Monday",
-                    subtitle: "Long Day: 11 AM - 6 PM. This is your survival day. You just need to get through college and do a little work at night.",
+                    subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.",
                     schedule: [
                         { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
                         { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
@@ -843,7 +843,7 @@
                 {
                     tabName: "Tuesday",
                     title: "📅 Tuesday",
-                    subtitle: "Short Day: 10 AM - 1 PM. This is your Golden Day. You get back early, so this is where the magic happens.",
+                    subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.",
                     schedule: [
                         { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
                         { time: "10:00 AM - 01:00 PM", task: "College." },
@@ -858,7 +858,7 @@
                 {
                     tabName: "Wednesday",
                     title: "📅 Wednesday",
-                    subtitle: "Long Day: 11 AM - 6 PM. This is your survival day. You just need to get through college and do a little work at night.",
+                    subtitle: "Long Days: 11 AM - 6 PM. These are your survival days. You just need to get through college and do a little work at night.",
                     schedule: [
                         { time: "09:30 AM - 11:00 AM", task: "Travel to MITS / relax / listen to music." },
                         { time: "11:00 AM - 06:00 PM", task: "College Lectures & Labs. (Use your lunch break to eat and rest your brain)." },
@@ -885,7 +885,7 @@
                 {
                     tabName: "Friday",
                     title: "📅 Friday",
-                    subtitle: "Short Day: 10 AM - 1 PM. This is your Golden Day. You get back early, so this is where the magic happens.",
+                    subtitle: "Short Days: 10 AM - 1 PM. These are your Golden Days. You get back early, so this is where the magic happens.",
                     schedule: [
                         { time: "09:30 AM - 10:00 AM", task: "Travel to college." },
                         { time: "10:00 AM - 01:00 PM", task: "College." },
@@ -1062,8 +1062,23 @@
             
             if (needsMigrate) {
                 state.routines = newRoutines;
-                saveState(); // Save the migrated data
+                saveState(); 
             }
+        }
+
+        // --- SORT LOGIC ---
+        // Sorts routines chronologically: Everyday -> Monday -> Sunday
+        function sortRoutines() {
+            const dayOrder = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            state.routines.sort((a, b) => {
+                const aIndex = dayOrder.indexOf(a.tabName);
+                const bIndex = dayOrder.indexOf(b.tabName);
+                
+                if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+                if (aIndex !== -1) return -1;
+                if (bIndex !== -1) return 1;
+                return 0;
+            });
         }
 
         // --- Cloud Load Logic (Real-time) ---
@@ -1090,8 +1105,8 @@
                     state.routines = defaultState.routines; 
                 }
                 
-                // Run safe migration
                 migrateRoutines();
+                sortRoutines(); // Enforce chronological order
                 
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
@@ -1110,8 +1125,8 @@
                         state.milestonesInitialized = true;
                     }
                     
-                    // Run safe migration
                     migrateRoutines();
+                    sortRoutines(); // Enforce chronological order
                 } else {
                     saveState();
                 }
