@@ -126,7 +126,23 @@
 
         /* XP Display & Tracking */
         .xp-display { text-align: center; padding: 20px 0; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; cursor: pointer; align-self: center; }
+        .level-badge-container { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+        .level-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(52,211,153,0.1)); border: 1px solid rgba(16,185,129,0.3); color: var(--secondary-light); padding: 8px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; }
+        
+        .trophy-icon-badge { 
+            display: inline-flex; align-items: center; justify-content: center; 
+            background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(244,114,182,0.1)); 
+            border: 1px solid rgba(245,158,11,0.3); 
+            color: var(--accent-light); padding: 8px 12px; border-radius: 50px; 
+            cursor: pointer; position: relative; transition: 0.3s; font-size: 14px;
+        }
+        .trophy-icon-badge:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(245,158,11,0.2); }
+        .trophy-icon-badge .trophy-count { 
+            position: absolute; top: -5px; right: -5px; background: var(--accent); color: #000; 
+            border-radius: 50%; width: 16px; height: 16px; display: flex; align-items: center; 
+            justify-content: center; font-size: 10px; font-weight: 800; 
+        }
+
         .xp-circle-wrapper { position: relative; width: 200px; height: 200px; margin: 0 auto 24px; }
         .xp-circle-bg { position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--secondary) calc(var(--progress) * 1%), rgba(255,255,255,0.02) 0); padding: 8px; box-shadow: var(--shadow-glow), inset 0 0 30px rgba(0,0,0,0.3); transition: background 0.5s ease; }
         .xp-circle-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -170,7 +186,6 @@
         .add-task-btn:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(99,102,241,0.5); }
         
         .task-list { max-height: 220px; overflow-y: auto; padding-right: 8px; margin-bottom: 16px; flex: 1; }
-        /* FIX: Stretch Today's Focus List to push the input to the bottom */
         #todayFocusList { max-height: none; }
 
         .task-item { display: flex; align-items: center; gap: 14px; padding: 16px 18px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 12px; transition: all 0.3s ease; }
@@ -203,8 +218,6 @@
 
         /* Upcoming Holidays List */
         .holiday-list-container { max-height: 300px; overflow-y: auto; padding-right: 8px; }
-        
-        /* FIX: Make Upcoming Holidays stretch exactly like XP tracking */
         #upcomingHolidaysList { display: flex; flex-direction: column; gap: 10px; flex: 1; margin-bottom: 12px; }
         .holiday-list-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; transition: all 0.3s ease; flex: 1; }
         .holiday-list-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); transform: translateX(4px); }
@@ -224,6 +237,12 @@
 
         .holiday-year-header { font-size: 18px; font-weight: 700; margin: 20px 0 10px; color: var(--text-primary); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
         .holiday-year-header:first-child { margin-top: 0; }
+
+        /* Quick Links */
+        .quick-link-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 10px; transition: all 0.3s ease; text-decoration: none; }
+        .quick-link-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); transform: translateX(4px); }
+        .quick-link-info { display: flex; align-items: center; gap: 10px; color: var(--text-primary); font-weight: 500; font-size: 14px; }
+        .quick-link-info i { color: var(--primary-light); }
 
         /* Routine */
         .routine-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
@@ -281,6 +300,16 @@
         .delete-review-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
         .delete-review-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.1); }
 
+        /* Auto PS Tracker */
+        .ps-stat-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; }
+        .ps-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 800; color: var(--secondary); margin-bottom: 4px; }
+        .ps-stat-lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .ps-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; margin-bottom: 8px; }
+        .ps-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .ps-easy { background: rgba(16,185,129,0.15); color: var(--secondary); }
+        .ps-medium { background: rgba(245,158,11,0.15); color: var(--accent); }
+        .ps-hard { background: rgba(239,68,68,0.15); color: var(--danger); }
+
         /* Project Blogs */
         .blog-item { position: relative; background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 18px; margin-bottom: 16px; transition: all 0.3s ease; }
         .blog-item:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
@@ -337,6 +366,24 @@
         .login-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(99,102,241,0.4); }
         .login-submit-btn.success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 20px rgba(16,185,129,0.3); }
         
+        /* Achievements Badges */
+        .achievement-badge {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 100%; padding: 20px 10px; border-radius: 16px; text-align: center;
+            border: 1px solid var(--border-color); transition: all 0.3s ease; position: relative;
+            background: rgba(255,255,255,0.02);
+            opacity: 0.4; filter: grayscale(100%);
+        }
+        .achievement-badge.unlocked {
+            opacity: 1; filter: grayscale(0%);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border-color: transparent;
+        }
+        .achievement-badge i { font-size: 32px; margin-bottom: 10px; }
+        .achievement-badge span { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; }
+        .achievement-badge .check-mark { position: absolute; top: 10px; right: 10px; color: var(--secondary); font-size: 12px; }
+        .achievement-badge .lock-mark { position: absolute; top: 10px; right: 10px; color: var(--text-muted); font-size: 12px; }
+
         /* Read-Only Mode Styling */
         body.read-only .header-actions,
         body.read-only .todo-input-group,
@@ -351,7 +398,10 @@
         body.read-only #addBlogBtn,
         body.read-only #editRoadmapBtn,
         body.read-only #editRoutineBtn,
-        body.read-only .task-delete {
+        body.read-only .task-delete,
+        body.read-only #hackathonList .action-btn,
+        body.read-only .link-delete,
+        body.read-only .ps-delete {
             display: none !important; 
         }
         body.read-only #revEasy,
@@ -466,6 +516,15 @@
         </div>
     </div>
 
+    <!-- Achievements Modal -->
+    <div class="login-overlay" id="achievementsOverlay">
+        <div class="login-box" style="max-width: 600px;">
+            <h3>Achievements</h3>
+            <div id="achievementsModalList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 16px; max-height: 60vh; overflow-y: auto; margin-bottom: 16px;"></div>
+            <button class="action-btn" id="achievementsCloseBtn" style="width: 100%; justify-content: center;"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+
     <!-- All Holidays Modal -->
     <div class="login-overlay" id="holidaysOverlay">
         <div class="login-box" style="max-width: 500px;">
@@ -531,7 +590,13 @@
                         <div class="card-title"><div class="card-icon"><i class="fas fa-bolt"></i></div> Experience Points</div>
                     </div>
                     <div class="xp-display">
-                        <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
+                        <div class="level-badge-container">
+                            <div class="level-badge" id="levelBadge"><i class="fas fa-seedling"></i> LEVEL: BEGINNER</div>
+                            <div class="trophy-icon-badge" id="trophyIconBtn" title="View Achievements">
+                                <i class="fas fa-trophy"></i>
+                                <span class="trophy-count" id="trophyCount">0</span>
+                            </div>
+                        </div>
                         <div class="xp-circle-wrapper" style="--progress: 0;" id="xpCircleWrapper">
                             <div class="xp-circle-bg">
                                 <div class="xp-circle-inner">
@@ -613,6 +678,22 @@
                     <div class="goals-timeline" id="goalsTimeline"></div>
                 </div>
 
+                <!-- Row 4: Quick Links -->
+                <div class="card d-col-3">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-link"></i></div> Quick Links / Resources</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="addLinkBtn"><i class="fas fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                    <div id="quickLinksList"></div>
+                    <div class="todo-input-group hidden" id="addLinkGroup" style="flex-direction: column; gap: 10px; width: 100%;">
+                        <input type="text" class="todo-input" id="linkNameInput" placeholder="Resource Name (e.g. DSA Playlist)" style="width: 100%;">
+                        <input type="text" class="todo-input" id="linkUrlInput" placeholder="https://..." style="width: 100%;">
+                        <button class="action-btn" id="saveLinkBtn" style="width: 100%; justify-content: center;"><i class="fas fa-check"></i> Save Link</button>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -665,6 +746,44 @@
         <!-- Reviews Section -->
         <section id="reviews" class="content-section">
             <div class="cards-grid">
+                
+                <!-- Auto PS Tracker -->
+                <div class="card span-2">
+                    <div class="card-header">
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-laptop-code"></i></div> Auto PS Tracker</div>
+                        <div class="header-actions">
+                            <button class="action-btn" id="editDSABtn"><i class="fas fa-cog"></i> Settings</button>
+                        </div>
+                    </div>
+                    
+                    <div id="dsaSettingsGroup" class="hidden" style="margin-bottom: 24px; border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.2);">
+                        <div class="review-label"><i class="fas fa-user"></i> Link Coding Platforms</div>
+                        <div class="todo-input-group" style="flex-direction: column; gap: 12px;">
+                            <input type="text" class="todo-input" id="lcUser" placeholder="LeetCode Username" style="width: 100%;">
+                            <input type="text" class="todo-input" id="cfUser" placeholder="Codeforces Handle" style="width: 100%;">
+                            <input type="text" class="todo-input" id="ccUser" placeholder="CodeChef Username" style="width: 100%;">
+                            <button class="action-btn active" id="saveDSABtn" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Save & Fetch Stats</button>
+                        </div>
+                    </div>
+
+                    <div class="review-stats" id="dsaStatsContainer">
+                        <!-- Live Stats will be injected here -->
+                    </div>
+
+                    <div class="review-label" style="margin-top: 24px;"><i class="fas fa-plus-circle"></i> Log Custom Problem (e.g. Supreme 4.0)</div>
+                    <div class="todo-input-group">
+                        <input type="text" class="todo-input" id="psTitle" placeholder="Problem Title / Topic">
+                        <select class="todo-input" id="psDiff" style="max-width: 120px;">
+                            <option value="Easy">Easy</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Hard">Hard</option>
+                        </select>
+                        <button class="add-task-btn" id="addPSBtn"><i class="fas fa-plus"></i> Add</button>
+                    </div>
+                    <div id="manualPSList" style="margin-top: 15px; max-height: 200px; overflow-y: auto; padding-right: 8px;"></div>
+                </div>
+
+                <!-- Weekly Review Form -->
                 <div class="card span-2">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div>
@@ -717,6 +836,7 @@
                     <button class="save-review-btn" id="saveReviewBtn"><i class="fas fa-save"></i> Save Weekly Review (+15 XP Bonus!)</button>
                 </div>
 
+                <!-- Past Reviews -->
                 <div class="card span-2">
                     <div class="card-header">
                         <div class="card-title"><div class="card-icon"><i class="fas fa-history"></i></div> Past Reviews</div>
@@ -736,7 +856,7 @@
             <div class="cards-grid">
                 <div class="card span-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
+                        <div class="card-title" id="blogFormTitle"><div class="card-icon"><i class="fas fa-blog"></i></div> Add Project Blog</div>
                     </div>
                     <div class="todo-input-group">
                         <input type="text" class="todo-input" id="blogTitleInput" placeholder="Project Title (e.g., Smart Remote)">
@@ -815,6 +935,11 @@
                 { day: "30", month: "Aug", title: "Setup Dev Environment", desc: "Install VS Code, Git, and setup GitHub student pack." }
             ],
             hackathons: [],
+            quickLinks: [
+                { name: "Love Babbar DSA Playlist", url: "https://youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr3rRkUU-1f8ukpD" }
+            ],
+            dsaUsernames: { leetcode: "", codeforces: "", codechef: "" },
+            manualProblems: [],
             routines: [
                 {
                     tabName: "Everyday",
@@ -1038,49 +1163,6 @@
             }
         }
 
-        // --- SAFE MIGRATION LOGIC ---
-        // Splits combined days without deleting user data
-        function migrateRoutines() {
-            if (!Array.isArray(state.routines)) return;
-            
-            let needsMigrate = false;
-            const newRoutines = [];
-            
-            state.routines.forEach(r => {
-                if (r.tabName === "Mon & Wed") {
-                    needsMigrate = true;
-                    newRoutines.push({ ...r, tabName: "Monday", title: "📅 Monday" });
-                    newRoutines.push({ ...r, tabName: "Wednesday", title: "📅 Wednesday" });
-                } else if (r.tabName === "Tue & Fri") {
-                    needsMigrate = true;
-                    newRoutines.push({ ...r, tabName: "Tuesday", title: "📅 Tuesday" });
-                    newRoutines.push({ ...r, tabName: "Friday", title: "📅 Friday" });
-                } else {
-                    newRoutines.push(r);
-                }
-            });
-            
-            if (needsMigrate) {
-                state.routines = newRoutines;
-                saveState(); 
-            }
-        }
-
-        // --- SORT LOGIC ---
-        // Sorts routines chronologically: Everyday -> Monday -> Sunday
-        function sortRoutines() {
-            const dayOrder = ["Everyday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-            state.routines.sort((a, b) => {
-                const aIndex = dayOrder.indexOf(a.tabName);
-                const bIndex = dayOrder.indexOf(b.tabName);
-                
-                if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-                if (aIndex !== -1) return -1;
-                if (bIndex !== -1) return 1;
-                return 0;
-            });
-        }
-
         // --- Cloud Load Logic (Real-time) ---
         const stateDocRef = doc(db, "appData", "mainState");
         onSnapshot(stateDocRef, (docSnap) => {
@@ -1099,14 +1181,14 @@
                 state.todayTasks = Array.isArray(state.todayTasks) ? state.todayTasks : [];
                 state.upcomingGoals = Array.isArray(state.upcomingGoals) ? state.upcomingGoals : defaultState.upcomingGoals;
                 state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
+                state.quickLinks = Array.isArray(state.quickLinks) ? state.quickLinks : defaultState.quickLinks;
+                state.manualProblems = Array.isArray(state.manualProblems) ? state.manualProblems : [];
+                state.dsaUsernames = state.dsaUsernames || defaultState.dsaUsernames;
                 
                 state.routines = Array.isArray(state.routines) ? state.routines : defaultState.routines;
                 if (state.routines.length > 0 && !state.routines[0].schedule) {
                     state.routines = defaultState.routines; 
                 }
-                
-                migrateRoutines();
-                sortRoutines(); // Enforce chronological order
                 
                 state.roadmap = Array.isArray(state.roadmap) ? state.roadmap : defaultState.roadmap;
                 state.pastReviews = Array.isArray(state.pastReviews) ? state.pastReviews : [];
@@ -1124,9 +1206,6 @@
                         state.milestones = defaultState.milestones;
                         state.milestonesInitialized = true;
                     }
-                    
-                    migrateRoutines();
-                    sortRoutines(); // Enforce chronological order
                 } else {
                     saveState();
                 }
@@ -1186,12 +1265,13 @@
                 document.body.classList.add('read-only');
                 loginBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
-                // Force exit edit modes if logged out
                 if (routineEditMode) { routineEditMode = false; renderRoutines(); }
                 if (roadmapEditMode) { roadmapEditMode = false; renderRoadmap(); }
                 if (specEditMode) { specEditMode = false; renderTags(); }
                 if (upcomingEditMode) { upcomingEditMode = false; renderUpcomingGoals(); }
                 if (milestoneEditMode) { milestoneEditMode = false; renderMilestones(); }
+                document.getElementById('dsaSettingsGroup').classList.add('hidden');
+                document.getElementById('addLinkGroup').classList.add('hidden');
             }
         });
 
@@ -1620,7 +1700,6 @@
             today.setHours(0,0,0,0);
             const upcomingDates = [];
             
-            // Add Weekends from today until end of 2029
             let tempDate = new Date(today);
             while(tempDate.getFullYear() <= 2029) {
                 if(tempDate.getDay() === 0) upcomingDates.push({ date: new Date(tempDate), name: "Sunday", type: "weekend" });
@@ -1628,7 +1707,6 @@
                 tempDate.setDate(tempDate.getDate() + 1);
             }
             
-            // Add MP Govt Holidays
             allMpHolidays.forEach(h => {
                 const d = new Date(h.d + 'T00:00:00');
                 if(d >= today) {
@@ -1636,7 +1714,6 @@
                 }
             });
             
-            // Sort chronologically
             upcomingDates.sort((a, b) => a.date - b.date);
             
             if(upcomingDates.length === 0) {
@@ -1647,17 +1724,15 @@
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             
-            // Render first 4 in Dashboard
             const next4 = upcomingDates.slice(0, 4);
             next4.forEach(item => {
                 list.appendChild(createHolidayElement(item, monthNames, dayNames));
             });
 
-            // Render ALL in Modal grouped by Year
             let currentYear = -1;
             upcomingDates.forEach(item => {
                 const y = item.date.getFullYear();
-                if(y > 2029) return; // Stop at 2029
+                if(y > 2029) return;
                 if(y !== currentYear) {
                     currentYear = y;
                     const subHeader = document.createElement('div');
@@ -1698,6 +1773,292 @@
         });
         document.getElementById('holidaysOverlay').addEventListener('click', (e) => {
             if (e.target.id === 'holidaysOverlay') e.target.classList.remove('active');
+        });
+
+        // --- Quick Links Logic ---
+        const addLinkBtn = document.getElementById('addLinkBtn');
+        const addLinkGroup = document.getElementById('addLinkGroup');
+
+        addLinkBtn.addEventListener('click', () => {
+            addLinkGroup.classList.toggle('hidden');
+        });
+
+        document.getElementById('saveLinkBtn').addEventListener('click', () => {
+            const name = document.getElementById('linkNameInput').value.trim();
+            const url = document.getElementById('linkUrlInput').value.trim();
+            if (!name || !url) return alert("Please enter both name and URL.");
+            state.quickLinks.push({ name, url });
+            document.getElementById('linkNameInput').value = '';
+            document.getElementById('linkUrlInput').value = '';
+            addLinkGroup.classList.add('hidden');
+            saveState();
+            renderQuickLinks();
+        });
+
+        window.deleteQuickLink = (index) => {
+            state.quickLinks.splice(index, 1);
+            saveState();
+            renderQuickLinks();
+        };
+
+        function renderQuickLinks() {
+            const list = document.getElementById('quickLinksList');
+            list.innerHTML = '';
+            if (state.quickLinks.length === 0) {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-link"></i><p>No links saved.</p></div>`;
+                return;
+            }
+            state.quickLinks.forEach((link, index) => {
+                const el = document.createElement('a');
+                el.href = link.url;
+                el.target = "_blank";
+                el.className = 'quick-link-item';
+                el.innerHTML = `
+                    <div class="quick-link-info">
+                        <i class="fas fa-link"></i> ${link.name}
+                    </div>
+                    <button class="action-btn danger link-delete" onclick="event.preventDefault(); deleteQuickLink(${index})"><i class="fas fa-times"></i></button>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        // --- Auto PS Tracker Logic ---
+        const editDSABtn = document.getElementById('editDSABtn');
+        const dsaSettingsGroup = document.getElementById('dsaSettingsGroup');
+
+        editDSABtn.addEventListener('click', () => {
+            dsaSettingsGroup.classList.toggle('hidden');
+            if (!dsaSettingsGroup.classList.contains('hidden')) {
+                document.getElementById('lcUser').value = state.dsaUsernames.leetcode;
+                document.getElementById('cfUser').value = state.dsaUsernames.codeforces;
+                document.getElementById('ccUser').value = state.dsaUsernames.codechef;
+            }
+        });
+
+        document.getElementById('saveDSABtn').addEventListener('click', async () => {
+            state.dsaUsernames.leetcode = document.getElementById('lcUser').value.trim();
+            state.dsaUsernames.codeforces = document.getElementById('cfUser').value.trim();
+            state.dsaUsernames.codechef = document.getElementById('ccUser').value.trim();
+            saveState();
+            dsaSettingsGroup.classList.add('hidden');
+            await fetchDSAStats();
+            renderManualProblems();
+        });
+
+        async function fetchDSAStats() {
+            const statsDiv = document.getElementById('dsaStatsContainer');
+            statsDiv.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><i class="fas fa-spinner fa-spin"></i><p>Fetching live stats...</p></div>`;
+            
+            let html = '';
+            
+            if (state.dsaUsernames.leetcode) {
+                try {
+                    const res = await fetch(`https://leetcode-stats-api.herokuapp.com/${state.dsaUsernames.leetcode}`);
+                    const data = await res.json();
+                    if (data.status === "success") {
+                        html += `
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.totalSolved}</div>
+                                <div class="ps-stat-lbl">LeetCode Solved</div>
+                            </div>
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.easySolved}</div>
+                                <div class="ps-stat-lbl">LeetCode Easy</div>
+                            </div>
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.mediumSolved}</div>
+                                <div class="ps-stat-lbl">LeetCode Medium</div>
+                            </div>
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.hardSolved}</div>
+                                <div class="ps-stat-lbl">LeetCode Hard</div>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error("Failed");
+                    }
+                } catch (e) {
+                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">LeetCode</div></div>`;
+                }
+            }
+
+            if (state.dsaUsernames.codeforces) {
+                try {
+                    const res = await fetch(`https://codeforces.com/api/user.info?handles=${state.dsaUsernames.codeforces}`);
+                    const data = await res.json();
+                    if (data.status === "OK") {
+                        const u = data.result[0];
+                        html += `
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${u.rating || 'N/A'}</div>
+                                <div class="ps-stat-lbl">Codeforces Rating</div>
+                            </div>
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${u.maxRating || 'N/A'}</div>
+                                <div class="ps-stat-lbl">Codeforces Max</div>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error("Failed");
+                    }
+                } catch (e) {
+                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">Codeforces</div></div>`;
+                }
+            }
+
+            if (state.dsaUsernames.codechef) {
+                html += `
+                    <div class="ps-stat-card">
+                        <a href="https://www.codechef.com/users/${state.dsaUsernames.codechef}" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="ps-stat-val" style="font-size: 14px;">View Profile</div>
+                            <div class="ps-stat-lbl">CodeChef Profile</div>
+                        </a>
+                    </div>
+                `;
+            }
+
+            if (state.manualProblems.length > 0) {
+                const easy = state.manualProblems.filter(p => p.diff === 'Easy').length;
+                const med = state.manualProblems.filter(p => p.diff === 'Medium').length;
+                const hard = state.manualProblems.filter(p => p.diff === 'Hard').length;
+                html += `
+                    <div class="ps-stat-card">
+                        <div class="ps-stat-val">${state.manualProblems.length}</div>
+                        <div class="ps-stat-lbl">Custom Logged</div>
+                    </div>
+                    <div class="ps-stat-card">
+                        <div class="ps-stat-val">${easy}</div>
+                        <div class="ps-stat-lbl">Custom Easy</div>
+                    </div>
+                    <div class="ps-stat-card">
+                        <div class="ps-stat-val">${med}</div>
+                        <div class="ps-stat-lbl">Custom Medium</div>
+                    </div>
+                    <div class="ps-stat-card">
+                        <div class="ps-stat-val">${hard}</div>
+                        <div class="ps-stat-lbl">Custom Hard</div>
+                    </div>
+                `;
+            }
+
+            if (!html) {
+                statsDiv.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><i class="fas fa-laptop-code"></i><p>No accounts linked. Click 'Settings' to add your profiles.</p></div>`;
+            } else {
+                statsDiv.innerHTML = html;
+            }
+        }
+
+        document.getElementById('addPSBtn').addEventListener('click', () => {
+            const title = document.getElementById('psTitle').value.trim();
+            const diff = document.getElementById('psDiff').value;
+            if (!title) return alert("Please enter a problem title.");
+            state.manualProblems.push({ title, diff });
+            document.getElementById('psTitle').value = '';
+            saveState();
+            renderManualProblems();
+            fetchDSAStats();
+        });
+
+        window.deleteManualProblem = (index) => {
+            state.manualProblems.splice(index, 1);
+            saveState();
+            renderManualProblems();
+            fetchDSAStats();
+        };
+
+        function renderManualProblems() {
+            const list = document.getElementById('manualPSList');
+            list.innerHTML = '';
+            if (state.manualProblems.length === 0) {
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-code"></i><p>No custom problems logged yet.</p></div>`;
+                return;
+            }
+            state.manualProblems.forEach((p, index) => {
+                const el = document.createElement('div');
+                el.className = 'ps-item';
+                el.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="ps-badge ps-${p.diff.toLowerCase()}">${p.diff}</span>
+                        <span style="font-size: 14px; color: var(--text-secondary);">${p.title}</span>
+                    </div>
+                    <button class="action-btn danger ps-delete" onclick="deleteManualProblem(${index})"><i class="fas fa-times"></i></button>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        // --- Achievements Logic ---
+        const achievementsConfig = [
+            { id: 'streak7', name: '7-Day Streak', icon: 'fa-fire', color: '#f59e0b', condition: () => state.streak >= 7 },
+            { id: 'rev1', name: 'First Review', icon: 'fa-pen-to-square', color: '#3b82f6', condition: () => state.pastReviews.length >= 1 },
+            { id: 'rev5', name: '5 Reviews Written', icon: 'fa-book', color: '#3b82f6', condition: () => state.pastReviews.length >= 5 },
+            { id: 'rev10', name: '10 Reviews Written', icon: 'fa-book-open', color: '#3b82f6', condition: () => state.pastReviews.length >= 10 },
+            { id: 'p50', name: '50 Problems Solved', icon: 'fa-bolt', color: '#10b981', condition: () => getTotalProblems() >= 50 },
+            { id: 'p100', name: '100 Problems Solved', icon: 'fa-star', color: '#fbbf24', condition: () => getTotalProblems() >= 100 },
+            { id: 'p250', name: '250 Problems Solved', icon: 'fa-fire-flame-curved', color: '#ef4444', condition: () => getTotalProblems() >= 250 },
+            { id: 'p500', name: '500 Problems Solved', icon: 'fa-dragon', color: '#f472b6', condition: () => getTotalProblems() >= 500 },
+            { id: 'coder', name: 'Reached Coder Level', icon: 'fa-laptop-code', color: '#818cf8', condition: () => state.totalXP >= 500 },
+            { id: 'dev', name: 'Reached Developer Level', icon: 'fa-code-branch', color: '#818cf8', condition: () => state.totalXP >= 2000 },
+            { id: 'expert', name: 'Reached Expert Level', icon: 'fa-cogs', color: '#818cf8', condition: () => state.totalXP >= 4000 },
+            { id: 'hack1', name: 'First Hackathon Win', icon: 'fa-trophy', color: '#f472b6', condition: () => state.hackathons.filter(h => h.status === 'won').length >= 1 },
+            { id: 'hack2', name: 'Second Hackathon Win', icon: 'fa-medal', color: '#f472b6', condition: () => state.hackathons.filter(h => h.status === 'won').length >= 2 },
+            { id: 'hack3', name: 'Third Hackathon Win', icon: 'fa-award', color: '#f472b6', condition: () => state.hackathons.filter(h => h.status === 'won').length >= 3 },
+            { id: 'blog1', name: 'First Project Blog', icon: 'fa-rocket', color: '#10b981', condition: () => state.projectBlogs.length >= 1 },
+            { id: 'blog3', name: '3 Project Blogs', icon: 'fa-box-archive', color: '#10b981', condition: () => state.projectBlogs.length >= 3 },
+            { id: 'sem1', name: 'Semester 1 Completed', icon: 'fa-graduation-cap', color: '#ef4444', condition: () => {
+                if(!state.roadmap[0]) return false;
+                const goals = state.roadmap[0].months.flatMap(m => m.goals);
+                return goals.length > 0 && goals.every(g => g.done);
+            }},
+            { id: 'sem2', name: 'Semester 2 Completed', icon: 'fa-graduation-cap', color: '#ef4444', condition: () => {
+                if(!state.roadmap[1]) return false;
+                const goals = state.roadmap[1].months.flatMap(m => m.goals);
+                return goals.length > 0 && goals.every(g => g.done);
+            }}
+        ];
+
+        function getTotalProblems() {
+            let manualCount = state.manualProblems.length;
+            let reviewCount = state.pastReviews.reduce((acc, r) => acc + r.easy + r.medium + r.hard, 0);
+            return manualCount + reviewCount;
+        }
+
+        function renderAchievements() {
+            const list = document.getElementById('achievementsModalList');
+            list.innerHTML = '';
+            let unlockedCount = 0;
+            
+            achievementsConfig.forEach(a => {
+                const unlocked = a.condition();
+                if(unlocked) unlockedCount++;
+                
+                const el = document.createElement('div');
+                el.className = `achievement-badge ${unlocked ? 'unlocked' : ''}`;
+                if(unlocked) {
+                    el.style.background = `linear-gradient(135deg, ${a.color}22, ${a.color}11)`;
+                    el.style.borderColor = a.color;
+                }
+                el.innerHTML = `
+                    ${unlocked ? '<i class="fas fa-check check-mark"></i>' : '<i class="fas fa-lock lock-mark"></i>'}
+                    <i class="fas ${a.icon}" style="font-size: 32px; color: ${a.color}; margin-bottom: 10px;"></i>
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.2; text-align: center;">${a.name}</span>
+                `;
+                list.appendChild(el);
+            });
+            
+            document.getElementById('trophyCount').innerText = unlockedCount;
+        }
+        
+        document.getElementById('trophyIconBtn').addEventListener('click', () => {
+            renderAchievements();
+            document.getElementById('achievementsOverlay').classList.add('active');
+        });
+        document.getElementById('achievementsCloseBtn').addEventListener('click', () => {
+            document.getElementById('achievementsOverlay').classList.remove('active');
+        });
+        document.getElementById('achievementsOverlay').addEventListener('click', (e) => {
+            if (e.target.id === 'achievementsOverlay') e.target.classList.remove('active');
         });
 
         // --- Milestones Logic ---
@@ -2007,7 +2368,7 @@
             document.getElementById('hackathonDate').value = '';
         });
 
-        // --- Routine Logic (Interactive Day Tabs with Edit Mode & Sorting) ---
+        // --- Routine Logic ---
         const routineTabs = document.getElementById('routineTabs');
         const routineContent = document.getElementById('routineContent');
         const editRoutineBtn = document.getElementById('editRoutineBtn');
@@ -2118,7 +2479,7 @@
             renderRoutines();
         };
 
-        // --- Roadmap Logic (With Months & Edit Mode Toggle) ---
+        // --- Roadmap Logic ---
         const timeline = document.getElementById('timeline');
         const editRoadmapBtn = document.getElementById('editRoadmapBtn');
         let roadmapEditMode = false;
@@ -2342,6 +2703,7 @@
 
         // --- Project Blogs Logic ---
         const projectBlogList = document.getElementById('projectBlogList');
+        let editingBlogIndex = null;
 
         function renderProjectBlogs() {
             projectBlogList.innerHTML = '';
@@ -2362,6 +2724,7 @@
                     <div class="blog-header">
                         <div class="blog-title">${b.title}</div>
                         <div class="header-actions">
+                            <button class="action-btn" onclick="editBlog(${index})" style="margin-right: 8px;"><i class="fas fa-edit"></i> Edit</button>
                             <button class="action-btn danger" onclick="deleteBlog(${index})"><i class="fas fa-trash"></i> Remove</button>
                         </div>
                     </div>
@@ -2388,6 +2751,22 @@
             renderProjectBlogs();
         };
 
+        window.editBlog = (index) => {
+            const b = state.projectBlogs[index];
+            document.getElementById('blogTitleInput').value = b.title;
+            document.getElementById('blogIdeaInput').value = b.idea;
+            document.getElementById('blogDidInput').value = b.did;
+            document.getElementById('blogProblemsInput').value = b.problems;
+            
+            editingBlogIndex = index;
+            
+            document.getElementById('addBlogBtn').innerHTML = `<i class="fas fa-save"></i> Update Blog`;
+            document.getElementById('blogFormTitle').innerText = "Edit Project Blog";
+            
+            document.getElementById('blogTitleInput').focus();
+            document.getElementById('blogTitleInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+
         document.getElementById('addBlogBtn').addEventListener('click', () => {
             const title = document.getElementById('blogTitleInput').value.trim();
             const idea = document.getElementById('blogIdeaInput').value.trim();
@@ -2396,7 +2775,15 @@
             
             if (!title || !idea || !did || !problems) return alert("Please fill in all fields.");
             
-            state.projectBlogs.unshift({ title, idea, did, problems });
+            if (editingBlogIndex !== null) {
+                state.projectBlogs[editingBlogIndex] = { title, idea, did, problems };
+                editingBlogIndex = null;
+                document.getElementById('addBlogBtn').innerHTML = `<i class="fas fa-plus"></i> Add Project Blog`;
+                document.getElementById('blogFormTitle').innerText = "Add Project Blog";
+            } else {
+                state.projectBlogs.unshift({ title, idea, did, problems });
+            }
+            
             saveState();
             document.getElementById('blogTitleInput').value = '';
             document.getElementById('blogIdeaInput').value = '';
@@ -2419,6 +2806,10 @@
             renderPastReviews();
             renderProjectBlogs();
             renderUpcomingHolidays();
+            renderAchievements();
+            renderQuickLinks();
+            fetchDSAStats();
+            renderManualProblems();
         }
     </script>
 </body>
