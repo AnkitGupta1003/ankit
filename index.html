@@ -404,9 +404,6 @@
         body.read-only .ps-delete {
             display: none !important; 
         }
-        body.read-only #revEasy,
-        body.read-only #revMedium,
-        body.read-only #revHard,
         body.read-only #revVideos,
         body.read-only #revHours,
         body.read-only #revContests,
@@ -766,11 +763,10 @@
                         </div>
                     </div>
 
-                    <div class="review-stats" id="dsaStatsContainer">
-                        <!-- Live Stats will be injected here -->
-                    </div>
+                    <div class="review-label"><i class="fas fa-chart-bar"></i> Live Stats</div>
+                    <div class="review-stats" id="dsaStatsContainer"></div>
 
-                    <div class="review-label" style="margin-top: 24px;"><i class="fas fa-plus-circle"></i> Log Custom Problem (e.g. Supreme 4.0)</div>
+                    <div class="review-label" style="margin-top: 24px;"><i class="fas fa-plus-circle"></i> Log Custom Problem (CodeChef / Supreme 4.0)</div>
                     <div class="todo-input-group">
                         <input type="text" class="todo-input" id="psTitle" placeholder="Problem Title / Topic">
                         <select class="todo-input" id="psDiff" style="max-width: 120px;">
@@ -778,7 +774,7 @@
                             <option value="Medium">Medium</option>
                             <option value="Hard">Hard</option>
                         </select>
-                        <button class="add-task-btn" id="addPSBtn"><i class="fas fa-plus"></i> Add</button>
+                        <button class="add-task-btn" id="addPSBtn"><i class="fas fa-plus"></i> Add (+XP)</button>
                     </div>
                     <div id="manualPSList" style="margin-top: 15px; max-height: 200px; overflow-y: auto; padding-right: 8px;"></div>
                 </div>
@@ -789,18 +785,6 @@
                         <div class="card-title"><div class="card-icon"><i class="fas fa-star"></i></div> Weekly Review</div>
                     </div>
                     <div class="review-stats">
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revEasy">0</div>
-                            <div class="review-stat-lbl">Easy Problems (+15 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revMedium">0</div>
-                            <div class="review-stat-lbl">Medium Problems (+25 XP)</div>
-                        </div>
-                        <div class="review-stat">
-                            <div class="review-stat-val" contenteditable="true" id="revHard">0</div>
-                            <div class="review-stat-lbl">Hard Problems (+40 XP)</div>
-                        </div>
                         <div class="review-stat">
                             <div class="review-stat-val" contenteditable="true" id="revVideos">0</div>
                             <div class="review-stat-lbl">Videos Watched (+5 XP)</div>
@@ -1854,30 +1838,27 @@
             
             if (state.dsaUsernames.leetcode) {
                 try {
-                    const res = await fetch(`https://leetcode-stats-api.herokuapp.com/${state.dsaUsernames.leetcode}`);
+                    const res = await fetch(`https://alfa-leetcode-api.onrender.com/${state.dsaUsernames.leetcode}/solved`);
+                    if (!res.ok) throw new Error("API Error");
                     const data = await res.json();
-                    if (data.status === "success") {
-                        html += `
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.totalSolved}</div>
-                                <div class="ps-stat-lbl">LeetCode Solved</div>
-                            </div>
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.easySolved}</div>
-                                <div class="ps-stat-lbl">LeetCode Easy</div>
-                            </div>
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.mediumSolved}</div>
-                                <div class="ps-stat-lbl">LeetCode Medium</div>
-                            </div>
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.hardSolved}</div>
-                                <div class="ps-stat-lbl">LeetCode Hard</div>
-                            </div>
-                        `;
-                    } else {
-                        throw new Error("Failed");
-                    }
+                    html += `
+                        <div class="ps-stat-card">
+                            <div class="ps-stat-val">${data.solvedProblem}</div>
+                            <div class="ps-stat-lbl">LeetCode Solved</div>
+                        </div>
+                        <div class="ps-stat-card">
+                            <div class="ps-stat-val">${data.easySolved}</div>
+                            <div class="ps-stat-lbl">LeetCode Easy</div>
+                        </div>
+                        <div class="ps-stat-card">
+                            <div class="ps-stat-val">${data.mediumSolved}</div>
+                            <div class="ps-stat-lbl">LeetCode Medium</div>
+                        </div>
+                        <div class="ps-stat-card">
+                            <div class="ps-stat-val">${data.hardSolved}</div>
+                            <div class="ps-stat-lbl">LeetCode Hard</div>
+                        </div>
+                    `;
                 } catch (e) {
                     html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">LeetCode</div></div>`;
                 }
@@ -1954,15 +1935,38 @@
             const diff = document.getElementById('psDiff').value;
             if (!title) return alert("Please enter a problem title.");
             state.manualProblems.push({ title, diff });
+            
+            let xpGain = 0;
+            if (diff === 'Easy') xpGain = 15;
+            else if (diff === 'Medium') xpGain = 25;
+            else if (diff === 'Hard') xpGain = 40;
+            
+            state.totalXP += xpGain;
+            state.todayXP += xpGain;
+            state.weekXP += xpGain;
+            
             document.getElementById('psTitle').value = '';
             saveState();
+            updateXPDisplay(state.totalXP);
             renderManualProblems();
             fetchDSAStats();
+            alert(`Problem logged! You earned ${xpGain} XP.`);
         });
 
         window.deleteManualProblem = (index) => {
+            const p = state.manualProblems[index];
+            let xpLoss = 0;
+            if (p.diff === 'Easy') xpLoss = 15;
+            else if (p.diff === 'Medium') xpLoss = 25;
+            else if (p.diff === 'Hard') xpLoss = 40;
+            
+            state.totalXP = Math.max(0, state.totalXP - xpLoss);
+            state.todayXP = Math.max(0, state.todayXP - xpLoss);
+            state.weekXP = Math.max(0, state.weekXP - xpLoss);
+            
             state.manualProblems.splice(index, 1);
             saveState();
+            updateXPDisplay(state.totalXP);
             renderManualProblems();
             fetchDSAStats();
         };
@@ -2019,9 +2023,7 @@
         ];
 
         function getTotalProblems() {
-            let manualCount = state.manualProblems.length;
-            let reviewCount = state.pastReviews.reduce((acc, r) => acc + r.easy + r.medium + r.hard, 0);
-            return manualCount + reviewCount;
+            return state.manualProblems.length;
         }
 
         function renderAchievements() {
@@ -2599,20 +2601,16 @@
         });
 
         document.getElementById('saveReviewBtn').addEventListener('click', () => {
-            const easy = parseInt(document.getElementById('revEasy').textContent) || 0;
-            const medium = parseInt(document.getElementById('revMedium').textContent) || 0;
-            const hard = parseInt(document.getElementById('revHard').textContent) || 0;
             const videos = parseInt(document.getElementById('revVideos').textContent) || 0;
             const hours = parseInt(document.getElementById('revHours').textContent) || 0;
             const contests = parseInt(document.getElementById('revContests').textContent) || 0;
             
             const textareas = document.querySelectorAll('#reviews .review-textarea');
             
-            const problemXP = (easy * 15) + (medium * 25) + (hard * 40);
             const videoXP = videos * 5; 
             const hoursXP = hours * 10; 
             const bonusXP = 15;
-            const earnedXP = problemXP + videoXP + hoursXP + bonusXP;
+            const earnedXP = videoXP + hoursXP + bonusXP;
             
             state.totalXP += earnedXP;
             state.todayXP += earnedXP;
@@ -2622,7 +2620,7 @@
             
             const reviewData = {
                 date: new Date().toLocaleDateString(),
-                easy, medium, hard, videos, hours, contests,
+                videos, hours, contests,
                 earnedXP,
                 completed: textareas[0].value,
                 goals: textareas[1].value,
@@ -2635,9 +2633,6 @@
             saveState();
             renderPastReviews();
             
-            document.getElementById('revEasy').textContent = '0';
-            document.getElementById('revMedium').textContent = '0';
-            document.getElementById('revHard').textContent = '0';
             document.getElementById('revVideos').textContent = '0';
             document.getElementById('revHours').textContent = '0';
             document.getElementById('revContests').textContent = '0';
@@ -2669,9 +2664,6 @@
                         <button class="delete-review-btn" onclick="deleteReview(${index})"><i class="fas fa-trash"></i> Delete</button>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; margin-bottom: 12px; text-align: center;">
-                        <div><strong>${r.easy}</strong><br><small style="color:var(--text-muted)">Easy</small></div>
-                        <div><strong>${r.medium}</strong><br><small style="color:var(--text-muted)">Medium</small></div>
-                        <div><strong>${r.hard}</strong><br><small style="color:var(--text-muted)">Hard</small></div>
                         <div><strong>${r.videos}</strong><br><small style="color:var(--text-muted)">Videos</small></div>
                         <div><strong>${r.hours}</strong><br><small style="color:var(--text-muted)">Hours</small></div>
                         <div><strong>${r.contests}</strong><br><small style="color:var(--text-muted)">Contests</small></div>
