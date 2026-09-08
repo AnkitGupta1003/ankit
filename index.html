@@ -1860,7 +1860,7 @@
                         </div>
                     `;
                 } catch (e) {
-                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">LeetCode</div></div>`;
+                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">LeetCode API</div></div>`;
                 }
             }
 
@@ -1889,14 +1889,26 @@
             }
 
             if (state.dsaUsernames.codechef) {
-                html += `
-                    <div class="ps-stat-card">
-                        <a href="https://www.codechef.com/users/${state.dsaUsernames.codechef}" target="_blank" style="text-decoration: none; color: inherit;">
-                            <div class="ps-stat-val" style="font-size: 14px;">View Profile</div>
-                            <div class="ps-stat-lbl">CodeChef Profile</div>
-                        </a>
-                    </div>
-                `;
+                try {
+                    const res = await fetch(`https://codechef-api.vercel.app/handle/${state.dsaUsernames.codechef}`);
+                    const data = await res.json();
+                    if (data.success) {
+                        html += `
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.fullySolvedCount || 0}</div>
+                                <div class="ps-stat-lbl">CodeChef Solved</div>
+                            </div>
+                            <div class="ps-stat-card">
+                                <div class="ps-stat-val">${data.rating || 'N/A'}</div>
+                                <div class="ps-stat-lbl">CodeChef Rating</div>
+                            </div>
+                        `;
+                    } else {
+                        throw new Error("Failed");
+                    }
+                } catch (e) {
+                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">CodeChef</div></div>`;
+                }
             }
 
             if (state.manualProblems.length > 0) {
