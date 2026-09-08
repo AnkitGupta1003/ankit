@@ -300,7 +300,7 @@
         .delete-review-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; transition: all 0.3s ease; -webkit-tap-highlight-color: transparent; }
         .delete-review-btn:hover { border-color: var(--danger); color: var(--danger); background: rgba(239,68,68,0.1); }
 
-        /* Auto PS Tracker */
+        /* DSA Problem Tracker */
         .ps-stat-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; text-align: center; }
         .ps-stat-val { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 800; color: var(--secondary); margin-bottom: 4px; }
         .ps-stat-lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
@@ -744,29 +744,16 @@
         <section id="reviews" class="content-section">
             <div class="cards-grid">
                 
-                <!-- Auto PS Tracker -->
+                <!-- DSA Problem Tracker -->
                 <div class="card span-2">
                     <div class="card-header">
-                        <div class="card-title"><div class="card-icon"><i class="fas fa-laptop-code"></i></div> Auto PS Tracker</div>
-                        <div class="header-actions">
-                            <button class="action-btn" id="editDSABtn"><i class="fas fa-cog"></i> Settings</button>
-                        </div>
-                    </div>
-                    
-                    <div id="dsaSettingsGroup" class="hidden" style="margin-bottom: 24px; border: 1px solid var(--border-color); padding: 20px; border-radius: 16px; background: rgba(0,0,0,0.2);">
-                        <div class="review-label"><i class="fas fa-user"></i> Link Coding Platforms</div>
-                        <div class="todo-input-group" style="flex-direction: column; gap: 12px;">
-                            <input type="text" class="todo-input" id="lcUser" placeholder="LeetCode Username" style="width: 100%;">
-                            <input type="text" class="todo-input" id="cfUser" placeholder="Codeforces Handle" style="width: 100%;">
-                            <input type="text" class="todo-input" id="ccUser" placeholder="CodeChef Username" style="width: 100%;">
-                            <button class="action-btn active" id="saveDSABtn" style="width: 100%; justify-content: center;"><i class="fas fa-save"></i> Save & Fetch Stats</button>
-                        </div>
+                        <div class="card-title"><div class="card-icon"><i class="fas fa-laptop-code"></i></div> DSA Problem Tracker</div>
                     </div>
 
-                    <div class="review-label"><i class="fas fa-chart-bar"></i> Live Stats</div>
+                    <div class="review-label"><i class="fas fa-chart-bar"></i> Logged Stats</div>
                     <div class="review-stats" id="dsaStatsContainer"></div>
 
-                    <div class="review-label" style="margin-top: 24px;"><i class="fas fa-plus-circle"></i> Log Custom Problem (CodeChef / Supreme 4.0)</div>
+                    <div class="review-label" style="margin-top: 24px;"><i class="fas fa-plus-circle"></i> Log Problem (LeetCode / CodeChef / Supreme 4.0)</div>
                     <div class="todo-input-group">
                         <input type="text" class="todo-input" id="psTitle" placeholder="Problem Title / Topic">
                         <select class="todo-input" id="psDiff" style="max-width: 120px;">
@@ -922,7 +909,6 @@
             quickLinks: [
                 { name: "Love Babbar DSA Playlist", url: "https://youtube.com/playlist?list=PLDzeHZWIZsTryvtXdMr3rRkUU-1f8ukpD" }
             ],
-            dsaUsernames: { leetcode: "", codeforces: "", codechef: "" },
             manualProblems: [],
             routines: [
                 {
@@ -1167,7 +1153,6 @@
                 state.hackathons = Array.isArray(state.hackathons) ? state.hackathons : [];
                 state.quickLinks = Array.isArray(state.quickLinks) ? state.quickLinks : defaultState.quickLinks;
                 state.manualProblems = Array.isArray(state.manualProblems) ? state.manualProblems : [];
-                state.dsaUsernames = state.dsaUsernames || defaultState.dsaUsernames;
                 
                 state.routines = Array.isArray(state.routines) ? state.routines : defaultState.routines;
                 if (state.routines.length > 0 && !state.routines[0].schedule) {
@@ -1254,8 +1239,8 @@
                 if (specEditMode) { specEditMode = false; renderTags(); }
                 if (upcomingEditMode) { upcomingEditMode = false; renderUpcomingGoals(); }
                 if (milestoneEditMode) { milestoneEditMode = false; renderMilestones(); }
-                document.getElementById('dsaSettingsGroup').classList.add('hidden');
-                document.getElementById('addLinkGroup').classList.add('hidden');
+                const linkGroup = document.getElementById('addLinkGroup');
+                if (linkGroup) linkGroup.classList.add('hidden');
             }
         });
 
@@ -1807,139 +1792,34 @@
             });
         }
 
-        // --- Auto PS Tracker Logic ---
-        const editDSABtn = document.getElementById('editDSABtn');
-        const dsaSettingsGroup = document.getElementById('dsaSettingsGroup');
-
-        editDSABtn.addEventListener('click', () => {
-            dsaSettingsGroup.classList.toggle('hidden');
-            if (!dsaSettingsGroup.classList.contains('hidden')) {
-                document.getElementById('lcUser').value = state.dsaUsernames.leetcode;
-                document.getElementById('cfUser').value = state.dsaUsernames.codeforces;
-                document.getElementById('ccUser').value = state.dsaUsernames.codechef;
-            }
-        });
-
-        document.getElementById('saveDSABtn').addEventListener('click', async () => {
-            state.dsaUsernames.leetcode = document.getElementById('lcUser').value.trim();
-            state.dsaUsernames.codeforces = document.getElementById('cfUser').value.trim();
-            state.dsaUsernames.codechef = document.getElementById('ccUser').value.trim();
-            saveState();
-            dsaSettingsGroup.classList.add('hidden');
-            await fetchDSAStats();
-            renderManualProblems();
-        });
-
-        async function fetchDSAStats() {
+        // --- DSA Problem Tracker Logic ---
+        function renderDSAStats() {
             const statsDiv = document.getElementById('dsaStatsContainer');
-            statsDiv.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><i class="fas fa-spinner fa-spin"></i><p>Fetching live stats...</p></div>`;
+            statsDiv.innerHTML = '';
             
-            let html = '';
+            const easy = state.manualProblems.filter(p => p.diff === 'Easy').length;
+            const med = state.manualProblems.filter(p => p.diff === 'Medium').length;
+            const hard = state.manualProblems.filter(p => p.diff === 'Hard').length;
+            const total = state.manualProblems.length;
             
-            if (state.dsaUsernames.leetcode) {
-                try {
-                    const res = await fetch(`https://alfa-leetcode-api.onrender.com/${state.dsaUsernames.leetcode}/solved`);
-                    if (!res.ok) throw new Error("API Error");
-                    const data = await res.json();
-                    html += `
-                        <div class="ps-stat-card">
-                            <div class="ps-stat-val">${data.solvedProblem}</div>
-                            <div class="ps-stat-lbl">LeetCode Solved</div>
-                        </div>
-                        <div class="ps-stat-card">
-                            <div class="ps-stat-val">${data.easySolved}</div>
-                            <div class="ps-stat-lbl">LeetCode Easy</div>
-                        </div>
-                        <div class="ps-stat-card">
-                            <div class="ps-stat-val">${data.mediumSolved}</div>
-                            <div class="ps-stat-lbl">LeetCode Medium</div>
-                        </div>
-                        <div class="ps-stat-card">
-                            <div class="ps-stat-val">${data.hardSolved}</div>
-                            <div class="ps-stat-lbl">LeetCode Hard</div>
-                        </div>
-                    `;
-                } catch (e) {
-                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">LeetCode API</div></div>`;
-                }
-            }
-
-            if (state.dsaUsernames.codeforces) {
-                try {
-                    const res = await fetch(`https://codeforces.com/api/user.info?handles=${state.dsaUsernames.codeforces}`);
-                    const data = await res.json();
-                    if (data.status === "OK") {
-                        const u = data.result[0];
-                        html += `
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${u.rating || 'N/A'}</div>
-                                <div class="ps-stat-lbl">Codeforces Rating</div>
-                            </div>
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${u.maxRating || 'N/A'}</div>
-                                <div class="ps-stat-lbl">Codeforces Max</div>
-                            </div>
-                        `;
-                    } else {
-                        throw new Error("Failed");
-                    }
-                } catch (e) {
-                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">Codeforces</div></div>`;
-                }
-            }
-
-            if (state.dsaUsernames.codechef) {
-                try {
-                    const res = await fetch(`https://codechef-api.vercel.app/handle/${state.dsaUsernames.codechef}`);
-                    const data = await res.json();
-                    if (data.success) {
-                        html += `
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.fullySolvedCount || 0}</div>
-                                <div class="ps-stat-lbl">CodeChef Solved</div>
-                            </div>
-                            <div class="ps-stat-card">
-                                <div class="ps-stat-val">${data.rating || 'N/A'}</div>
-                                <div class="ps-stat-lbl">CodeChef Rating</div>
-                            </div>
-                        `;
-                    } else {
-                        throw new Error("Failed");
-                    }
-                } catch (e) {
-                    html += `<div class="ps-stat-card"><div class="ps-stat-val" style="color: var(--danger)">Err</div><div class="ps-stat-lbl">CodeChef</div></div>`;
-                }
-            }
-
-            if (state.manualProblems.length > 0) {
-                const easy = state.manualProblems.filter(p => p.diff === 'Easy').length;
-                const med = state.manualProblems.filter(p => p.diff === 'Medium').length;
-                const hard = state.manualProblems.filter(p => p.diff === 'Hard').length;
-                html += `
-                    <div class="ps-stat-card">
-                        <div class="ps-stat-val">${state.manualProblems.length}</div>
-                        <div class="ps-stat-lbl">Custom Logged</div>
-                    </div>
-                    <div class="ps-stat-card">
-                        <div class="ps-stat-val">${easy}</div>
-                        <div class="ps-stat-lbl">Custom Easy</div>
-                    </div>
-                    <div class="ps-stat-card">
-                        <div class="ps-stat-val">${med}</div>
-                        <div class="ps-stat-lbl">Custom Medium</div>
-                    </div>
-                    <div class="ps-stat-card">
-                        <div class="ps-stat-val">${hard}</div>
-                        <div class="ps-stat-lbl">Custom Hard</div>
-                    </div>
-                `;
-            }
-
-            if (!html) {
-                statsDiv.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;"><i class="fas fa-laptop-code"></i><p>No accounts linked. Click 'Settings' to add your profiles.</p></div>`;
-            } else {
-                statsDiv.innerHTML = html;
-            }
+            statsDiv.innerHTML = `
+                <div class="ps-stat-card">
+                    <div class="ps-stat-val">${total}</div>
+                    <div class="ps-stat-lbl">Total Solved</div>
+                </div>
+                <div class="ps-stat-card">
+                    <div class="ps-stat-val">${easy}</div>
+                    <div class="ps-stat-lbl">Easy Solved</div>
+                </div>
+                <div class="ps-stat-card">
+                    <div class="ps-stat-val">${med}</div>
+                    <div class="ps-stat-lbl">Medium Solved</div>
+                </div>
+                <div class="ps-stat-card">
+                    <div class="ps-stat-val">${hard}</div>
+                    <div class="ps-stat-lbl">Hard Solved</div>
+                </div>
+            `;
         }
 
         document.getElementById('addPSBtn').addEventListener('click', () => {
@@ -1961,7 +1841,7 @@
             saveState();
             updateXPDisplay(state.totalXP);
             renderManualProblems();
-            fetchDSAStats();
+            renderDSAStats();
             alert(`Problem logged! You earned ${xpGain} XP.`);
         });
 
@@ -1980,14 +1860,14 @@
             saveState();
             updateXPDisplay(state.totalXP);
             renderManualProblems();
-            fetchDSAStats();
+            renderDSAStats();
         };
 
         function renderManualProblems() {
             const list = document.getElementById('manualPSList');
             list.innerHTML = '';
             if (state.manualProblems.length === 0) {
-                list.innerHTML = `<div class="empty-state"><i class="fas fa-code"></i><p>No custom problems logged yet.</p></div>`;
+                list.innerHTML = `<div class="empty-state"><i class="fas fa-code"></i><p>No problems logged yet.</p></div>`;
                 return;
             }
             state.manualProblems.forEach((p, index) => {
@@ -2812,7 +2692,7 @@
             renderUpcomingHolidays();
             renderAchievements();
             renderQuickLinks();
-            fetchDSAStats();
+            renderDSAStats();
             renderManualProblems();
         }
     </script>
